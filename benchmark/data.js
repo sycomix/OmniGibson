@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1681942034089,
+  "lastUpdate": 1681944192227,
   "repoUrl": "https://github.com/StanfordVL/OmniGibson",
   "entries": {
     "Benchmark": [
@@ -44,6 +44,51 @@ window.BENCHMARK_DATA = {
           {
             "name": "Non physics step fps (Rs_int, without Fetch, without particles & cloth flatcache on)",
             "value": 906.5916584049986,
+            "unit": "fps"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "StanfordVL",
+            "username": "StanfordVL"
+          },
+          "committer": {
+            "name": "StanfordVL",
+            "username": "StanfordVL"
+          },
+          "id": "72615e4e7a7b483185c390318bd3a03a9d2169a4",
+          "message": "[WIP] Profiling",
+          "timestamp": "2023-04-18T14:04:33Z",
+          "url": "https://github.com/StanfordVL/OmniGibson/pull/139/commits/72615e4e7a7b483185c390318bd3a03a9d2169a4"
+        },
+        "date": 1681944191623,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "Total step fps (Rs_int, without Fetch, without particles & cloth flatcache on)",
+            "value": 21.214955962346334,
+            "unit": "fps"
+          },
+          {
+            "name": "Action generation fps (Rs_int, without Fetch, without particles & cloth flatcache on)",
+            "value": 84076.6537484966,
+            "unit": "fps"
+          },
+          {
+            "name": "Physics step fps (Rs_int, without Fetch, without particles & cloth flatcache on)",
+            "value": 26.053587487929196,
+            "unit": "fps"
+          },
+          {
+            "name": "Render step time (Rs_int, without Fetch, without particles & cloth flatcache on)",
+            "value": 131.93878282869164,
+            "unit": "fps"
+          },
+          {
+            "name": "Non physics step fps (Rs_int, without Fetch, without particles & cloth flatcache on)",
+            "value": 889.0330858559166,
             "unit": "fps"
           }
         ]
