@@ -183,7 +183,7 @@
 
             const color = '#38ff38';
             const data = {
-              labels: dataset.map(d => d.commit.id.slice(0, 7)),
+              labels: Array.from(dataset).map(([name, value]) => (value[0].commit.id.slice(0, 7))),
               datasets: Array.from(dataset).map(([name, value]) => ({
                 label: name,
                 data: value.map(d => d.bench.value),
