@@ -133,11 +133,18 @@
               const {commit, date, tool, benches} = entry;
               for (const bench of benches) {
                 const result = { commit, date, tool, bench };
-                const arr = map.get(bench.name);
-                if (arr === undefined) {
-                  map.set(bench.name, [result]);
+                const title_map = map.get(bench.title);
+                if (title_map === undefined) {
+                  const temp_map = new Map();
+                  temp_map.set(bench.name, [result]);
+                  map.set(bench.title, temp_map);
                 } else {
-                  arr.push(result);
+                  const name_map = title_map.get(bench.name);
+                  if (name_map === undefined) {
+                    title_map.set(bench.name, [result]);
+                  } else {
+                    name_map.push(result);
+                  }
                 }
               }
             }
@@ -168,24 +175,20 @@
           }));
         }
 
-        function renderAllChars(dataSets) {
-
-          function renderGraph(parent, name, dataset) {
+        function renderAllCharts(dataSets) {
+          function renderGraph(parent, title, dataset) {
             const canvas = document.createElement('canvas');
             canvas.className = 'benchmark-chart';
             parent.appendChild(canvas);
 
-            const color = toolColors[dataset.length > 0 ? dataset[0].tool : '_'];
+            const color = '#38ff38';
             const data = {
               labels: dataset.map(d => d.commit.id.slice(0, 7)),
-              datasets: [
-                {
-                  label: name,
-                  data: dataset.map(d => d.bench.value),
-                  borderColor: color,
-                  backgroundColor: color + '60', // Add alpha for #rrggbbaa
-                }
-              ],
+              datasets: Array.from(dataset).map(([name, value]) => ({
+                label: name,
+                data: value.map(d => d.bench.value),
+                borderColor: color,
+              }))
             };
             const options = {
               scales: {
@@ -263,8 +266,8 @@
             graphsElem.className = 'benchmark-graphs';
             setElem.appendChild(graphsElem);
 
-            for (const [benchName, benches] of benchSet.entries()) {
-              renderGraph(graphsElem, benchName, benches)
+            for (const [benchTitle, benches] of benchSet.entries()) {
+              renderGraph(graphsElem, benchTitle, benches)
             }
           }
 
@@ -274,7 +277,7 @@
           }
         }
 
-        renderAllChars(init()); // Start
+        renderAllCharts(init()); // Start
       })();
     </script>
   </body>
