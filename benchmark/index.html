@@ -133,11 +133,11 @@
               const {commit, date, tool, benches} = entry;
               for (const bench of benches) {
                 const result = { commit, date, tool, bench };
-                const title_map = map.get(bench.title);
+                const title_map = map.get(bench.extra);
                 if (title_map === undefined) {
                   const temp_map = new Map();
                   temp_map.set(bench.name, [result]);
-                  map.set(bench.title, temp_map);
+                  map.set(bench.extra, temp_map);
                 } else {
                   const name_map = title_map.get(bench.name);
                   if (name_map === undefined) {
