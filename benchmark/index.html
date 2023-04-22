@@ -188,6 +188,7 @@
                 label: name,
                 data: value.map(d => d.bench.value),
                 borderColor: color,
+                backgroundColor: 'rgba(0, 0, 0, 0.01)'
               }))
             };
             const options = {
@@ -197,6 +198,9 @@
                     scaleLabel: {
                       display: true,
                       labelString: 'commit',
+                      padding: {
+                        'botton': 30
+                      }
                     },
                   }
                 ],
@@ -204,7 +208,7 @@
                   {
                     scaleLabel: {
                       display: true,
-                      labelString: dataset.length > 0 ? dataset[0].bench.unit : '',
+                      labelString: dataset.size > 0 ? dataset.values().next().value[0].bench.unit : '',
                     },
                     ticks: {
                       beginAtZero: true,
@@ -216,12 +220,12 @@
                 callbacks: {
                   afterTitle: items => {
                     const {index} = items[0];
-                    const data = dataset[index];
+                    const data = dataset.values().next().value[index];
                     return '\n' + data.commit.message + '\n\n' + data.commit.timestamp + ' committed by @' + data.commit.committer.username + '\n';
                   },
                   label: item => {
                     let label = item.value;
-                    const { range, unit } = dataset[item.index].bench;
+                    const { range, unit } = dataset.values().next().value[item.index].bench;
                     label += ' ' + unit;
                     if (range) {
                       label += ' (' + range + ')';
@@ -229,7 +233,7 @@
                     return label;
                   },
                   afterLabel: item => {
-                    const { extra } = dataset[item.index].bench;
+                    const { extra } = dataset.values().next().value[item.index].bench;
                     return extra ? '\n' + extra : '';
                   }
                 }
@@ -240,9 +244,19 @@
                 }
                 // XXX: Undocumented. How can we know the index?
                 const index = activeElems[0]._index;
-                const url = dataset[index].commit.url;
+                const url = dataset.values().next().value[index].commit.url;
                 window.open(url, '_blank');
               },
+              responsive: true,
+              title: {
+                display: true,
+                text: title,
+              },
+              layout: {
+                padding: 10
+              },
+              responsive: true,
+              maintainAspectRatio: false
             };
 
             new Chart(canvas, {
