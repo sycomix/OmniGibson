@@ -3940,30 +3940,26 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/StanfordVL/OmniGibson.git
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">cd</span><span class="w"> </span>OmniGibson
 </code></pre></div>
-</li>
-</ol>
 <details class="note annotate">
 <summary>Nightly build</summary>
 <p>The main branch contains the stable version of <strong><code>OmniGibson</code></strong>. If you want to be up-to-date with our latest developed (yet not fully tested) features and bug fixes, you can clone from the <code>og-develop</code> branch.</p>
 </details>
-<ol>
-<li>
-<p>Setup a virtual conda environment to run <strong><code>OmniGibson</code></strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./setup.sh<span class="w"> </span><span class="c1"># (1)!</span>
-</code></pre></div>
-<p>This will automatically create an dump you into a conda env called <code>omnigibson</code>. To activate this environment, simply call:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>conda<span class="w"> </span>activate<span class="w"> </span>omnigibson
-</code></pre></div>
 </li>
 <li>
-<p>[Optional] Download <strong><code>OmniGibson</code></strong> assets and datasets:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python<span class="w"> </span>scripts/download_datasets.py
+<p>Setup a virtual conda environment to run <strong><code>OmniGibson</code></strong>:</p>
+<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./setup.sh<span class="w"> </span><span class="c1"># (1)!</span>
+</code></pre></div>
+<p>This will create a conda env with <code>omnigibson</code> installed. Simply call <code>conda activate</code> to activate this environment.</p>
+</li>
+<li>
+<p>[Optional] Download <strong><code>OmniGibson</code></strong> dataset (within the conda env):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span>scripts/download_datasets.py
 </code></pre></div>
 </li>
 </ol>
 </div>
 <ol>
-<li>If you installed Isaac Sim to the default location, this is <code>~/.local/share/ov/pkg/isaac_sim-2022.2.0</code></li>
+<li>The script will ask you which Isaac Sim to use. If you installed it in the default location, it should be <code>~/.local/share/ov/pkg/isaac_sim-2022.2.0</code></li>
 </ol>
 </div>
 <div class="tabbed-block">
@@ -3977,8 +3973,8 @@
 </li>
 <li>
 <p>Clone <a href="https://github.com/StanfordVL/OmniGibson"><strong><code>OmniGibson</code></strong></a> and move into the directory:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/StanfordVL/OmniGibson.git
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">cd</span><span class="w"> </span>OmniGibson
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/StanfordVL/OmniGibson.git
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">cd</span><span class="w"> </span>OmniGibson
 </code></pre></div>
 </li>
 </ol>
@@ -3989,21 +3985,19 @@
 <ol>
 <li>
 <p>Setup a virtual conda environment to run <strong><code>OmniGibson</code></strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>.<span class="se">\s</span>etup_conda_env.bat<span class="w"> </span><span class="c1"># (1)!</span>
+<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>.<span class="se">\s</span>cripts<span class="se">\s</span>etup.bat<span class="w"> </span><span class="c1"># (1)!</span>
 </code></pre></div>
-<p>This will automatically create an dump you into a conda env called <code>omnigibson</code>. To activate this environment, simply call:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>conda<span class="w"> </span>activate<span class="w"> </span>omnigibson
-</code></pre></div>
+<p>This will create a conda env with <code>omnigibson</code> installed. Simply call <code>conda activate</code> to activate this environment.</p>
 </li>
 <li>
-<p>[Optional] Download <strong><code>OmniGibson</code></strong> assets and datasets:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">(</span>omnigibson<span class="o">)</span><span class="w"> </span>python<span class="w"> </span>scripts/download_datasets.py
+<p>[Optional] Download <strong><code>OmniGibson</code></strong> dataset (within the conda env):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>scripts/download_datasets.py
 </code></pre></div>
 </li>
 </ol>
 </div>
 <ol>
-<li>If you installed Isaac Sim to the default location, this is <code>C:\Users\&lt;USER_NAME&gt;\AppData\Local\ov\pkg\isaac_sim-2022.2.0</code></li>
+<li>The script will ask you which Isaac Sim to use. If you installed it in the default location, it should be <code>C:\Users\&lt;USER_NAME&gt;\AppData\Local\ov\pkg\isaac_sim-2022.2.0</code></li>
 </ol>
 </div>
 </div>
@@ -4019,13 +4013,13 @@
 <p>Omniverse requires some one-time startup setup (up to ~5 minutes) when <strong><code>OmniGibson</code></strong> is imported for the first time. This is expected behavior, and should only occur once!</p>
 </div>
 <p><strong><code>OmniGibson</code></strong> is now successfully installed! Try exploring some of our new scenes interactively:</p>
-<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>python<span class="w"> </span>-m<span class="w"> </span>omnigibson.examples.scenes.scene_selector<span class="w"> </span><span class="c1"># (1)!</span>
+<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>python<span class="w"> </span>-m<span class="w"> </span>omnigibson.examples.scenes.scene_selector<span class="w"> </span><span class="c1"># (1)!</span>
 </code></pre></div>
 <ol>
 <li>This demo lets you choose a scene and interactively move around using your keyboard and mouse. Hold down <strong><code>Shift</code></strong> and then <strong><code>Left-click + Drag</code></strong> an object to apply forces!</li>
 </ol>
 <p>You can also try teleoperating one of our robots:</p>
-<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>python<span class="w"> </span>-m<span class="w"> </span>omnigibson.examples.robots.robot_control_example<span class="w"> </span><span class="c1"># (1)!</span>
+<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>python<span class="w"> </span>-m<span class="w"> </span>omnigibson.examples.robots.robot_control_example<span class="w"> </span><span class="c1"># (1)!</span>
 </code></pre></div>
 <ol>
 <li>This demo lets you choose a scene, robot, and set of controllers, and then teleoperate the robot using your keyboard.</li>
