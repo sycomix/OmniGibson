@@ -6,10 +6,9 @@ from pxr.Sdf import ValueTypeNames as VT
 from pxr import Sdf, Gf
 
 import omnigibson as og
-from omnigibson.macros import create_module_macros
+from omnigibson.macros import create_module_macros, gm
 from omnigibson.object_states.factory import (
     get_default_states,
-    get_object_state_instance,
     get_state_name,
     get_states_for_ability,
     get_texture_change_states,
@@ -25,8 +24,7 @@ from omnigibson.object_states.particle_modifier import ParticleRemover
 from omnigibson.objects.object_base import BaseObject
 from omnigibson.renderer_settings.renderer_settings import RendererSettings
 from omnigibson.utils.constants import PrimType, EmitterType
-from omnigibson.utils.usd_utils import BoundingBoxAPI
-from omnigibson.utils.python_utils import classproperty
+from omnigibson.utils.python_utils import classproperty, extract_class_init_kwargs_from_dict
 from omnigibson.object_states import Saturated
 from omnigibson.utils.ui_utils import create_module_logger
 
@@ -106,19 +104,18 @@ class StatefulObject(BaseObject):
         self._emitters = dict()
         self._visual_states = None
         self._current_texture_state = None
+        self._include_default_states = include_default_states
 
         # Load abilities from taxonomy if needed & possible
         if abilities is None:
             abilities = {}
             if OBJECT_TAXONOMY is not None:
                 # TODO! Update!!
-                taxonomy_class = OBJECT_TAXONOMY.get_class_name_from_igibson_category(category)
+                taxonomy_class = OBJECT_TAXONOMY.get_synset_from_category(category)
                 if taxonomy_class is not None:
                     abilities = OBJECT_TAXONOMY.get_abilities(taxonomy_class)
         assert isinstance(abilities, dict), "Object abilities must be in dictionary form."
-
         self._abilities = abilities
-        self.prepare_object_states(abilities=abilities, include_default_states=include_default_states)
 
         # Run super init
         super().__init__(
@@ -136,6 +133,15 @@ class StatefulObject(BaseObject):
             load_config=load_config,
             **kwargs,
         )
+
+    def _post_load(self):
+        # Run super first
+        super()._post_load()
+
+        # Prepare the object states
+        self._states = {}
+        if gm.ENABLE_OBJECT_STATES:
+            self.prepare_object_states()
 
     def _initialize(self):
         # Run super first
@@ -187,27 +193,22 @@ class StatefulObject(BaseObject):
         """
         return self._abilities
 
-    def prepare_object_states(self, abilities=None, include_default_states=True):
+    def prepare_object_states(self):
         """
         Prepare the state dictionary for an object by generating the appropriate
         object state instances.
 
         This uses the abilities of the object and the state dependency graph to
         find & instantiate all relevant states.
-
-        Args:
-            abilities (None or dict): If specified, dict in the form of {ability: {param: value}} containing
-                object abilities and parameters.
-            include_default_states (bool): whether to include the default object states from @get_default_states
         """
-        if abilities is None:
-            abilities = {}
-
-        state_types_and_params = [(state, {}) for state in get_default_states()] if include_default_states else []
+        state_types_and_params = [(state, {}) for state in get_default_states()] if self._include_default_states else []
 
         # Map the ability params to the states immediately imported by the abilities
-        for ability, params in abilities.items():
-            state_types_and_params.extend((state_name, params) for state_name in get_states_for_ability(ability))
+        state_type_to_ability = dict()
+        for ability, params in self._abilities.items():
+            for state_type in get_states_for_ability(ability):
+                state_types_and_params.append((state_type, params))
+                state_type_to_ability[state_type] = ability
 
         # Add the dependencies into the list, too.
         for state_type, _ in state_types_and_params:
@@ -219,7 +220,19 @@ class StatefulObject(BaseObject):
         # Now generate the states in topological order.
         self._states = dict()
         for state_type, params in reversed(state_types_and_params):
-            self._states[state_type] = get_object_state_instance(state_type, self, params)
+            relevant_params = extract_class_init_kwargs_from_dict(cls=state_type, dic=params, copy=False)
+            compatible, reason = state_type.is_compatible(obj=self, **relevant_params)
+            if compatible:
+                self._states[state_type] = state_type(obj=self, **relevant_params)
+            else:
+                log.warning(f"State {state_type.__name__} is incompatible with obj {self.name}. Reason: {reason}")
+                # Remove the ability if it exists
+                # Note that the object may still have some of the states related to the desired ability. In this way,
+                # we guarantee that the existence of a certain ability in self.abilities means at ALL corresponding
+                # object state dependencies are met by the underlying object asset
+                ability = state_type_to_ability.get(state_type, None)
+                if ability in self._abilities:
+                    self._abilities.pop(ability)
 
     def _create_emitter_apis(self, emitter_type):
         """
@@ -467,7 +480,7 @@ class StatefulObject(BaseObject):
                 if state_name in state["non_kin"]:
                     state_instance.load_state(state=state["non_kin"][state_name], serialized=False)
                 else:
-                    log.warning("Missing object state [{}] in the state dump".format(state_name))
+                    log.warning(f"Missing object state [{state_name}] in the state dump for obj {self.name}")
 
         # Clear cache after loading state
         self.clear_states_cache()
@@ -509,7 +522,6 @@ class StatefulObject(BaseObject):
             return
         for _, obj_state in self._states.items():
             obj_state.clear_cache()
-        BoundingBoxAPI.clear()
 
     def set_position_orientation(self, position=None, orientation=None):
         super().set_position_orientation(position=position, orientation=orientation)

@@ -16,7 +16,7 @@ from omnigibson.objects.usd_object import USDObject
 from omnigibson.utils.constants import AVERAGE_CATEGORY_SPECS, DEFAULT_JOINT_FRICTION, SPECIAL_JOINT_FRICTIONS, JointType
 import omnigibson.utils.transform_utils as T
 from omnigibson.utils.usd_utils import BoundingBoxAPI
-from omnigibson.utils.asset_utils import decrypt_file
+from omnigibson.utils.asset_utils import decrypt_file, get_all_object_category_models
 from omnigibson.utils.constants import PrimType
 from omnigibson.macros import gm, create_module_macros
 from omnigibson.utils.ui_utils import create_module_logger
@@ -42,7 +42,6 @@ class DatasetObject(USDObject):
     def __init__(
         self,
         name,
-        usd_path=None,
         prim_path=None,
         category="object",
         model=None,
@@ -60,21 +59,20 @@ class DatasetObject(USDObject):
         bounding_box=None,
         fit_avg_dim_volume=False,
         in_rooms=None,
-        bddl_object_scope=None,
         **kwargs,
     ):
         """
         Args:
             name (str): Name for the object. Names need to be unique per scene
-            usd_path (None or str): If specified, global path to the USD file to load. Note that this will override
-                @category + @model!
             prim_path (None or str): global path in the stage to this object. If not specified, will automatically be
                 created at /World/<name>
             category (str): Category for the object. Defaults to "object".
-            model (None or str): if @usd_path is not specified, then this must be specified in conjunction with
+            model (None or str): If specified, this is used in conjunction with
                 @category to infer the usd filepath to load for this object, which evaluates to the following:
 
                     {og_dataset_path}/objects/{category}/{model}/usd/{model}.usd
+
+                Otherwise, will randomly sample a model given @category
 
             class_id (None or int): What class ID the object should be assigned in semantic segmentation rendering mode.
                 If None, the ID will be inferred from this object's category.
@@ -100,13 +98,11 @@ class DatasetObject(USDObject):
             fit_avg_dim_volume (bool): whether to fit the object to have the same volume as the average dimension
                 while keeping the aspect ratio. Note that if this is set, it will override both @scale and @bounding_box
             in_rooms (None or list): If specified, sets the rooms that this object should belong to
-            bddl_object_scope (None or str): If specified, should set the BDDL object scope name, e.g. chip.n.04_2
             kwargs (dict): Additional keyword arguments that are used for other super() calls from subclasses, allowing
                 for flexible compositions of various object subclasses (e.g.: Robot is USDObject + ControllableObject).
         """
         # Store variables
         self._in_rooms = in_rooms
-        self._bddl_object_scope = bddl_object_scope
 
         # Info that will be filled in at runtime
         self.supporting_surfaces = None             # Dictionary mapping link names to surfaces represented by links
@@ -121,15 +117,12 @@ class DatasetObject(USDObject):
         load_config["fit_avg_dim_volume"] = fit_avg_dim_volume
 
         # Infer the correct usd path to use
-        if usd_path is None:
-            assert model is not None, f"Either usd_path or model and category must be specified in order to create a" \
-                                      f"DatasetObject!"
-            usd_path = f"{gm.DATASET_PATH}/objects/{category}/{model}/usd/{model}.usd"
-
-        # Post-process the usd path if we're generating a cloth object
-        if prim_type == PrimType.CLOTH:
-            assert usd_path.endswith(".usd"), f"usd_path [{usd_path}] is invalid."
-            usd_path = usd_path[:-4] + "_cloth.usd"
+        if model is None:
+            available_models = get_all_object_category_models(category=category)
+            assert len(available_models) > 0, f"No available models found for category {category}!"
+            model = np.random.choice(available_models)
+        self._model = model
+        usd_path = self.get_usd_path(category=category, model=model)
 
         # Run super init
         super().__init__(
@@ -150,6 +143,22 @@ class DatasetObject(USDObject):
             abilities=abilities,
             **kwargs,
         )
+
+    @classmethod
+    def get_usd_path(cls, category, model):
+        """
+        Grabs the USD path for a DatasetObject corresponding to @category and @model.
+
+        NOTE: This is the unencrypted path, NOT the encrypted path
+
+        Args:
+            category (str): Category for the object
+            model (str): Specific model ID of the object
+
+        Returns:
+            str: Absolute filepath to the corresponding USD asset file
+        """
+        return os.path.join(gm.DATASET_PATH, "objects", category, model, "usd", f"{model}.usd")
 
     def load_supporting_surfaces(self):
         # Initialize dict of supporting surface info
@@ -232,22 +241,19 @@ class DatasetObject(USDObject):
                 joint.friction = friction
 
     def _load(self):
-        if gm.USE_ENCRYPTED_ASSETS:
-            # Create a temporary file to store the decrytped asset, load it, and then delete it.
-            original_usd_path = self._usd_path
-            encrypted_filename = original_usd_path.replace(".usd", ".encrypted.usd")
-            decrypted_fd, decrypted_filename = tempfile.mkstemp(os.path.basename(original_usd_path), dir=og.tempdir)
-            decrypt_file(encrypted_filename, decrypted_filename)
-            self._usd_path = decrypted_filename
-            prim = super()._load()
-            os.close(decrypted_fd)
-            # On Windows, Isaac Sim won't let go of the file until the prim is removed, so we can't delete it.
-            if os.name == "posix":
-                os.remove(decrypted_filename)
-            self._usd_path = original_usd_path
-            return prim
-        else:
-            return super()._load()
+        # Create a temporary file to store the decrytped asset, load it, and then delete it.
+        original_usd_path = self._usd_path
+        encrypted_filename = original_usd_path.replace(".usd", ".encrypted.usd")
+        decrypted_fd, decrypted_filename = tempfile.mkstemp(os.path.basename(original_usd_path), dir=og.tempdir)
+        decrypt_file(encrypted_filename, decrypted_filename)
+        self._usd_path = decrypted_filename
+        prim = super()._load()
+        os.close(decrypted_fd)
+        # On Windows, Isaac Sim won't let go of the file until the prim is removed, so we can't delete it.
+        if os.name == "posix":
+            os.remove(decrypted_filename)
+        self._usd_path = original_usd_path
+        return prim
 
     def _post_load(self):
         # We run this post loading first before any others because we're modifying the load config that will be used
@@ -263,7 +269,9 @@ class DatasetObject(USDObject):
                 scale *= size_ratio
         # Otherwise, if manual bounding box is specified, scale based on ratio between that and the native bbox
         elif self._load_config["bounding_box"] is not None:
-            scale = self._load_config["bounding_box"] / self.native_bbox
+            scale = np.ones(3)
+            valid_idxes = ~np.isclose(self.native_bbox, 0.0)
+            scale[valid_idxes] = np.array(self._load_config["bounding_box"])[valid_idxes] / self.native_bbox[valid_idxes]
         else:
             scale = np.ones(3) if self._load_config["scale"] is None else self._load_config["scale"]
 
@@ -276,13 +284,12 @@ class DatasetObject(USDObject):
         # Run super last
         super()._post_load()
 
-        if gm.USE_ENCRYPTED_ASSETS:
-            # The loaded USD is from an already-deleted temporary file, so the asset paths for texture maps are wrong.
-            # We explicitly provide the root_path to update all the asset paths: the asset paths are relative to the
-            # original USD folder, i.e. <category>/<model>/usd.
-            root_path = os.path.dirname(self._usd_path)
-            for material in self.materials:
-                material.shader_update_asset_paths_with_root_path(root_path)
+        # The loaded USD is from an already-deleted temporary file, so the asset paths for texture maps are wrong.
+        # We explicitly provide the root_path to update all the asset paths: the asset paths are relative to the
+        # original USD folder, i.e. <category>/<model>/usd.
+        root_path = os.path.dirname(self._usd_path)
+        for material in self.materials:
+            material.shader_update_asset_paths_with_root_path(root_path)
 
         # Assign realistic density and mass based on average object category spec
         if self.avg_obj_dims is not None and self.avg_obj_dims["size"] is not None and self.avg_obj_dims["mass"] is not None:
@@ -300,7 +307,7 @@ class DatasetObject(USDObject):
             elif self._prim_type == PrimType.CLOTH:
                 # Cloth cannot set density. Internally omni evenly distributes the mass to each particle
                 mass = self.avg_obj_dims["mass"] * v_ratio
-                self._links["base_link"].mass = mass
+                self.root_link.mass = mass
 
     def _update_texture_change(self, object_state):
         """
@@ -359,6 +366,14 @@ class DatasetObject(USDObject):
         self.set_position_orientation(position, orientation)
 
     @property
+    def model(self):
+        """
+        Returns:
+            str: Unique model ID for this object
+        """
+        return self._model
+
+    @property
     def in_rooms(self):
         """
         Returns:
@@ -377,26 +392,6 @@ class DatasetObject(USDObject):
         # Store the value to the internal variable and also update the init kwargs accordingly
         self._init_info["args"]["in_rooms"] = rooms
         self._in_rooms = rooms
-
-    @property
-    def bddl_object_scope(self):
-        """
-        Returns:
-            None or str: If specified, BDDL object scope name (e.g. chip.n.04_2) to assign to this object
-        """
-        return self._bddl_object_scope
-
-    @bddl_object_scope.setter
-    def bddl_object_scope(self, name):
-        """
-        Sets which BDDL object scope name for this object. If no name, then should set to None
-
-        Args:
-            name (None or str): If specified, BDDL object scope name (e.g. chip.n.04_2) to assign to this object
-        """
-        # Store the value to the internal variable and also update the init kwargs accordingly
-        self._init_info["args"]["bddl_object_scope"] = name
-        self._bddl_object_scope = name
 
     @property
     def native_bbox(self):
@@ -590,7 +585,7 @@ class DatasetObject(USDObject):
                 points.extend(trimesh.transformations.transform_points(vertices_in_base_frame, bbox_center_in_base_frame))
             elif fallback_to_aabb:
                 # If no BB annotation is available, get the AABB for this link.
-                aabb_center, aabb_extent = BoundingBoxAPI.compute_center_extent(prim_path=link.prim_path)
+                aabb_center, aabb_extent = BoundingBoxAPI.compute_center_extent(prim=link)
                 aabb_vertices_in_world = aabb_center + np.array(list(itertools.product((1, -1), repeat=3))) * (
                         aabb_extent / 2
                 )
@@ -658,7 +653,6 @@ class DatasetObject(USDObject):
         # Add additional kwargs (fit_avg_dim_volume and bounding_box are already captured in load_config)
         return self.__class__(
             prim_path=prim_path,
-            usd_path=self._usd_path,
             name=name,
             category=self.category,
             class_id=self.class_id,
@@ -670,5 +664,4 @@ class DatasetObject(USDObject):
             load_config=load_config,
             abilities=self._abilities,
             in_rooms=self.in_rooms,
-            bddl_object_scope=self.bddl_object_scope,
         )
