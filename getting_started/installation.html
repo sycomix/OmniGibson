@@ -3839,18 +3839,12 @@
 <h1 id="installation">🛠️ <strong>Installation</strong></h1>
 <h2 id="requirements">🗒️ <strong>Requirements</strong></h2>
 <p>Please make sure your system meets the following specs:</p>
-<ol class="task-list">
-<li>
-<p><img alt="🙋‍♂️" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f64b-200d-2642-fe0f.svg" title=":man_raising_hand:" /> I'm an annotation! I can contain <code>code</code>, <strong>formatted
-    text</strong>, images, ... basically anything that can be expressed in Markdown.</p>
-</li>
-<li class="task-list-item">
-<p><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>OS:</strong> Ubuntu 20.04+ / Windows 10+</p>
-</li>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>OS:</strong> Ubuntu 20.04+ / Windows 10+</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>RAM:</strong> 32GB+</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>GPU:</strong> NVIDIA RTX 2070+</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> <strong>VRAM:</strong> 8GB+</li>
-</ol>
+</ul>
 <details class="question">
 <summary>Why these specs?</summary>
 <p><strong><code>OmniGibson</code></strong> is built upon NVIDIA's <a href="https://www.nvidia.com/en-us/omniverse/">Omniverse</a> and <a href="https://developer.nvidia.com/isaac-sim">Isaac Sim</a> platforms, so we inherit their dependencies. For more information, please see <a href="https://docs.omniverse.nvidia.com/app_isaacsim/app_isaacsim/requirements.html">Isaac Sim's Requirements</a>.</p>
@@ -3958,7 +3952,7 @@
 <p>This will create a conda environment with <code>omnigibson</code> installed. Simply call <code>conda activate</code> to activate it.</p>
 </li>
 <li>
-<p>(Optional) Download <strong><code>OmniGibson</code></strong> dataset (within the conda env):</p>
+<p>Download <strong><code>OmniGibson</code></strong> dataset (within the conda env):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span>scripts/download_datasets.py
 </code></pre></div>
 </li>
@@ -3996,8 +3990,8 @@
 <p>This will create a conda env with <code>omnigibson</code> installed. Simply call <code>conda activate</code> to activate this environment.</p>
 </li>
 <li>
-<p>[Optional] Download <strong><code>OmniGibson</code></strong> dataset (within the conda env):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>scripts/download_datasets.py
+<p>Download <strong><code>OmniGibson</code></strong> dataset (within the conda env):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">python</span> <span class="n">scripts</span><span class="p">\</span><span class="n">download_datasets</span><span class="p">.</span><span class="n">py</span>
 </code></pre></div>
 </li>
 </ol>
@@ -4014,7 +4008,7 @@
 <div class="admonition warning annotate">
 <p class="admonition-title">Expect slowdown during first execution</p>
 <p>Omniverse requires some one-time startup setup when <strong><code>OmniGibson</code></strong> is imported for the first time.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="o">[</span>Warning<span class="o">]</span><span class="w"> </span><span class="o">[</span>gpu.foundation.plugin<span class="o">]</span><span class="w"> </span>Waiting<span class="w"> </span><span class="k">for</span><span class="w"> </span>compilation<span class="w"> </span>of<span class="w"> </span>ray<span class="w"> </span>tracing<span class="w"> </span>shaders<span class="w"> </span>by<span class="w"> </span>GPU<span class="w"> </span>driver:<span class="w"> </span>x<span class="w"> </span>seconds<span class="w"> </span>so<span class="w"> </span>far
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>[Warning] [gpu.foundation.plugin] Waiting for compilation of ray tracing shaders by GPU driver
 </code></pre></div>
 <p>The process could take up to 5 minutes. This is expected behavior, and should only occur once!</p>
 </div>

@@ -14,7 +14,7 @@ macros = Dict()
 gm = macros.globals
 
 # Path (either relative to OmniGibson root directory or global absolute path) for data
-gm.DATA_PATH = "omnigibson/data"
+gm.DATA_PATH = "data"
 
 # Assets correspond to non-objects / scenes (e.g.: robots), and dataset incliudes objects + scene
 gm.ASSET_PATH = f"{gm.DATA_PATH}/assets"
