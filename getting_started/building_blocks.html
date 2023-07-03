@@ -4428,11 +4428,9 @@
 <h2 id="a-quick-word-about-macros">⚙️ <strong>A quick word about macros</strong></h2>
 <details class="question annotate">
 <summary>Why macros?</summary>
-<p>Macros enforce global behavior that is consistent within an individual python process but can differ between processes. This is useful because globally enabling all of <strong><code>OmniGibson</code></strong>'s features can cause unecessary slowdowns (1), and so configuring the macros for your specific use case can optimize performance.</p>
+<p>Macros enforce global behavior that is consistent within an individual python process but can differ between processes. This is useful because globally enabling all of <strong><code>OmniGibson</code></strong>'s features can cause unecessary slowdowns, and so configuring the macros for your specific use case can optimize performance.</p>
+<p>For example, Omniverse provides a so-called <code>flatcache</code> feature which provides significant performance boosts, but cannot be used when fluids or soft bodies are present. So, we ideally should always have <code>gm.USE_FLATCACHE=True</code> unless we have fluids or soft bodies in our environment.</p>
 </details>
-<ol>
-<li>For example, Omniverse provides a so-called <code>flatcache</code> feature which provides significant performance boosts, but cannot be used when fluids or soft bodies are present. So, we ideally should always have <code>gm.USE_FLATCACHE=True</code> unless we have fluids or soft bodies in our environment.</li>
-</ol>
 <p><code>macros</code> define a globally available set of magic numbers or flags set throughout <strong><code>OmniGibson</code></strong>. These can either be directly set in <code>omnigibson.macros.py</code>, or can be programmatically modified at runtime via:</p>
 <div class="annotate highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">omnigibson.macros</span> <span class="kn">import</span> <span class="n">gm</span><span class="p">,</span> <span class="n">macros</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
@@ -6835,10 +6833,7 @@
 </div>
 <div class="annotate highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">omnigibson</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">object_states</span><span class="o">.</span><span class="n">folded_unfolded_state_demo</span>
 </code></pre></div>
-<p class="annotate">This demo loads in three different cloth objects, and allows you to manipulate them (1) while printing out their <code>Folded</code> state status in real-time.</p>
-<ol>
-<li>Manipulate the object by holding down <strong><code>Shift</code></strong> and then <strong><code>Left-click + Drag</code></strong>!</li>
-</ol>
+<p>This demo loads in three different cloth objects, and allows you to manipulate them while printing out their <code>Folded</code> state status in real-time. Try manipulate the object by holding down <strong><code>Shift</code></strong> and then <strong><code>Left-click + Drag</code></strong>!</p>
 <details class="code">
 <summary>folded_unfolded_state_demo.py</summary>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-26-1">  1</a></span>
@@ -8107,10 +8102,7 @@
 </div>
 <div class="annotate highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">omnigibson</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">object_states</span><span class="o">.</span><span class="n">overlaid_demo</span>
 </code></pre></div>
-<p class="annotate">This demo loads in a carpet on top of a table. The demo allows you to manipulate the carpet (1) while printing out their <code>Overlaid</code> state status in real-time.</p>
-<ol>
-<li>Manipulate the object by holding down <strong><code>Shift</code></strong> and then <strong><code>Left-click + Drag</code></strong>!</li>
-</ol>
+<p>This demo loads in a carpet on top of a table. The demo allows you to manipulate the carpet while printing out their <code>Overlaid</code> state status in real-time. Try manipulate the object by holding down <strong><code>Shift</code></strong> and then <strong><code>Left-click + Drag</code></strong>!</p>
 <details class="code">
 <summary>overlaid_demo.py</summary>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-36-1"> 1</a></span>
@@ -10648,16 +10640,13 @@ irregardless of overlap with other objects.</p>
 <div class="admonition abstract annotate">
 <p class="admonition-title">This demo is useful for...</p>
 <ul>
-<li>Understanding the difference between <code>physical</code> and <code>sticky</code> (1) grasping</li>
+<li>Understanding the difference between <code>physical</code> and <code>sticky</code> grasping</li>
 <li>Understanding how to teleoperate a robot through external commands</li>
 </ul>
 </div>
-<ol>
-<li><code>physical</code> means natural friction is required to hold objects, <code>sticky</code> means that objects are constrained to the robot's gripper once contact is made</li>
-</ol>
 <div class="annotate highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">omnigibson</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">robots</span><span class="o">.</span><span class="n">grasping_mode_example</span>
 </code></pre></div>
-<p>This demo lets you choose a grasping mode and then loads a <code>Fetch</code> robot and a cube on a table. You can then teleoperate the robot to grasp the cube, observing the difference is grasping behavior based on the grasping mode chosen.</p>
+<p>This demo lets you choose a grasping mode and then loads a <code>Fetch</code> robot and a cube on a table. You can then teleoperate the robot to grasp the cube, observing the difference is grasping behavior based on the grasping mode chosen. Here, <code>physical</code> means natural friction is required to hold objects, while <code>sticky</code> means that objects are constrained to the robot's gripper once contact is made. </p>
 <details class="code">
 <summary>grasping_mode_example.py</summary>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-54-1">  1</a></span>
