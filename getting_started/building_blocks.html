@@ -6168,14 +6168,12 @@
 <div class="admonition abstract annotate">
 <p class="admonition-title">This demo is useful for...</p>
 <ul>
-<li>Understanding how to access observations from a <code>GymObservable (1)</code> object</li>
+<li>Understanding how to access observations from a <code>GymObservable</code> object</li>
 <li>Understanding how to access objects' bounding box information</li>
 <li>Understanding how to dynamically modify vision modalities</li>
 </ul>
 </div>
-<ol>
-<li><a href="../reference/envs/env_base.html"><code>Environment</code></a>, all sensors extending from <a href="../reference/sensors/sensor_base.html"><code>BaseSensor</code></a>, and all objects extending from <a href="../reference/objects/object_base.html"><code>BaseObject</code></a> (which includes all robots extending from <a href="../reference/robots/robot_base.html"><code>BaseRobot</code></a>!) are <a href="../reference/utils/gym_utils.html#utils.gym_utils.GymObservable"><code>GymObservable</code></a> objects!</li>
-</ol>
+<p>*[GymObservable]: <a href="../reference/envs/env_base.html"><code>Environment</code></a>, all sensors extending from <a href="../reference/sensors/sensor_base.html"><code>BaseSensor</code></a>, and all objects extending from <a href="../reference/objects/object_base.html"><code>BaseObject</code></a> (which includes all robots extending from <a href="../reference/robots/robot_base.html"><code>BaseRobot</code></a>!) are <a href="../reference/utils/gym_utils.html#utils.gym_utils.GymObservable"><code>GymObservable</code></a> objects!</p>
 <div class="annotate highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">omnigibson</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">draw_bounding_box</span>
 </code></pre></div>
 <p>This demo loads a door object and banana object, and partially obscures the banana with the door. It generates both "loose" and "tight" bounding boxes (where the latter respects occlusions) for both objects, and dumps them to an image on disk.</p>
