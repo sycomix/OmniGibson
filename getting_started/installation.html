@@ -405,6 +405,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    🧯 Troubleshooting
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3818,6 +3825,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    🧯 Troubleshooting
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3928,9 +3942,7 @@
 <div class="admonition warning">
 <p class="admonition-title">The latest version of Isaac Sim (2022.2.1) has known issues when loading large <strong><code>OmniGibson</code></strong> scenes. Please install 2022.2.0 instead.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">For Ubuntu 22.04, you need to <a href="https://github.com/AppImage/AppImageKit/wiki/FUSE">install FUSE</a> to run the Omniverse Launcher AppImage.</p>
-</div>
+<p>For Ubuntu 22.04, you need to <a href="https://github.com/AppImage/AppImageKit/wiki/FUSE">install FUSE</a> to run the Omniverse Launcher AppImage.</p>
 </li>
 <li>
 <p>Clone <a href="https://github.com/StanfordVL/OmniGibson"><strong><code>OmniGibson</code></strong></a> and move into the directory:</p>
@@ -3973,13 +3985,11 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/StanfordVL/OmniGibson.git
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">cd</span><span class="w"> </span>OmniGibson
 </code></pre></div>
-</li>
-</ol>
 <details class="note">
 <summary>Nightly build</summary>
 <p>The main branch contains the stable version of <strong><code>OmniGibson</code></strong>. If you want to be up-to-date with our latest developed (yet not fully tested) features and bug fixes, you can clone from the <code>og-develop</code> branch.</p>
 </details>
-<ol>
+</li>
 <li>
 <p>Setup a virtual conda environment to run <strong><code>OmniGibson</code></strong>:</p>
 <div class="annotate highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">setup</span><span class="p">.</span><span class="n">bat</span> <span class="c"># (1)!</span>
@@ -4026,6 +4036,15 @@
 </ol>
 <hr />
 <p><strong>Next:</strong> Get quickly familiarized with <strong><code>OmniGibson</code></strong> from our <a href="quickstart.html">Quickstart Guide</a>!</p>
+<h2 id="troubleshooting">🧯 <strong>Troubleshooting</strong></h2>
+<details class="question">
+<summary>I cannot open Omniverse Launcher AppImage on Linux</summary>
+<p>You probably need to <a href="https://github.com/AppImage/AppImageKit/wiki/FUSE">install FUSE</a> to run the Omniverse Launcher AppImage.</p>
+</details>
+<details class="question">
+<summary>OmniGibson stucks at shader compilation upon startup</summary>
+<p>The process could take up to 5 minutes. This is expected behavior, and should only occur once when you import OmniGibson for the first time.</p>
+</details>
 
 
   
