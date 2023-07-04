@@ -6380,9 +6380,9 @@ dynamically loaded after this class is created.</p>
 <a id="__codelineno-0-319" name="__codelineno-0-319"></a>                        <span class="c1"># Compute the joint frame orientation in the object frame</span>
 <a id="__codelineno-0-320" name="__codelineno-0-320"></a>                        <span class="n">joint_orn</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">quat_multiply</span><span class="p">(</span><span class="n">quaternion1</span><span class="o">=</span><span class="n">joint_local_orn</span><span class="p">,</span> <span class="n">quaternion0</span><span class="o">=</span><span class="n">link_local_orn</span><span class="p">)</span>
 <a id="__codelineno-0-321" name="__codelineno-0-321"></a>
-<a id="__codelineno-0-322" name="__codelineno-0-322"></a>                        <span class="k">assert</span> <span class="n">T</span><span class="o">.</span><span class="n">check_quat_right_angle</span><span class="p">(</span><span class="n">joint_orn</span><span class="p">),</span> \
-<a id="__codelineno-0-323" name="__codelineno-0-323"></a>                            <span class="sa">f</span><span class="s2">&quot;Objects that are NOT uniformly scaled requires all joints to have orientations that &quot;</span> \
-<a id="__codelineno-0-324" name="__codelineno-0-324"></a>                            <span class="sa">f</span><span class="s2">&quot;are factors of 90 degrees! Got orn: </span><span class="si">{</span><span class="n">joint_orn</span><span class="si">}</span><span class="s2"> for object </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-322" name="__codelineno-0-322"></a>                        <span class="c1"># assert T.check_quat_right_angle(joint_orn), \</span>
+<a id="__codelineno-0-323" name="__codelineno-0-323"></a>                        <span class="c1">#     f&quot;Objects that are NOT uniformly scaled requires all joints to have orientations that &quot; \</span>
+<a id="__codelineno-0-324" name="__codelineno-0-324"></a>                        <span class="c1">#     f&quot;are factors of 90 degrees! Got orn: {joint_orn} for object {self.name}&quot;</span>
 <a id="__codelineno-0-325" name="__codelineno-0-325"></a>
 <a id="__codelineno-0-326" name="__codelineno-0-326"></a>                        <span class="c1"># Find the joint axis unit vector (e.g. [1, 0, 0] for &quot;X&quot;, [0, 1, 0] for &quot;Y&quot;, etc.)</span>
 <a id="__codelineno-0-327" name="__codelineno-0-327"></a>                        <span class="n">axis_in_joint_frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -8109,8 +8109,8 @@ for that joint</p>
 <code class="highlight language-python"><span class="n">kinematic_only</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8673,8 +8673,8 @@ for more information</p>
 <code class="highlight language-python"><span class="n">self_collisions</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8715,8 +8715,8 @@ for more information</p>
 <code class="highlight language-python"><span class="n">sleep_threshold</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8757,8 +8757,8 @@ for more information</p>
 <code class="highlight language-python"><span class="n">solver_position_iteration_count</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8799,8 +8799,8 @@ for more information</p>
 <code class="highlight language-python"><span class="n">solver_velocity_iteration_count</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8841,8 +8841,8 @@ for more information</p>
 <code class="highlight language-python"><span class="n">stabilization_threshold</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8883,8 +8883,8 @@ for more information</p>
 <code class="highlight language-python"><span class="n">visual_only</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
