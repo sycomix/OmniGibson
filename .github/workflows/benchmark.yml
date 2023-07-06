@@ -1,13 +1,22 @@
-name: Tests
+name: Benchmark
 
-on: [pull_request]
+on: 
+  pull_request:
+    branches:
+        - og-develop
+
+permissions:
+  # deployments permission to deploy GitHub pages website
+  deployments: write
+  # contents permission to update benchmark contents in gh-pages branch
+  contents: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
   cancel-in-progress: true
 
 jobs:
-  test:
+  profiling:
     runs-on: [self-hosted, linux, gpu]
     container:
       image: stanfordvl/omnigibson-dev:latest
@@ -39,23 +48,24 @@ jobs:
 
       - name: Checkout source
         uses: actions/checkout@v3
-        with:
-          submodules: true
-          path: omnigibson-src
 
       - name: Install dev requirements
-        working-directory: omnigibson-src
         run: pip install -r requirements-dev.txt
 
       - name: Install
-        working-directory: omnigibson-src
         run: pip install -e .
-
-      - name: Run tests
-        working-directory: omnigibson-src
-        run: source /isaac-sim/setup_conda_env.sh && pytest
-
-      # - name: Upload coverage to Codecov
-      #   uses: codecov/codecov-action@v2.1.0
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }}
+      
+      - name: Run performance benchmark
+        run: source /isaac-sim/setup_conda_env.sh && bash scripts/benchmark.sh
+          
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          tool: 'customSmallerIsBetter'
+          output-file-path: output.json
+          benchmark-data-dir-path: benchmark
+          fail-on-alert: true
+          alert-threshold: '200%'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-on-alert: true
+          auto-push: true
