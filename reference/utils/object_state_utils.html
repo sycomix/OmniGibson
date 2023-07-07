@@ -4079,22 +4079,7 @@ will always be used.</p>
 
       <details class="quote">
         <summary>Source code in <code>omnigibson/utils/object_state_utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-214">214</a></span>
-<span class="normal"><a href="#__codelineno-0-215">215</a></span>
-<span class="normal"><a href="#__codelineno-0-216">216</a></span>
-<span class="normal"><a href="#__codelineno-0-217">217</a></span>
-<span class="normal"><a href="#__codelineno-0-218">218</a></span>
-<span class="normal"><a href="#__codelineno-0-219">219</a></span>
-<span class="normal"><a href="#__codelineno-0-220">220</a></span>
-<span class="normal"><a href="#__codelineno-0-221">221</a></span>
-<span class="normal"><a href="#__codelineno-0-222">222</a></span>
-<span class="normal"><a href="#__codelineno-0-223">223</a></span>
-<span class="normal"><a href="#__codelineno-0-224">224</a></span>
-<span class="normal"><a href="#__codelineno-0-225">225</a></span>
-<span class="normal"><a href="#__codelineno-0-226">226</a></span>
-<span class="normal"><a href="#__codelineno-0-227">227</a></span>
-<span class="normal"><a href="#__codelineno-0-228">228</a></span>
-<span class="normal"><a href="#__codelineno-0-229">229</a></span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-229">229</a></span>
 <span class="normal"><a href="#__codelineno-0-230">230</a></span>
 <span class="normal"><a href="#__codelineno-0-231">231</a></span>
 <span class="normal"><a href="#__codelineno-0-232">232</a></span>
@@ -4152,80 +4137,95 @@ will always be used.</p>
 <span class="normal"><a href="#__codelineno-0-284">284</a></span>
 <span class="normal"><a href="#__codelineno-0-285">285</a></span>
 <span class="normal"><a href="#__codelineno-0-286">286</a></span>
-<span class="normal"><a href="#__codelineno-0-287">287</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-214" name="__codelineno-0-214"></a><span class="k">def</span> <span class="nf">sample_cloth_on_rigid</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">max_trials</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">z_offset</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">randomize_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<a id="__codelineno-0-215" name="__codelineno-0-215"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-216" name="__codelineno-0-216"></a><span class="sd">    Samples the cloth object @obj on the rigid object @other</span>
-<a id="__codelineno-0-217" name="__codelineno-0-217"></a>
-<a id="__codelineno-0-218" name="__codelineno-0-218"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-219" name="__codelineno-0-219"></a><span class="sd">        obj (StatefulObject): Object whose state should be sampled. e.g.: for sampling a bed sheet on a rack,</span>
-<a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="sd">            @obj is the bed sheet</span>
-<a id="__codelineno-0-221" name="__codelineno-0-221"></a><span class="sd">        other (StatefulObject): Object who is the reference point for @obj&#39;s state. e.g.: for sampling a bed sheet</span>
-<a id="__codelineno-0-222" name="__codelineno-0-222"></a><span class="sd">            on a rack, @other is the rack</span>
-<a id="__codelineno-0-223" name="__codelineno-0-223"></a><span class="sd">        max_trials (int): Number of attempts for sampling</span>
-<a id="__codelineno-0-224" name="__codelineno-0-224"></a><span class="sd">        z_offset (float): Z-offset to apply to the sampled pose</span>
-<a id="__codelineno-0-225" name="__codelineno-0-225"></a><span class="sd">        randomize_xy (bool): Whether to randomize the XY position of the sampled pose. If False, the center of @other</span>
-<a id="__codelineno-0-226" name="__codelineno-0-226"></a><span class="sd">            will always be used.</span>
-<a id="__codelineno-0-227" name="__codelineno-0-227"></a>
-<a id="__codelineno-0-228" name="__codelineno-0-228"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-229" name="__codelineno-0-229"></a><span class="sd">        bool: True if successfully sampled, else False</span>
-<a id="__codelineno-0-230" name="__codelineno-0-230"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-231" name="__codelineno-0-231"></a>    <span class="k">assert</span> <span class="n">z_offset</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="mf">9.81</span> <span class="o">*</span> <span class="p">(</span><span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">()</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.02</span><span class="p">,</span>\
-<a id="__codelineno-0-232" name="__codelineno-0-232"></a>        <span class="sa">f</span><span class="s2">&quot;z_offset </span><span class="si">{</span><span class="n">z_offset</span><span class="si">}</span><span class="s2"> is too small for the current physics_dt </span><span class="si">{</span><span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-0-233" name="__codelineno-0-233"></a>
-<a id="__codelineno-0-234" name="__codelineno-0-234"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">prim_type</span> <span class="o">==</span> <span class="n">PrimType</span><span class="o">.</span><span class="n">CLOTH</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">prim_type</span> <span class="o">==</span> <span class="n">PrimType</span><span class="o">.</span><span class="n">RIGID</span><span class="p">):</span>
-<a id="__codelineno-0-235" name="__codelineno-0-235"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sample_cloth_on_rigid requires obj1 is cloth and obj2 is rigid.&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-236" name="__codelineno-0-236"></a>
-<a id="__codelineno-0-237" name="__codelineno-0-237"></a>    <span class="n">state</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">dump_state</span><span class="p">(</span><span class="n">serialized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<a id="__codelineno-0-238" name="__codelineno-0-238"></a>
-<a id="__codelineno-0-239" name="__codelineno-0-239"></a>    <span class="c1"># Reset the cloth</span>
-<a id="__codelineno-0-240" name="__codelineno-0-240"></a>    <span class="n">obj</span><span class="o">.</span><span class="n">root_link</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<a id="__codelineno-0-241" name="__codelineno-0-241"></a>
-<a id="__codelineno-0-242" name="__codelineno-0-242"></a>    <span class="n">obj_aabb_low</span><span class="p">,</span> <span class="n">obj_aabb_high</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">AABB</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
-<a id="__codelineno-0-243" name="__codelineno-0-243"></a>    <span class="n">other_aabb_low</span><span class="p">,</span> <span class="n">other_aabb_high</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">AABB</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
-<a id="__codelineno-0-244" name="__codelineno-0-244"></a>
-<a id="__codelineno-0-245" name="__codelineno-0-245"></a>    <span class="c1"># z value is always the same: the top-z of the other object + half the height of the object to be placed + offset</span>
-<a id="__codelineno-0-246" name="__codelineno-0-246"></a>    <span class="n">z_value</span> <span class="o">=</span> <span class="n">other_aabb_high</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">obj_aabb_high</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">obj_aabb_low</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">z_offset</span>
-<a id="__codelineno-0-247" name="__codelineno-0-247"></a>
-<a id="__codelineno-0-248" name="__codelineno-0-248"></a>    <span class="k">if</span> <span class="n">randomize_xy</span><span class="p">:</span>
-<a id="__codelineno-0-249" name="__codelineno-0-249"></a>        <span class="c1"># Sample a random position in the x-y plane within the other object&#39;s AABB</span>
-<a id="__codelineno-0-250" name="__codelineno-0-250"></a>        <span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">other_aabb_low</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">other_aabb_low</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z_value</span><span class="p">])</span>
-<a id="__codelineno-0-251" name="__codelineno-0-251"></a>        <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">other_aabb_high</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">other_aabb_high</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z_value</span><span class="p">])</span>
-<a id="__codelineno-0-252" name="__codelineno-0-252"></a>    <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-253" name="__codelineno-0-253"></a>        <span class="c1"># Always sample the center of the other object&#39;s AABB</span>
-<a id="__codelineno-0-254" name="__codelineno-0-254"></a>        <span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">other_aabb_low</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">other_aabb_high</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-<a id="__codelineno-0-255" name="__codelineno-0-255"></a>                        <span class="p">(</span><span class="n">other_aabb_low</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">other_aabb_high</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
-<a id="__codelineno-0-256" name="__codelineno-0-256"></a>                        <span class="n">z_value</span><span class="p">])</span>
-<a id="__codelineno-0-257" name="__codelineno-0-257"></a>        <span class="n">high</span> <span class="o">=</span> <span class="n">low</span>
-<a id="__codelineno-0-258" name="__codelineno-0-258"></a>
-<a id="__codelineno-0-259" name="__codelineno-0-259"></a>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_trials</span><span class="p">):</span>
-<a id="__codelineno-0-260" name="__codelineno-0-260"></a>        <span class="c1"># Sample a random position</span>
-<a id="__codelineno-0-261" name="__codelineno-0-261"></a>        <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
-<a id="__codelineno-0-262" name="__codelineno-0-262"></a>        <span class="c1"># Sample a random orientation in the z-axis</span>
-<a id="__codelineno-0-263" name="__codelineno-0-263"></a>        <span class="n">orn</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">euler2quat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)]))</span>
-<a id="__codelineno-0-264" name="__codelineno-0-264"></a>
-<a id="__codelineno-0-265" name="__codelineno-0-265"></a>        <span class="n">obj</span><span class="o">.</span><span class="n">set_position_orientation</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">orn</span><span class="p">)</span>
-<a id="__codelineno-0-266" name="__codelineno-0-266"></a>        <span class="n">obj</span><span class="o">.</span><span class="n">root_link</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<a id="__codelineno-0-267" name="__codelineno-0-267"></a>        <span class="n">obj</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
-<a id="__codelineno-0-268" name="__codelineno-0-268"></a>
-<a id="__codelineno-0-269" name="__codelineno-0-269"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step_physics</span><span class="p">()</span>
-<a id="__codelineno-0-270" name="__codelineno-0-270"></a>        <span class="n">success</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ContactBodies</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>
-<a id="__codelineno-0-271" name="__codelineno-0-271"></a>
-<a id="__codelineno-0-272" name="__codelineno-0-272"></a>        <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
-<a id="__codelineno-0-273" name="__codelineno-0-273"></a>            <span class="k">break</span>
-<a id="__codelineno-0-274" name="__codelineno-0-274"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-275" name="__codelineno-0-275"></a>            <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-<a id="__codelineno-0-276" name="__codelineno-0-276"></a>
-<a id="__codelineno-0-277" name="__codelineno-0-277"></a>    <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
-<a id="__codelineno-0-278" name="__codelineno-0-278"></a>        <span class="c1"># Let it fall for 0.2 second always to let the cloth settle</span>
-<a id="__codelineno-0-279" name="__codelineno-0-279"></a>        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">/</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">())):</span>
-<a id="__codelineno-0-280" name="__codelineno-0-280"></a>            <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step_physics</span><span class="p">()</span>
-<a id="__codelineno-0-281" name="__codelineno-0-281"></a>
+<span class="normal"><a href="#__codelineno-0-287">287</a></span>
+<span class="normal"><a href="#__codelineno-0-288">288</a></span>
+<span class="normal"><a href="#__codelineno-0-289">289</a></span>
+<span class="normal"><a href="#__codelineno-0-290">290</a></span>
+<span class="normal"><a href="#__codelineno-0-291">291</a></span>
+<span class="normal"><a href="#__codelineno-0-292">292</a></span>
+<span class="normal"><a href="#__codelineno-0-293">293</a></span>
+<span class="normal"><a href="#__codelineno-0-294">294</a></span>
+<span class="normal"><a href="#__codelineno-0-295">295</a></span>
+<span class="normal"><a href="#__codelineno-0-296">296</a></span>
+<span class="normal"><a href="#__codelineno-0-297">297</a></span>
+<span class="normal"><a href="#__codelineno-0-298">298</a></span>
+<span class="normal"><a href="#__codelineno-0-299">299</a></span>
+<span class="normal"><a href="#__codelineno-0-300">300</a></span>
+<span class="normal"><a href="#__codelineno-0-301">301</a></span>
+<span class="normal"><a href="#__codelineno-0-302">302</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-229" name="__codelineno-0-229"></a><span class="k">def</span> <span class="nf">sample_cloth_on_rigid</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">max_trials</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">z_offset</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">randomize_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<a id="__codelineno-0-230" name="__codelineno-0-230"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-231" name="__codelineno-0-231"></a><span class="sd">    Samples the cloth object @obj on the rigid object @other</span>
+<a id="__codelineno-0-232" name="__codelineno-0-232"></a>
+<a id="__codelineno-0-233" name="__codelineno-0-233"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-234" name="__codelineno-0-234"></a><span class="sd">        obj (StatefulObject): Object whose state should be sampled. e.g.: for sampling a bed sheet on a rack,</span>
+<a id="__codelineno-0-235" name="__codelineno-0-235"></a><span class="sd">            @obj is the bed sheet</span>
+<a id="__codelineno-0-236" name="__codelineno-0-236"></a><span class="sd">        other (StatefulObject): Object who is the reference point for @obj&#39;s state. e.g.: for sampling a bed sheet</span>
+<a id="__codelineno-0-237" name="__codelineno-0-237"></a><span class="sd">            on a rack, @other is the rack</span>
+<a id="__codelineno-0-238" name="__codelineno-0-238"></a><span class="sd">        max_trials (int): Number of attempts for sampling</span>
+<a id="__codelineno-0-239" name="__codelineno-0-239"></a><span class="sd">        z_offset (float): Z-offset to apply to the sampled pose</span>
+<a id="__codelineno-0-240" name="__codelineno-0-240"></a><span class="sd">        randomize_xy (bool): Whether to randomize the XY position of the sampled pose. If False, the center of @other</span>
+<a id="__codelineno-0-241" name="__codelineno-0-241"></a><span class="sd">            will always be used.</span>
+<a id="__codelineno-0-242" name="__codelineno-0-242"></a>
+<a id="__codelineno-0-243" name="__codelineno-0-243"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-244" name="__codelineno-0-244"></a><span class="sd">        bool: True if successfully sampled, else False</span>
+<a id="__codelineno-0-245" name="__codelineno-0-245"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-246" name="__codelineno-0-246"></a>    <span class="k">assert</span> <span class="n">z_offset</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="mf">9.81</span> <span class="o">*</span> <span class="p">(</span><span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">()</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.02</span><span class="p">,</span>\
+<a id="__codelineno-0-247" name="__codelineno-0-247"></a>        <span class="sa">f</span><span class="s2">&quot;z_offset </span><span class="si">{</span><span class="n">z_offset</span><span class="si">}</span><span class="s2"> is too small for the current physics_dt </span><span class="si">{</span><span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-248" name="__codelineno-0-248"></a>
+<a id="__codelineno-0-249" name="__codelineno-0-249"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">prim_type</span> <span class="o">==</span> <span class="n">PrimType</span><span class="o">.</span><span class="n">CLOTH</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">prim_type</span> <span class="o">==</span> <span class="n">PrimType</span><span class="o">.</span><span class="n">RIGID</span><span class="p">):</span>
+<a id="__codelineno-0-250" name="__codelineno-0-250"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sample_cloth_on_rigid requires obj1 is cloth and obj2 is rigid.&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-251" name="__codelineno-0-251"></a>
+<a id="__codelineno-0-252" name="__codelineno-0-252"></a>    <span class="n">state</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">dump_state</span><span class="p">(</span><span class="n">serialized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-0-253" name="__codelineno-0-253"></a>
+<a id="__codelineno-0-254" name="__codelineno-0-254"></a>    <span class="c1"># Reset the cloth</span>
+<a id="__codelineno-0-255" name="__codelineno-0-255"></a>    <span class="n">obj</span><span class="o">.</span><span class="n">root_link</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<a id="__codelineno-0-256" name="__codelineno-0-256"></a>
+<a id="__codelineno-0-257" name="__codelineno-0-257"></a>    <span class="n">obj_aabb_low</span><span class="p">,</span> <span class="n">obj_aabb_high</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">AABB</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+<a id="__codelineno-0-258" name="__codelineno-0-258"></a>    <span class="n">other_aabb_low</span><span class="p">,</span> <span class="n">other_aabb_high</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">AABB</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+<a id="__codelineno-0-259" name="__codelineno-0-259"></a>
+<a id="__codelineno-0-260" name="__codelineno-0-260"></a>    <span class="c1"># z value is always the same: the top-z of the other object + half the height of the object to be placed + offset</span>
+<a id="__codelineno-0-261" name="__codelineno-0-261"></a>    <span class="n">z_value</span> <span class="o">=</span> <span class="n">other_aabb_high</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">obj_aabb_high</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">obj_aabb_low</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">z_offset</span>
+<a id="__codelineno-0-262" name="__codelineno-0-262"></a>
+<a id="__codelineno-0-263" name="__codelineno-0-263"></a>    <span class="k">if</span> <span class="n">randomize_xy</span><span class="p">:</span>
+<a id="__codelineno-0-264" name="__codelineno-0-264"></a>        <span class="c1"># Sample a random position in the x-y plane within the other object&#39;s AABB</span>
+<a id="__codelineno-0-265" name="__codelineno-0-265"></a>        <span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">other_aabb_low</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">other_aabb_low</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z_value</span><span class="p">])</span>
+<a id="__codelineno-0-266" name="__codelineno-0-266"></a>        <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">other_aabb_high</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">other_aabb_high</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z_value</span><span class="p">])</span>
+<a id="__codelineno-0-267" name="__codelineno-0-267"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-268" name="__codelineno-0-268"></a>        <span class="c1"># Always sample the center of the other object&#39;s AABB</span>
+<a id="__codelineno-0-269" name="__codelineno-0-269"></a>        <span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">other_aabb_low</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">other_aabb_high</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+<a id="__codelineno-0-270" name="__codelineno-0-270"></a>                        <span class="p">(</span><span class="n">other_aabb_low</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">other_aabb_high</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+<a id="__codelineno-0-271" name="__codelineno-0-271"></a>                        <span class="n">z_value</span><span class="p">])</span>
+<a id="__codelineno-0-272" name="__codelineno-0-272"></a>        <span class="n">high</span> <span class="o">=</span> <span class="n">low</span>
+<a id="__codelineno-0-273" name="__codelineno-0-273"></a>
+<a id="__codelineno-0-274" name="__codelineno-0-274"></a>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_trials</span><span class="p">):</span>
+<a id="__codelineno-0-275" name="__codelineno-0-275"></a>        <span class="c1"># Sample a random position</span>
+<a id="__codelineno-0-276" name="__codelineno-0-276"></a>        <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
+<a id="__codelineno-0-277" name="__codelineno-0-277"></a>        <span class="c1"># Sample a random orientation in the z-axis</span>
+<a id="__codelineno-0-278" name="__codelineno-0-278"></a>        <span class="n">orn</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">euler2quat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)]))</span>
+<a id="__codelineno-0-279" name="__codelineno-0-279"></a>
+<a id="__codelineno-0-280" name="__codelineno-0-280"></a>        <span class="n">obj</span><span class="o">.</span><span class="n">set_position_orientation</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">orn</span><span class="p">)</span>
+<a id="__codelineno-0-281" name="__codelineno-0-281"></a>        <span class="n">obj</span><span class="o">.</span><span class="n">root_link</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 <a id="__codelineno-0-282" name="__codelineno-0-282"></a>        <span class="n">obj</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
 <a id="__codelineno-0-283" name="__codelineno-0-283"></a>
-<a id="__codelineno-0-284" name="__codelineno-0-284"></a>        <span class="c1"># Render at the end</span>
-<a id="__codelineno-0-285" name="__codelineno-0-285"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<a id="__codelineno-0-284" name="__codelineno-0-284"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step_physics</span><span class="p">()</span>
+<a id="__codelineno-0-285" name="__codelineno-0-285"></a>        <span class="n">success</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ContactBodies</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>
 <a id="__codelineno-0-286" name="__codelineno-0-286"></a>
-<a id="__codelineno-0-287" name="__codelineno-0-287"></a>    <span class="k">return</span> <span class="n">success</span>
+<a id="__codelineno-0-287" name="__codelineno-0-287"></a>        <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+<a id="__codelineno-0-288" name="__codelineno-0-288"></a>            <span class="k">break</span>
+<a id="__codelineno-0-289" name="__codelineno-0-289"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-290" name="__codelineno-0-290"></a>            <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<a id="__codelineno-0-291" name="__codelineno-0-291"></a>
+<a id="__codelineno-0-292" name="__codelineno-0-292"></a>    <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+<a id="__codelineno-0-293" name="__codelineno-0-293"></a>        <span class="c1"># Let it fall for 0.2 second always to let the cloth settle</span>
+<a id="__codelineno-0-294" name="__codelineno-0-294"></a>        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">/</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">())):</span>
+<a id="__codelineno-0-295" name="__codelineno-0-295"></a>            <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step_physics</span><span class="p">()</span>
+<a id="__codelineno-0-296" name="__codelineno-0-296"></a>
+<a id="__codelineno-0-297" name="__codelineno-0-297"></a>        <span class="n">obj</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
+<a id="__codelineno-0-298" name="__codelineno-0-298"></a>
+<a id="__codelineno-0-299" name="__codelineno-0-299"></a>        <span class="c1"># Render at the end</span>
+<a id="__codelineno-0-300" name="__codelineno-0-300"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<a id="__codelineno-0-301" name="__codelineno-0-301"></a>
+<a id="__codelineno-0-302" name="__codelineno-0-302"></a>    <span class="k">return</span> <span class="n">success</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -4537,7 +4537,22 @@ a microwave on a cabinet, @objB is the cabinet</p>
 <span class="normal"><a href="#__codelineno-0-208">208</a></span>
 <span class="normal"><a href="#__codelineno-0-209">209</a></span>
 <span class="normal"><a href="#__codelineno-0-210">210</a></span>
-<span class="normal"><a href="#__codelineno-0-211">211</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="k">def</span> <span class="nf">sample_kinematics</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-211">211</a></span>
+<span class="normal"><a href="#__codelineno-0-212">212</a></span>
+<span class="normal"><a href="#__codelineno-0-213">213</a></span>
+<span class="normal"><a href="#__codelineno-0-214">214</a></span>
+<span class="normal"><a href="#__codelineno-0-215">215</a></span>
+<span class="normal"><a href="#__codelineno-0-216">216</a></span>
+<span class="normal"><a href="#__codelineno-0-217">217</a></span>
+<span class="normal"><a href="#__codelineno-0-218">218</a></span>
+<span class="normal"><a href="#__codelineno-0-219">219</a></span>
+<span class="normal"><a href="#__codelineno-0-220">220</a></span>
+<span class="normal"><a href="#__codelineno-0-221">221</a></span>
+<span class="normal"><a href="#__codelineno-0-222">222</a></span>
+<span class="normal"><a href="#__codelineno-0-223">223</a></span>
+<span class="normal"><a href="#__codelineno-0-224">224</a></span>
+<span class="normal"><a href="#__codelineno-0-225">225</a></span>
+<span class="normal"><a href="#__codelineno-0-226">226</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="k">def</span> <span class="nf">sample_kinematics</span><span class="p">(</span>
 <a id="__codelineno-0-44" name="__codelineno-0-44"></a>    <span class="n">predicate</span><span class="p">,</span>
 <a id="__codelineno-0-45" name="__codelineno-0-45"></a>    <span class="n">objA</span><span class="p">,</span>
 <a id="__codelineno-0-46" name="__codelineno-0-46"></a>    <span class="n">objB</span><span class="p">,</span>
@@ -4651,61 +4666,76 @@ a microwave on a cabinet, @objB is the cabinet</p>
 <a id="__codelineno-0-154" name="__codelineno-0-154"></a>        <span class="n">sampled_quaternion</span> <span class="o">=</span> <span class="n">sampling_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
 <a id="__codelineno-0-155" name="__codelineno-0-155"></a>
 <a id="__codelineno-0-156" name="__codelineno-0-156"></a>        <span class="n">sampling_success</span> <span class="o">=</span> <span class="n">sampled_vector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-<a id="__codelineno-0-157" name="__codelineno-0-157"></a>        <span class="k">if</span> <span class="n">sampling_success</span><span class="p">:</span>
-<a id="__codelineno-0-158" name="__codelineno-0-158"></a>            <span class="c1"># Move the object from the original parallel bbox to the sampled bbox</span>
-<a id="__codelineno-0-159" name="__codelineno-0-159"></a>            <span class="n">parallel_bbox_rotation</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">from_quat</span><span class="p">(</span><span class="n">parallel_bbox_orn</span><span class="p">)</span>
-<a id="__codelineno-0-160" name="__codelineno-0-160"></a>            <span class="n">sample_rotation</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">from_quat</span><span class="p">(</span><span class="n">sampled_quaternion</span><span class="p">)</span>
-<a id="__codelineno-0-161" name="__codelineno-0-161"></a>            <span class="n">original_rotation</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">from_quat</span><span class="p">(</span><span class="n">orientation</span><span class="p">)</span>
-<a id="__codelineno-0-162" name="__codelineno-0-162"></a>
-<a id="__codelineno-0-163" name="__codelineno-0-163"></a>            <span class="c1"># The additional orientation to be applied should be the delta orientation</span>
-<a id="__codelineno-0-164" name="__codelineno-0-164"></a>            <span class="c1"># between the parallel bbox orientation and the sample orientation</span>
-<a id="__codelineno-0-165" name="__codelineno-0-165"></a>            <span class="n">additional_rotation</span> <span class="o">=</span> <span class="n">sample_rotation</span> <span class="o">*</span> <span class="n">parallel_bbox_rotation</span><span class="o">.</span><span class="n">inv</span><span class="p">()</span>
-<a id="__codelineno-0-166" name="__codelineno-0-166"></a>            <span class="n">combined_rotation</span> <span class="o">=</span> <span class="n">additional_rotation</span> <span class="o">*</span> <span class="n">original_rotation</span>
-<a id="__codelineno-0-167" name="__codelineno-0-167"></a>            <span class="n">orientation</span> <span class="o">=</span> <span class="n">combined_rotation</span><span class="o">.</span><span class="n">as_quat</span><span class="p">()</span>
-<a id="__codelineno-0-168" name="__codelineno-0-168"></a>
-<a id="__codelineno-0-169" name="__codelineno-0-169"></a>            <span class="c1"># The delta vector between the base CoM frame and the parallel bbox center needs to be rotated</span>
-<a id="__codelineno-0-170" name="__codelineno-0-170"></a>            <span class="c1"># by the same additional orientation</span>
-<a id="__codelineno-0-171" name="__codelineno-0-171"></a>            <span class="n">diff</span> <span class="o">=</span> <span class="n">old_pos</span> <span class="o">-</span> <span class="n">parallel_bbox_center</span>
-<a id="__codelineno-0-172" name="__codelineno-0-172"></a>            <span class="n">rotated_diff</span> <span class="o">=</span> <span class="n">additional_rotation</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
-<a id="__codelineno-0-173" name="__codelineno-0-173"></a>            <span class="n">pos</span> <span class="o">=</span> <span class="n">sampled_vector</span> <span class="o">+</span> <span class="n">rotated_diff</span>
-<a id="__codelineno-0-174" name="__codelineno-0-174"></a>
-<a id="__codelineno-0-175" name="__codelineno-0-175"></a>        <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-176" name="__codelineno-0-176"></a>            <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
-<a id="__codelineno-0-177" name="__codelineno-0-177"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-178" name="__codelineno-0-178"></a>            <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">z_offset</span>
-<a id="__codelineno-0-179" name="__codelineno-0-179"></a>            <span class="n">objA</span><span class="o">.</span><span class="n">set_position_orientation</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
-<a id="__codelineno-0-180" name="__codelineno-0-180"></a>            <span class="n">objA</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
-<a id="__codelineno-0-181" name="__codelineno-0-181"></a>
-<a id="__codelineno-0-182" name="__codelineno-0-182"></a>            <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step_physics</span><span class="p">()</span>
-<a id="__codelineno-0-183" name="__codelineno-0-183"></a>            <span class="n">objA</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
-<a id="__codelineno-0-184" name="__codelineno-0-184"></a>            <span class="n">success</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">objA</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ContactBodies</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>
-<a id="__codelineno-0-185" name="__codelineno-0-185"></a>
-<a id="__codelineno-0-186" name="__codelineno-0-186"></a>        <span class="k">if</span> <span class="n">gm</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
-<a id="__codelineno-0-187" name="__codelineno-0-187"></a>            <span class="n">debug_breakpoint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sample_kinematics: </span><span class="si">{</span><span class="n">success</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-188" name="__codelineno-0-188"></a>
-<a id="__codelineno-0-189" name="__codelineno-0-189"></a>        <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
-<a id="__codelineno-0-190" name="__codelineno-0-190"></a>            <span class="k">break</span>
-<a id="__codelineno-0-191" name="__codelineno-0-191"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-192" name="__codelineno-0-192"></a>            <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-<a id="__codelineno-0-193" name="__codelineno-0-193"></a>
-<a id="__codelineno-0-194" name="__codelineno-0-194"></a>    <span class="k">if</span> <span class="n">success</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">skip_falling</span><span class="p">:</span>
-<a id="__codelineno-0-195" name="__codelineno-0-195"></a>        <span class="n">objA</span><span class="o">.</span><span class="n">set_position_orientation</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
-<a id="__codelineno-0-196" name="__codelineno-0-196"></a>        <span class="n">objA</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
-<a id="__codelineno-0-197" name="__codelineno-0-197"></a>
-<a id="__codelineno-0-198" name="__codelineno-0-198"></a>        <span class="c1"># Let it fall for 0.2 second</span>
-<a id="__codelineno-0-199" name="__codelineno-0-199"></a>        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">/</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">())):</span>
-<a id="__codelineno-0-200" name="__codelineno-0-200"></a>            <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step_physics</span><span class="p">()</span>
-<a id="__codelineno-0-201" name="__codelineno-0-201"></a>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">objA</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ContactBodies</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-0-202" name="__codelineno-0-202"></a>                <span class="c1"># Take extra step for depenetration, then break</span>
-<a id="__codelineno-0-203" name="__codelineno-0-203"></a>                <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step_physics</span><span class="p">()</span>
-<a id="__codelineno-0-204" name="__codelineno-0-204"></a>                <span class="k">break</span>
-<a id="__codelineno-0-205" name="__codelineno-0-205"></a>
-<a id="__codelineno-0-206" name="__codelineno-0-206"></a>        <span class="n">objA</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
-<a id="__codelineno-0-207" name="__codelineno-0-207"></a>
-<a id="__codelineno-0-208" name="__codelineno-0-208"></a>        <span class="c1"># Render at the end</span>
-<a id="__codelineno-0-209" name="__codelineno-0-209"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<a id="__codelineno-0-157" name="__codelineno-0-157"></a>
+<a id="__codelineno-0-158" name="__codelineno-0-158"></a>        <span class="k">if</span> <span class="n">sampling_success</span><span class="p">:</span>
+<a id="__codelineno-0-159" name="__codelineno-0-159"></a>            <span class="c1"># Move the object from the original parallel bbox to the sampled bbox</span>
+<a id="__codelineno-0-160" name="__codelineno-0-160"></a>            <span class="n">parallel_bbox_rotation</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">from_quat</span><span class="p">(</span><span class="n">parallel_bbox_orn</span><span class="p">)</span>
+<a id="__codelineno-0-161" name="__codelineno-0-161"></a>            <span class="n">sample_rotation</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">from_quat</span><span class="p">(</span><span class="n">sampled_quaternion</span><span class="p">)</span>
+<a id="__codelineno-0-162" name="__codelineno-0-162"></a>            <span class="n">original_rotation</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">from_quat</span><span class="p">(</span><span class="n">orientation</span><span class="p">)</span>
+<a id="__codelineno-0-163" name="__codelineno-0-163"></a>
+<a id="__codelineno-0-164" name="__codelineno-0-164"></a>            <span class="c1"># The additional orientation to be applied should be the delta orientation</span>
+<a id="__codelineno-0-165" name="__codelineno-0-165"></a>            <span class="c1"># between the parallel bbox orientation and the sample orientation</span>
+<a id="__codelineno-0-166" name="__codelineno-0-166"></a>            <span class="n">additional_rotation</span> <span class="o">=</span> <span class="n">sample_rotation</span> <span class="o">*</span> <span class="n">parallel_bbox_rotation</span><span class="o">.</span><span class="n">inv</span><span class="p">()</span>
+<a id="__codelineno-0-167" name="__codelineno-0-167"></a>            <span class="n">combined_rotation</span> <span class="o">=</span> <span class="n">additional_rotation</span> <span class="o">*</span> <span class="n">original_rotation</span>
+<a id="__codelineno-0-168" name="__codelineno-0-168"></a>            <span class="n">orientation</span> <span class="o">=</span> <span class="n">combined_rotation</span><span class="o">.</span><span class="n">as_quat</span><span class="p">()</span>
+<a id="__codelineno-0-169" name="__codelineno-0-169"></a>
+<a id="__codelineno-0-170" name="__codelineno-0-170"></a>            <span class="c1"># The delta vector between the base CoM frame and the parallel bbox center needs to be rotated</span>
+<a id="__codelineno-0-171" name="__codelineno-0-171"></a>            <span class="c1"># by the same additional orientation</span>
+<a id="__codelineno-0-172" name="__codelineno-0-172"></a>            <span class="n">diff</span> <span class="o">=</span> <span class="n">old_pos</span> <span class="o">-</span> <span class="n">parallel_bbox_center</span>
+<a id="__codelineno-0-173" name="__codelineno-0-173"></a>            <span class="n">rotated_diff</span> <span class="o">=</span> <span class="n">additional_rotation</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+<a id="__codelineno-0-174" name="__codelineno-0-174"></a>            <span class="n">pos</span> <span class="o">=</span> <span class="n">sampled_vector</span> <span class="o">+</span> <span class="n">rotated_diff</span>
+<a id="__codelineno-0-175" name="__codelineno-0-175"></a>
+<a id="__codelineno-0-176" name="__codelineno-0-176"></a>        <span class="k">elif</span> <span class="n">predicate</span> <span class="o">==</span> <span class="s2">&quot;onTop&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-177" name="__codelineno-0-177"></a>            <span class="c1"># Place objA at center of objB&#39;s AABB, offset in z direction such that their AABBs are &quot;stacked&quot;</span>
+<a id="__codelineno-0-178" name="__codelineno-0-178"></a>            <span class="n">aabb_lower_a</span><span class="p">,</span> <span class="n">aabb_upper_a</span> <span class="o">=</span> <span class="n">objA</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">AABB</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+<a id="__codelineno-0-179" name="__codelineno-0-179"></a>            <span class="n">aabb_lower_b</span><span class="p">,</span> <span class="n">aabb_upper_b</span> <span class="o">=</span> <span class="n">objB</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">AABB</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+<a id="__codelineno-0-180" name="__codelineno-0-180"></a>            <span class="n">bbox_to_obj</span> <span class="o">=</span> <span class="n">objA</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span><span class="n">aabb_lower_a</span> <span class="o">+</span> <span class="n">aabb_upper_a</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+<a id="__codelineno-0-181" name="__codelineno-0-181"></a>            <span class="n">bbox_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">aabb_lower_b</span> <span class="o">+</span> <span class="n">aabb_upper_b</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+<a id="__codelineno-0-182" name="__codelineno-0-182"></a>            <span class="n">bbox_pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">aabb_upper_b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">aabb_upper_a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">aabb_lower_a</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<a id="__codelineno-0-183" name="__codelineno-0-183"></a>            <span class="n">pos</span> <span class="o">=</span> <span class="n">bbox_pos</span> <span class="o">+</span> <span class="n">bbox_to_obj</span>
+<a id="__codelineno-0-184" name="__codelineno-0-184"></a>
+<a id="__codelineno-0-185" name="__codelineno-0-185"></a>        <span class="c1"># if &quot;chicken&quot; in objA.name:</span>
+<a id="__codelineno-0-186" name="__codelineno-0-186"></a>        <span class="c1">#     from IPython import embed; embed()</span>
+<a id="__codelineno-0-187" name="__codelineno-0-187"></a>
+<a id="__codelineno-0-188" name="__codelineno-0-188"></a>        <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-189" name="__codelineno-0-189"></a>            <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-0-190" name="__codelineno-0-190"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-191" name="__codelineno-0-191"></a>            <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">z_offset</span>
+<a id="__codelineno-0-192" name="__codelineno-0-192"></a>            <span class="n">objA</span><span class="o">.</span><span class="n">set_position_orientation</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
+<a id="__codelineno-0-193" name="__codelineno-0-193"></a>            <span class="n">objA</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
+<a id="__codelineno-0-194" name="__codelineno-0-194"></a>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a>            <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step_physics</span><span class="p">()</span>
+<a id="__codelineno-0-196" name="__codelineno-0-196"></a>            <span class="n">objA</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
+<a id="__codelineno-0-197" name="__codelineno-0-197"></a>            <span class="n">success</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">objA</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ContactBodies</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>
+<a id="__codelineno-0-198" name="__codelineno-0-198"></a>
+<a id="__codelineno-0-199" name="__codelineno-0-199"></a>        <span class="k">if</span> <span class="n">gm</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+<a id="__codelineno-0-200" name="__codelineno-0-200"></a>            <span class="n">debug_breakpoint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sample_kinematics: </span><span class="si">{</span><span class="n">success</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-201" name="__codelineno-0-201"></a>
+<a id="__codelineno-0-202" name="__codelineno-0-202"></a>        <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+<a id="__codelineno-0-203" name="__codelineno-0-203"></a>            <span class="k">break</span>
+<a id="__codelineno-0-204" name="__codelineno-0-204"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-205" name="__codelineno-0-205"></a>            <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<a id="__codelineno-0-206" name="__codelineno-0-206"></a>
+<a id="__codelineno-0-207" name="__codelineno-0-207"></a>    <span class="k">if</span> <span class="n">success</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">skip_falling</span><span class="p">:</span>
+<a id="__codelineno-0-208" name="__codelineno-0-208"></a>        <span class="n">objA</span><span class="o">.</span><span class="n">set_position_orientation</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
+<a id="__codelineno-0-209" name="__codelineno-0-209"></a>        <span class="n">objA</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
 <a id="__codelineno-0-210" name="__codelineno-0-210"></a>
-<a id="__codelineno-0-211" name="__codelineno-0-211"></a>    <span class="k">return</span> <span class="n">success</span>
+<a id="__codelineno-0-211" name="__codelineno-0-211"></a>        <span class="c1"># Let it fall for 0.2 second</span>
+<a id="__codelineno-0-212" name="__codelineno-0-212"></a>        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">/</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">get_physics_dt</span><span class="p">())):</span>
+<a id="__codelineno-0-213" name="__codelineno-0-213"></a>            <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step_physics</span><span class="p">()</span>
+<a id="__codelineno-0-214" name="__codelineno-0-214"></a>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">objA</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ContactBodies</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-215" name="__codelineno-0-215"></a>                <span class="k">break</span>
+<a id="__codelineno-0-216" name="__codelineno-0-216"></a>
+<a id="__codelineno-0-217" name="__codelineno-0-217"></a>        <span class="n">objA</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
+<a id="__codelineno-0-218" name="__codelineno-0-218"></a>        <span class="n">objB</span><span class="o">.</span><span class="n">keep_still</span><span class="p">()</span>
+<a id="__codelineno-0-219" name="__codelineno-0-219"></a>
+<a id="__codelineno-0-220" name="__codelineno-0-220"></a>        <span class="c1"># Take extra step for depenetration, then break</span>
+<a id="__codelineno-0-221" name="__codelineno-0-221"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step_physics</span><span class="p">()</span>
+<a id="__codelineno-0-222" name="__codelineno-0-222"></a>
+<a id="__codelineno-0-223" name="__codelineno-0-223"></a>        <span class="c1"># Render at the end</span>
+<a id="__codelineno-0-224" name="__codelineno-0-224"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<a id="__codelineno-0-225" name="__codelineno-0-225"></a>
+<a id="__codelineno-0-226" name="__codelineno-0-226"></a>    <span class="k">return</span> <span class="n">success</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>

@@ -6176,23 +6176,23 @@ Defaults to 0.01.</p>
 <a id="__codelineno-0-439" name="__codelineno-0-439"></a>                <span class="c1"># Also refresh the transition rules that are currently active</span>
 <a id="__codelineno-0-440" name="__codelineno-0-440"></a>                <span class="n">TransitionRuleAPI</span><span class="o">.</span><span class="n">refresh_all_rules</span><span class="p">()</span>
 <a id="__codelineno-0-441" name="__codelineno-0-441"></a>
-<a id="__codelineno-0-442" name="__codelineno-0-442"></a>            <span class="c1"># Propagate states if the feature is enabled</span>
-<a id="__codelineno-0-443" name="__codelineno-0-443"></a>            <span class="k">if</span> <span class="n">gm</span><span class="o">.</span><span class="n">ENABLE_OBJECT_STATES</span><span class="p">:</span>
-<a id="__codelineno-0-444" name="__codelineno-0-444"></a>                <span class="c1"># Step the object states in global topological order (if the scene exists)</span>
-<a id="__codelineno-0-445" name="__codelineno-0-445"></a>                <span class="k">for</span> <span class="n">state_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_state_types_requiring_update</span><span class="p">:</span>
-<a id="__codelineno-0-446" name="__codelineno-0-446"></a>                    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">get_objects_with_state</span><span class="p">(</span><span class="n">state_type</span><span class="p">):</span>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a>                        <span class="c1"># Only update objects that have been initialized so far</span>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a>                        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">initialized</span><span class="p">:</span>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a>                            <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">state_type</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a>                <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
-<a id="__codelineno-0-452" name="__codelineno-0-452"></a>                    <span class="c1"># Only update visuals for objects that have been initialized so far</span>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a>                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">StatefulObject</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">initialized</span><span class="p">:</span>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a>                        <span class="n">obj</span><span class="o">.</span><span class="n">update_visuals</span><span class="p">()</span>
+<a id="__codelineno-0-442" name="__codelineno-0-442"></a>            <span class="c1"># # Propagate states if the feature is enabled</span>
+<a id="__codelineno-0-443" name="__codelineno-0-443"></a>            <span class="c1"># if gm.ENABLE_OBJECT_STATES:</span>
+<a id="__codelineno-0-444" name="__codelineno-0-444"></a>            <span class="c1">#     # Step the object states in global topological order (if the scene exists)</span>
+<a id="__codelineno-0-445" name="__codelineno-0-445"></a>            <span class="c1">#     for state_type in self.object_state_types_requiring_update:</span>
+<a id="__codelineno-0-446" name="__codelineno-0-446"></a>            <span class="c1">#         for obj in self.scene.get_objects_with_state(state_type):</span>
+<a id="__codelineno-0-447" name="__codelineno-0-447"></a>            <span class="c1">#             # Only update objects that have been initialized so far</span>
+<a id="__codelineno-0-448" name="__codelineno-0-448"></a>            <span class="c1">#             if obj.initialized:</span>
+<a id="__codelineno-0-449" name="__codelineno-0-449"></a>            <span class="c1">#                 obj.states[state_type].update()</span>
+<a id="__codelineno-0-450" name="__codelineno-0-450"></a>            <span class="c1">#</span>
+<a id="__codelineno-0-451" name="__codelineno-0-451"></a>            <span class="c1">#     for obj in self.scene.objects:</span>
+<a id="__codelineno-0-452" name="__codelineno-0-452"></a>            <span class="c1">#         # Only update visuals for objects that have been initialized so far</span>
+<a id="__codelineno-0-453" name="__codelineno-0-453"></a>            <span class="c1">#         if isinstance(obj, StatefulObject) and obj.initialized:</span>
+<a id="__codelineno-0-454" name="__codelineno-0-454"></a>            <span class="c1">#             obj.update_visuals()</span>
 <a id="__codelineno-0-455" name="__codelineno-0-455"></a>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a>            <span class="c1"># Possibly run transition rule step</span>
-<a id="__codelineno-0-457" name="__codelineno-0-457"></a>            <span class="k">if</span> <span class="n">gm</span><span class="o">.</span><span class="n">ENABLE_TRANSITION_RULES</span><span class="p">:</span>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a>                <span class="n">TransitionRuleAPI</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<a id="__codelineno-0-456" name="__codelineno-0-456"></a>            <span class="c1"># # Possibly run transition rule step</span>
+<a id="__codelineno-0-457" name="__codelineno-0-457"></a>            <span class="c1"># if gm.ENABLE_TRANSITION_RULES:</span>
+<a id="__codelineno-0-458" name="__codelineno-0-458"></a>            <span class="c1">#     TransitionRuleAPI.step()</span>
 <a id="__codelineno-0-459" name="__codelineno-0-459"></a>
 <a id="__codelineno-0-460" name="__codelineno-0-460"></a>    <span class="k">def</span> <span class="nf">_omni_update_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <a id="__codelineno-0-461" name="__codelineno-0-461"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
