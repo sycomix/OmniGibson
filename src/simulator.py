@@ -436,8 +436,8 @@ class Simulator(SimulationContext, Serializable):
                 # Re-initialize the physics view because the number of objects has changed
                 RigidContactAPI.initialize_view()
 
-                # Also refresh the transition rules that are currently active
-                TransitionRuleAPI.refresh_all_rules()
+                # # Also refresh the transition rules that are currently active
+                # TransitionRuleAPI.refresh_all_rules()
 
             # # Propagate states if the feature is enabled
             # if gm.ENABLE_OBJECT_STATES:
@@ -867,7 +867,9 @@ class Simulator(SimulationContext, Serializable):
         # Clear all vision sensors and remove viewer camera reference and camera mover reference
         VisionSensor.clear()
         self._viewer_camera = None
-        self._camera_mover = None
+        if self._camera_mover is not None:
+            self._camera_mover.clear()
+            self._camera_mover = None
 
         # Clear all transition rules if being used
         if gm.ENABLE_TRANSITION_RULES:
