@@ -788,4 +788,3 @@ def clear():
     Clear state tied to singleton classes
     """
     NAMES.clear()
-    CLASS_NAMES.clear()
