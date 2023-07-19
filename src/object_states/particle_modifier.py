@@ -238,22 +238,6 @@ class ParticleModifier(AbsoluteObjectState, LinkBasedStateMixin, UpdateStateMixi
 
         return True, None
 
-    @classmethod
-    def is_compatible_asset(cls, prim, **kwargs):
-        # Run super first
-        compatible, reason = super().is_compatible_asset(prim, **kwargs)
-        if not compatible:
-            return compatible, reason
-
-        # Check whether this state has toggledon if required or saturated if required for any condition
-        conditions = kwargs.get("conditions", dict())
-        cond_types = {cond[0] for _, conds in conditions.items() for cond in conds}
-        for cond_type, state_type in zip((ParticleModifyCondition.TOGGLEDON,), (ToggledOn,)):
-            if cond_type in cond_types and not state_type.is_compatible_asset(prim=prim, **kwargs):
-                return False, f"{cls.__name__} requires {state_type.__name__} state!"
-
-        return True, None
-
     def _initialize(self):
         super()._initialize()
 
@@ -289,11 +273,6 @@ class ParticleModifier(AbsoluteObjectState, LinkBasedStateMixin, UpdateStateMixi
             # Create a primitive shape if it doesn't already exist
             pre_existing_mesh = get_prim_at_path(mesh_prim_path)
             if not pre_existing_mesh:
-                if self._projection_mesh_params is None:
-                    self._projection_mesh_params = {
-                        "type": "Cone",
-                        "extents": np.ones(3) * 0.25,
-                    }
                 # Projection mesh params must be specified in order to determine scalings
                 assert self._projection_mesh_params is not None, \
                     f"Must specify projection_mesh_params for {self.__class__.__name__} " \
@@ -677,9 +656,6 @@ class ParticleRemover(ParticleModifier):
         # Create set of default system to condition mappings based on settings
         all_conditions = dict()
         for system_name in REGISTERED_SYSTEMS.keys():
-            # Ignore cloth
-            if system_name == "cloth":
-                continue
             default_system_conditions = self._default_physical_conditions if is_physical_particle_system(system_name) \
                 else self._default_visual_conditions
             if default_system_conditions is not None:
