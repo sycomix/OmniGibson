@@ -393,7 +393,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
                 z_extent = cls._particle_object.aabb_extent[2]
                 if not cls._CLIP_INTO_OBJECTS and z_extent > 0:
                     z_offsets = np.array([z_extent * particle.scale[2] for particle in cls._group_particles[group].values()]) / 2.0
-                    # Shift the particles halfway down
+                    # Shift the particles halfway up
                     positions += normals * z_offsets.reshape(-1, 1)
 
                 # Set the group particle poses
@@ -451,11 +451,12 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         super().remove_particle_by_name(name=name)
 
         # Remove this particle from its respective group as well
-        group = cls._particles_info[name]["obj"].name
+        parent_obj = cls._particles_info[name]["obj"]
+        group = cls.get_group_name(obj=parent_obj)
         cls._group_particles[group].pop(name)
         cls._particles_local_mat.pop(name)
         particle_info = cls._particles_info.pop(name)
-        if "face_id" in particle_info:
+        if cls._is_cloth_obj(obj=parent_obj):
             # Also remove from cloth face ids
             face_ids = cls._cloth_face_ids[group]
             idx_mapping = {face_id: i for i, face_id in enumerate(face_ids)}
@@ -475,7 +476,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
 
         # Standardize orientations and links
         obj = cls._group_objects[group]
-        is_cloth = obj.prim_type == PrimType.CLOTH
+        is_cloth = cls._is_cloth_obj(obj=obj)
 
         # If cloth, run the following sanity checks:
         # (1) make sure link prim paths are not specified -- we can ONLY apply particles under the object xform prim
@@ -552,8 +553,6 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         if obj.prim_type == PrimType.CLOTH:
             # Sample locations based on randomly sampled keyfaces
             cloth = obj.root_link
-            assert len(cloth.keyface_idx) >= max_samples, \
-                "Insufficient number of keyfaces from which to sample group visual particles for cloth!"
             n_faces = len(cloth.faces)
             face_ids = np.random.choice(n_faces, min(max_samples, n_faces), replace=False)
             # Positions are the midpoints of each requested face
@@ -638,7 +637,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
             particle_local_poses_batch = np.zeros_like(link_tfs_batch)
             for i, name in enumerate(particles):
                 obj = cls._particles_info[name]["obj"]
-                is_cloth = obj.prim_type == PrimType.CLOTH
+                is_cloth = cls._is_cloth_obj(obj=obj)
                 if is_cloth:
                     if obj not in link_tfs:
                         # We want World --> obj transform, NOT the World --> root_link transform, since these particles
@@ -681,7 +680,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         # First, get local pose, scale it by the parent link's scale, and then convert into a matrix
         # Note that particles_local_mat already takes the parent scale into account when computing the transform!
         parent_obj = cls._particles_info[name]["obj"]
-        is_cloth = parent_obj.prim_type == PrimType.CLOTH
+        is_cloth = cls._is_cloth_obj(obj=parent_obj)
         local_mat = cls._particles_local_mat[name]
         link_tf = T.pose2mat(XFormPrim.get_local_pose(parent_obj)) if is_cloth else \
             T.pose2mat(cls._particles_info[name]["link"].get_position_orientation())
@@ -730,7 +729,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
             link_tfs_batch = np.zeros((cls.n_particles, 4, 4))
             for i, name in enumerate(particles):
                 obj = cls._particles_info[name]["obj"]
-                is_cloth = obj.prim_type == PrimType.CLOTH
+                is_cloth = cls._is_cloth_obj(obj=obj)
                 if is_cloth:
                     if obj not in link_tfs:
                         # We want World --> obj transform, NOT the World --> root_link transform, since these particles
@@ -782,7 +781,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         global_mat[:3, :3] = T.quat2mat(orientation)
         # First, get global pose, scale it by the parent link's scale, and then convert into a matrix
         parent_obj = cls._particles_info[name]["obj"]
-        is_cloth = parent_obj.prim_type == PrimType.CLOTH
+        is_cloth = cls._is_cloth_obj(obj=parent_obj)
         link_tf = T.pose2mat(XFormPrim.get_local_pose(parent_obj)) if is_cloth else \
             T.pose2mat(cls._particles_info[name]["link"].get_position_orientation())
         local_mat = np.linalg.inv(link_tf) @ global_mat
@@ -804,6 +803,19 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         cls._modify_particle_local_mat(name=name, mat=local_mat, ignore_scale=True)
 
     @classmethod
+    def _is_cloth_obj(cls, obj):
+        """
+        Checks whether object @obj is a cloth or not
+
+        Args:
+            obj (BaseObject): Object to check
+
+        Returns:
+            bool: True if the object is cloth type, otherwise False
+        """
+        return obj.prim_type == PrimType.CLOTH
+
+    @classmethod
     def _compute_particle_local_mat(cls, name, ignore_scale=False):
         """
         Computes particle @name's local transform as a homogeneous 4x4 matrix
@@ -817,7 +829,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         """
         particle = cls.particles[name]
         parent_obj = cls._particles_info[name]["obj"]
-        is_cloth = parent_obj.prim_type == PrimType.CLOTH
+        is_cloth = cls._is_cloth_obj(obj=parent_obj)
         scale = np.ones(3) if is_cloth else cls._particles_info[name]["link"].scale
         local_pos, local_quat = particle.get_local_pose()
         local_pos = local_pos if ignore_scale else local_pos * scale
@@ -835,7 +847,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         """
         particle = cls.particles[name]
         parent_obj = cls._particles_info[name]["obj"]
-        is_cloth = parent_obj.prim_type == PrimType.CLOTH
+        is_cloth = cls._is_cloth_obj(obj=parent_obj)
         scale = np.ones(3) if is_cloth else cls._particles_info[name]["link"].scale
         local_pos, local_quat = T.mat2pose(mat)
         local_pos = local_pos if ignore_scale else local_pos / scale
@@ -902,7 +914,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
             obj = og.sim.scene.object_registry("name", name)
             info = name_to_info_mapping[name]
             cls.create_attachment_group(obj=obj)
-            is_cloth = obj.prim_type == PrimType.CLOTH
+            is_cloth = cls._is_cloth_obj(obj=obj)
             for particle_idn, reference in zip(info["particle_idns"], info["references"]):
                 # Reference is either the face ID (int) if cloth group or link name (str) if rigid body group
                 # Create the necessary particles
@@ -990,7 +1002,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         groups_dict = dict()
         for group_name, group_particles in cls._group_particles.items():
             obj = cls._group_objects[group_name]
-            is_cloth = obj.prim_type == PrimType.CLOTH
+            is_cloth = cls._is_cloth_obj(obj=obj)
             groups_dict[group_name] = dict(
                 particle_attached_obj_uuid=obj.uuid,
                 n_particles=cls.num_group_particles(group=group_name),
@@ -1034,7 +1046,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         state_group_flat = [[state["n_groups"]]]
         for group_name, group_dict in groups_dict.items():
             obj = cls._group_objects[group_name]
-            is_cloth = obj.prim_type == PrimType.CLOTH
+            is_cloth = cls._is_cloth_obj(obj=obj)
             group_obj_link2id = {link_name: i for i, link_name in enumerate(obj.links.keys())}
             state_group_flat += [
                 [group_dict["particle_attached_obj_uuid"]],
@@ -1057,7 +1069,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         for i in range(n_groups):
             obj_uuid, n_particles = int(state[idx]), int(state[idx + 1])
             obj = og.sim.scene.object_registry("uuid", obj_uuid)
-            is_cloth = obj.prim_type == PrimType.CLOTH
+            is_cloth = cls._is_cloth_obj(obj=obj)
             group_obj_id2link = {i: link_name for i, link_name in enumerate(obj.links.keys())}
             group_objs.append(obj)
             groups_dict[obj.name] = dict(
