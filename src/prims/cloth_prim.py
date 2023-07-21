@@ -272,17 +272,6 @@ class ClothPrim(GeomPrim):
         # the velocities attribute is w.r.t the world frame already
         self.set_attribute(attr="velocities", val=Vt.Vec3fArray.FromNumpy(vel))
 
-    @property
-    def particle_normals(self):
-        """
-        Grabs individual particle positions for this cloth prim
-
-        Returns:
-            np.array: (N, 3) numpy array, where each of the N particles' positions are expressed in (x,y,z)
-                cartesian coordinates relative to the world frame
-        """
-        return np.array(self.get_attribute(attr="normals"))
-
     def compute_face_normals(self, face_ids=None):
         """
         Grabs individual face normals for this cloth prim
@@ -594,7 +583,8 @@ class ClothPrim(GeomPrim):
 
     def reset(self):
         """
-        Reset the points to their default positions in the local frame
+        Reset the points to their default positions in the local frame, and also zeroes out velocities
         """
         if self.initialized:
             self.set_attribute(attr="points", val=Vt.Vec3fArray.FromNumpy(self._default_positions))
+            self.particle_velocities = np.zeros((self._n_particles, 3))
