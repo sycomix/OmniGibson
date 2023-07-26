@@ -16,8 +16,7 @@ from omnigibson.object_states.update_state_mixin import UpdateStateMixin
 from omnigibson.systems.system_base import VisualParticleSystem, PhysicalParticleSystem, get_system, \
     is_visual_particle_system, is_physical_particle_system, is_system_active, REGISTERED_SYSTEMS
 from omnigibson.utils.constants import ParticleModifyMethod, ParticleModifyCondition, PrimType
-from omnigibson.utils.geometry_utils import generate_points_in_volume_checker_function, \
-    get_particle_positions_in_frame, get_particle_positions_from_frame
+from omnigibson.utils.geometry_utils import generate_points_in_volume_checker_function, get_particle_positions_from_frame
 from omnigibson.utils.python_utils import assert_valid_key, classproperty
 from omnigibson.utils.deprecated_utils import Core
 from omnigibson.utils.ui_utils import suppress_omni_log
@@ -235,22 +234,6 @@ class ParticleModifier(AbsoluteObjectState, LinkBasedStateMixin, UpdateStateMixi
         cond_types = {cond[0] for _, conds in conditions.items() for cond in conds}
         for cond_type, state_type in zip((ParticleModifyCondition.TOGGLEDON,), (ToggledOn,)):
             if cond_type in cond_types and state_type not in obj.states:
-                return False, f"{cls.__name__} requires {state_type.__name__} state!"
-
-        return True, None
-
-    @classmethod
-    def is_compatible_asset(cls, prim, **kwargs):
-        # Run super first
-        compatible, reason = super().is_compatible_asset(prim, **kwargs)
-        if not compatible:
-            return compatible, reason
-
-        # Check whether this state has toggledon if required or saturated if required for any condition
-        conditions = kwargs.get("conditions", dict())
-        cond_types = {cond[0] for _, conds in conditions.items() for cond in conds}
-        for cond_type, state_type in zip((ParticleModifyCondition.TOGGLEDON,), (ToggledOn,)):
-            if cond_type in cond_types and not state_type.is_compatible_asset(prim=prim, **kwargs):
                 return False, f"{cls.__name__} requires {state_type.__name__} state!"
 
         return True, None
@@ -673,9 +656,6 @@ class ParticleRemover(ParticleModifier):
         # Create set of default system to condition mappings based on settings
         all_conditions = dict()
         for system_name in REGISTERED_SYSTEMS.keys():
-            # Ignore cloth
-            if system_name == "cloth":
-                continue
             default_system_conditions = self._default_physical_conditions if is_physical_particle_system(system_name) \
                 else self._default_visual_conditions
             if default_system_conditions is not None:
@@ -895,12 +875,13 @@ class ParticleApplier(ParticleModifier):
             system (BaseSystem): Particle system whose particles will be spawned from this ParticleApplier
         """
         # We now pre-compute local particle positions that are within the projection mesh used to infer spawn pos
-        # We sample over the entire object AABB, assuming most will be filtered out
+        # We sample the range of each extent minus the particle radius
         sampling_distance = 2 * system.particle_radius
         extent = np.array(self._projection_mesh_params["extents"])
         h = extent[2]
-        low, high = self.obj.aabb
-        n_particles_per_axis = ((high - low) / sampling_distance).astype(int)
+        low = np.array([-extent[0] / 2, -extent[1] / 2, -h])
+        high = np.array([extent[0] / 2, extent[1] / 2, 0])
+        n_particles_per_axis = (extent / sampling_distance).astype(int)
         assert np.all(n_particles_per_axis), f"link {self.link.name} is too small to sample any particle of radius {system.particle_radius}."
         # 1e-10 is added because the extent might be an exact multiple of particle radius
         arrs = [np.arange(lo + system.particle_radius, hi - system.particle_radius + 1e-10, system.particle_radius * 2)
@@ -908,18 +889,17 @@ class ParticleApplier(ParticleModifier):
         # Generate 3D-rectangular grid of points, and only keep the ones inside the mesh
         points = np.stack([arr.flatten() for arr in np.meshgrid(*arrs)]).T
         pos, quat = self.link.get_position_orientation()
-        points = points[np.where(self._check_in_mesh(points))[0]]
-        # Convert the points into local frame
-        points_in_local_frame = get_particle_positions_in_frame(
+        points_in_world_frame = get_particle_positions_from_frame(
             pos=pos,
             quat=quat,
             scale=self.obj.scale,
             particle_positions=points,
         )
+        points = points[np.where(self._check_in_mesh(points_in_world_frame))[0]]
         n_max_particles = self._get_max_particles_limit_per_step(system=system)
         # Potentially sub-sample points based on max particle limit per step
-        self._in_mesh_local_particle_positions = points_in_local_frame if n_max_particles > len(points) else \
-            points_in_local_frame[np.random.choice(len(points_in_local_frame), n_max_particles, replace=False)]
+        self._in_mesh_local_particle_positions = points if n_max_particles > len(points) else \
+            points[np.random.choice(len(points), n_max_particles, replace=False)]
         # Also programmatically compute the directions of each particle position -- this is the normalized
         # vector pointing from source to the particle
         projection_type = self._projection_mesh_params["type"]

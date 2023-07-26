@@ -3878,42 +3878,13 @@
 
 
 <h2 class="doc doc-heading" id="object_states.factory.get_state_dependency_graph">
-<code class="highlight language-python"><span class="n">get_state_dependency_graph</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">get_state_dependency_graph</span><span class="p">()</span></code>
 
 </h2>
 
 
   <div class="doc doc-contents ">
   
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>states</code></td>
-          <td>
-                <code>None or Iterable</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If specified, specific state(s) to sort. Otherwise, will generate dependency graph
-over all states</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
 
   <p><strong>Returns:</strong></p>
   <table>
@@ -3945,24 +3916,14 @@ over all states</p>
 <span class="normal"><a href="#__codelineno-0-119">119</a></span>
 <span class="normal"><a href="#__codelineno-0-120">120</a></span>
 <span class="normal"><a href="#__codelineno-0-121">121</a></span>
-<span class="normal"><a href="#__codelineno-0-122">122</a></span>
-<span class="normal"><a href="#__codelineno-0-123">123</a></span>
-<span class="normal"><a href="#__codelineno-0-124">124</a></span>
-<span class="normal"><a href="#__codelineno-0-125">125</a></span>
-<span class="normal"><a href="#__codelineno-0-126">126</a></span>
-<span class="normal"><a href="#__codelineno-0-127">127</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-115" name="__codelineno-0-115"></a><span class="k">def</span> <span class="nf">get_state_dependency_graph</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-122">122</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-115" name="__codelineno-0-115"></a><span class="k">def</span> <span class="nf">get_state_dependency_graph</span><span class="p">():</span>
 <a id="__codelineno-0-116" name="__codelineno-0-116"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-117" name="__codelineno-0-117"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-118" name="__codelineno-0-118"></a><span class="sd">        states (None or Iterable): If specified, specific state(s) to sort. Otherwise, will generate dependency graph</span>
-<a id="__codelineno-0-119" name="__codelineno-0-119"></a><span class="sd">            over all states</span>
-<a id="__codelineno-0-120" name="__codelineno-0-120"></a>
-<a id="__codelineno-0-121" name="__codelineno-0-121"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-122" name="__codelineno-0-122"></a><span class="sd">        nx.DiGraph: State dependency graph of supported object states</span>
-<a id="__codelineno-0-123" name="__codelineno-0-123"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-124" name="__codelineno-0-124"></a>    <span class="n">states</span> <span class="o">=</span> <span class="n">REGISTERED_OBJECT_STATES</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">states</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">states</span>
-<a id="__codelineno-0-125" name="__codelineno-0-125"></a>    <span class="n">dependencies</span> <span class="o">=</span> <span class="p">{</span><span class="n">state</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">()</span> <span class="o">+</span> <span class="n">state</span><span class="o">.</span><span class="n">get_optional_dependencies</span><span class="p">()</span>
-<a id="__codelineno-0-126" name="__codelineno-0-126"></a>                    <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">states</span><span class="p">}</span>
-<a id="__codelineno-0-127" name="__codelineno-0-127"></a>    <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(</span><span class="n">dependencies</span><span class="p">)</span>
+<a id="__codelineno-0-117" name="__codelineno-0-117"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-118" name="__codelineno-0-118"></a><span class="sd">        nx.DiGraph: State dependency graph of supported object states</span>
+<a id="__codelineno-0-119" name="__codelineno-0-119"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-120" name="__codelineno-0-120"></a>    <span class="n">dependencies</span> <span class="o">=</span> <span class="p">{</span><span class="n">state</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">()</span> <span class="o">+</span> <span class="n">state</span><span class="o">.</span><span class="n">get_optional_dependencies</span><span class="p">()</span>
+<a id="__codelineno-0-121" name="__codelineno-0-121"></a>                    <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">REGISTERED_OBJECT_STATES</span><span class="o">.</span><span class="n">values</span><span class="p">()}</span>
+<a id="__codelineno-0-122" name="__codelineno-0-122"></a>    <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(</span><span class="n">dependencies</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -3974,42 +3935,13 @@ over all states</p>
 
 
 <h2 class="doc doc-heading" id="object_states.factory.get_states_by_dependency_order">
-<code class="highlight language-python"><span class="n">get_states_by_dependency_order</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">get_states_by_dependency_order</span><span class="p">()</span></code>
 
 </h2>
 
 
   <div class="doc doc-contents ">
   
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>states</code></td>
-          <td>
-                <code>None or Iterable</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If specified, specific state(s) to sort. Otherwise, will generate dependency graph
-over all states</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
 
   <p><strong>Returns:</strong></p>
   <table>
@@ -4034,25 +3966,17 @@ over all states</p>
 
       <details class="quote">
         <summary>Source code in <code>omnigibson/object_states/factory.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-130">130</a></span>
-<span class="normal"><a href="#__codelineno-0-131">131</a></span>
-<span class="normal"><a href="#__codelineno-0-132">132</a></span>
-<span class="normal"><a href="#__codelineno-0-133">133</a></span>
-<span class="normal"><a href="#__codelineno-0-134">134</a></span>
-<span class="normal"><a href="#__codelineno-0-135">135</a></span>
-<span class="normal"><a href="#__codelineno-0-136">136</a></span>
-<span class="normal"><a href="#__codelineno-0-137">137</a></span>
-<span class="normal"><a href="#__codelineno-0-138">138</a></span>
-<span class="normal"><a href="#__codelineno-0-139">139</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-130" name="__codelineno-0-130"></a><span class="k">def</span> <span class="nf">get_states_by_dependency_order</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<a id="__codelineno-0-131" name="__codelineno-0-131"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-132" name="__codelineno-0-132"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-133" name="__codelineno-0-133"></a><span class="sd">        states (None or Iterable): If specified, specific state(s) to sort. Otherwise, will generate dependency graph</span>
-<a id="__codelineno-0-134" name="__codelineno-0-134"></a><span class="sd">            over all states</span>
-<a id="__codelineno-0-135" name="__codelineno-0-135"></a>
-<a id="__codelineno-0-136" name="__codelineno-0-136"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-137" name="__codelineno-0-137"></a><span class="sd">        list: all states in topological order of dependency</span>
-<a id="__codelineno-0-138" name="__codelineno-0-138"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-139" name="__codelineno-0-139"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">algorithms</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">get_state_dependency_graph</span><span class="p">(</span><span class="n">states</span><span class="p">)))))</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-125">125</a></span>
+<span class="normal"><a href="#__codelineno-0-126">126</a></span>
+<span class="normal"><a href="#__codelineno-0-127">127</a></span>
+<span class="normal"><a href="#__codelineno-0-128">128</a></span>
+<span class="normal"><a href="#__codelineno-0-129">129</a></span>
+<span class="normal"><a href="#__codelineno-0-130">130</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-125" name="__codelineno-0-125"></a><span class="k">def</span> <span class="nf">get_states_by_dependency_order</span><span class="p">():</span>
+<a id="__codelineno-0-126" name="__codelineno-0-126"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-127" name="__codelineno-0-127"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-128" name="__codelineno-0-128"></a><span class="sd">        list: all states in topological order of dependency</span>
+<a id="__codelineno-0-129" name="__codelineno-0-129"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-130" name="__codelineno-0-130"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">algorithms</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">get_state_dependency_graph</span><span class="p">()))))</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>

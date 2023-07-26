@@ -11,7 +11,6 @@ from omnigibson.object_states.factory import (
     get_default_states,
     get_state_name,
     get_states_for_ability,
-    get_states_by_dependency_order,
     get_texture_change_states,
     get_fire_states,
     get_steam_states,
@@ -202,31 +201,26 @@ class StatefulObject(BaseObject):
         This uses the abilities of the object and the state dependency graph to
         find & instantiate all relevant states.
         """
-        states_info = {state_type: {"ability": None, "params": dict()} for state_type in get_default_states()} if \
-            self._include_default_states else dict()
+        state_types_and_params = [(state, {}) for state in get_default_states()] if self._include_default_states else []
 
-        # Map the state type (class) to ability name and params
+        # Map the ability params to the states immediately imported by the abilities
+        state_type_to_ability = dict()
         for ability, params in self._abilities.items():
             for state_type in get_states_for_ability(ability):
-                states_info[state_type] = {"ability": ability, "params": params}
+                state_types_and_params.append((state_type, params))
+                state_type_to_ability[state_type] = ability
 
-        # Add the dependencies into the list, too, and sort based on the dependency chain
-        # Must iterate over explicit tuple since dictionary changes size mid-iteration
-        for state_type in tuple(states_info.keys()):
-            # Add each state's dependencies, too. Note that only required dependencies are explicitly added, but both
-            # required AND optional dependencies are checked / sorted
+        # Add the dependencies into the list, too.
+        for state_type, _ in state_types_and_params:
+            # Add each state's dependencies, too. Note that only required dependencies are added.
             for dependency in state_type.get_dependencies():
-                if dependency not in states_info:
-                    states_info[dependency] = {"ability": None, "params": dict()}
+                if all(other_state != dependency for other_state, _ in state_types_and_params):
+                    state_types_and_params.append((dependency, {}))
 
-        # Iterate over all sorted state types, generating the states in topological order.
+        # Now generate the states in topological order.
         self._states = dict()
-        for state_type in get_states_by_dependency_order(states=states_info):
-            # Skip over any types that are not in our info dict -- these correspond to optional dependencies
-            if state_type not in states_info:
-                continue
-
-            relevant_params = extract_class_init_kwargs_from_dict(cls=state_type, dic=states_info[state_type]["params"], copy=False)
+        for state_type, params in reversed(state_types_and_params):
+            relevant_params = extract_class_init_kwargs_from_dict(cls=state_type, dic=params, copy=False)
             compatible, reason = state_type.is_compatible(obj=self, **relevant_params)
             if compatible:
                 self._states[state_type] = state_type(obj=self, **relevant_params)
@@ -236,7 +230,7 @@ class StatefulObject(BaseObject):
                 # Note that the object may still have some of the states related to the desired ability. In this way,
                 # we guarantee that the existence of a certain ability in self.abilities means at ALL corresponding
                 # object state dependencies are met by the underlying object asset
-                ability = states_info[state_type]["ability"]
+                ability = state_type_to_ability.get(state_type, None)
                 if ability in self._abilities:
                     self._abilities.pop(ability)
 

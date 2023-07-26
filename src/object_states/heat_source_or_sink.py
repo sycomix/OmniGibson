@@ -1,4 +1,4 @@
-from omnigibson.macros import create_module_macros, macros
+from omnigibson.macros import create_module_macros
 from omnigibson.object_states.aabb import AABB
 from omnigibson.object_states.inside import Inside
 from omnigibson.object_states.link_based_state_mixin import LinkBasedStateMixin
@@ -91,20 +91,6 @@ class HeatSourceOrSink(AbsoluteObjectState, LinkBasedStateMixin):
         # Check whether this state has toggledon if required or open if required
         for kwarg, state_type in zip(("requires_toggled_on", "requires_closed"), (ToggledOn, Open)):
             if kwargs.get(kwarg, False) and state_type not in obj.states:
-                return False, f"{cls.__name__} has {kwarg} but obj has no {state_type.__name__} state!"
-
-        return True, None
-
-    @classmethod
-    def is_compatible_asset(cls, prim, **kwargs):
-        # Run super first
-        compatible, reason = super().is_compatible_asset(prim, **kwargs)
-        if not compatible:
-            return compatible, reason
-
-        # Check whether this state has toggledon if required or open if required
-        for kwarg, state_type in zip(("requires_toggled_on", "requires_closed"), (ToggledOn, Open)):
-            if kwargs.get(kwarg, False) and not state_type.is_compatible_asset(prim=prim, **kwargs)[0]:
                 return False, f"{cls.__name__} has {kwarg} but obj has no {state_type.__name__} state!"
 
         return True, None

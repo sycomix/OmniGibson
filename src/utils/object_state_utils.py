@@ -44,7 +44,7 @@ def sample_kinematics(
     predicate,
     objA,
     objB,
-    max_trials=40,
+    max_trials=10,
     z_offset=0.05,
     skip_falling=False,
 ):
@@ -154,7 +154,6 @@ def sample_kinematics(
         sampled_quaternion = sampling_results[0][2]
 
         sampling_success = sampled_vector is not None
-
         if sampling_success:
             # Move the object from the original parallel bbox to the sampled bbox
             parallel_bbox_rotation = R.from_quat(parallel_bbox_orn)
@@ -192,36 +191,6 @@ def sample_kinematics(
         else:
             og.sim.load_state(state)
 
-    # If we didn't succeed, try last-ditch effort
-    if not success and predicate in {"onTop", "inside"}:
-        og.sim.step_physics()
-        # Place objA at center of objB's AABB, offset in z direction such that their AABBs are "stacked", and let fall
-        # until it settles
-        aabb_lower_a, aabb_upper_a = objA.states[AABB].get_value()
-        aabb_lower_b, aabb_upper_b = objB.states[AABB].get_value()
-        bbox_to_obj = objA.get_position() - (aabb_lower_a + aabb_upper_a) / 2.0
-        desired_bbox_pos = (aabb_lower_b + aabb_upper_b) / 2.0
-        desired_bbox_pos[2] = aabb_upper_b[2] + (aabb_upper_a[2] - aabb_lower_a[2]) / 2.0
-        pos = desired_bbox_pos + bbox_to_obj
-        objA.set_position_orientation(pos, orientation)
-        objA.keep_still()
-
-        # Step until either (a) max steps is reached (total of 0.5 second in sim time) or (b) contact is made, then
-        # step until (a) max steps is reached (restarted from 0) or (b) velocity is below some threshold
-        n_steps_max = int(0.5 / og.sim.get_physics_dt())
-        i = 0
-        while len(objA.states[ContactBodies].get_value()) == 0 and i < n_steps_max:
-            og.sim.step_physics()
-            i += 1
-        objA.keep_still()
-        og.sim.step_physics()
-        i = 0
-        while np.linalg.norm(objA.get_linear_velocity()) > 1e-3 and i < n_steps_max:
-            og.sim.step_physics()
-            i += 1
-
-        success = True
-
     if success and not skip_falling:
         objA.set_position_orientation(pos, orientation)
         objA.keep_still()
@@ -233,10 +202,6 @@ def sample_kinematics(
                 break
 
         objA.keep_still()
-        objB.keep_still()
-
-        # Take extra step for depenetration, then break
-        og.sim.step_physics()
 
         # Take extra step for depenetration, then break
         og.sim.step_physics()
@@ -247,7 +212,7 @@ def sample_kinematics(
     return success
 
 
-def sample_cloth_on_rigid(obj, other, max_trials=40, z_offset=0.05, randomize_xy=True):
+def sample_cloth_on_rigid(obj, other, max_trials=10, z_offset=0.05, randomize_xy=True):
     """
     Samples the cloth object @obj on the rigid object @other
 
