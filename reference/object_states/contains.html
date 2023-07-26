@@ -3985,11 +3985,7 @@
 <span class="normal"><a href="#__codelineno-0-105">105</a></span>
 <span class="normal"><a href="#__codelineno-0-106">106</a></span>
 <span class="normal"><a href="#__codelineno-0-107">107</a></span>
-<span class="normal"><a href="#__codelineno-0-108">108</a></span>
-<span class="normal"><a href="#__codelineno-0-109">109</a></span>
-<span class="normal"><a href="#__codelineno-0-110">110</a></span>
-<span class="normal"><a href="#__codelineno-0-111">111</a></span>
-<span class="normal"><a href="#__codelineno-0-112">112</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="k">class</span> <span class="nc">ContainedParticles</span><span class="p">(</span><span class="n">RelativeObjectState</span><span class="p">,</span> <span class="n">LinkBasedStateMixin</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-108">108</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="k">class</span> <span class="nc">ContainedParticles</span><span class="p">(</span><span class="n">RelativeObjectState</span><span class="p">,</span> <span class="n">LinkBasedStateMixin</span><span class="p">):</span>
 <a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="sd">    Object state for computing the number of particles of a given system contained in this object&#39;s container volume</span>
 <a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="sd">    &quot;&quot;&quot;</span>
@@ -4045,35 +4041,31 @@
 <a id="__codelineno-0-81" name="__codelineno-0-81"></a>
 <a id="__codelineno-0-82" name="__codelineno-0-82"></a>        <span class="k">return</span> <span class="n">ContainedParticlesData</span><span class="p">(</span><span class="n">n_particles_in_volume</span><span class="p">,</span> <span class="n">raw_positions</span><span class="p">,</span> <span class="n">particles_in_volume</span><span class="p">)</span>
 <a id="__codelineno-0-83" name="__codelineno-0-83"></a>
-<a id="__codelineno-0-84" name="__codelineno-0-84"></a>    <span class="k">def</span> <span class="nf">_set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
-<a id="__codelineno-0-85" name="__codelineno-0-85"></a>        <span class="c1"># Cannot set this value</span>
-<a id="__codelineno-0-86" name="__codelineno-0-86"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;set_value not supported for ContainedParticles state.&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84"></a>    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_link_mixin</span><span class="p">()</span>
 <a id="__codelineno-0-87" name="__codelineno-0-87"></a>
-<a id="__codelineno-0-88" name="__codelineno-0-88"></a>    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-89" name="__codelineno-0-89"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
-<a id="__codelineno-0-90" name="__codelineno-0-90"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_link_mixin</span><span class="p">()</span>
+<a id="__codelineno-0-88" name="__codelineno-0-88"></a>        <span class="c1"># Generate volume checker function for this object</span>
+<a id="__codelineno-0-89" name="__codelineno-0-89"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">check_in_volume</span><span class="p">,</span> <span class="n">calculate_volume</span> <span class="o">=</span> \
+<a id="__codelineno-0-90" name="__codelineno-0-90"></a>            <span class="n">generate_points_in_volume_checker_function</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">volume_link</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">)</span>
 <a id="__codelineno-0-91" name="__codelineno-0-91"></a>
-<a id="__codelineno-0-92" name="__codelineno-0-92"></a>        <span class="c1"># Generate volume checker function for this object</span>
-<a id="__codelineno-0-93" name="__codelineno-0-93"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">check_in_volume</span><span class="p">,</span> <span class="n">calculate_volume</span> <span class="o">=</span> \
-<a id="__codelineno-0-94" name="__codelineno-0-94"></a>            <span class="n">generate_points_in_volume_checker_function</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">volume_link</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">,</span> <span class="n">mesh_name_prefixes</span><span class="o">=</span><span class="s2">&quot;container&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-95" name="__codelineno-0-95"></a>
-<a id="__codelineno-0-96" name="__codelineno-0-96"></a>        <span class="c1"># Calculate volume</span>
-<a id="__codelineno-0-97" name="__codelineno-0-97"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span> <span class="o">=</span> <span class="n">calculate_volume</span><span class="p">()</span>
-<a id="__codelineno-0-98" name="__codelineno-0-98"></a>
-<a id="__codelineno-0-99" name="__codelineno-0-99"></a>        <span class="c1"># Grab group name</span>
-<a id="__codelineno-0-100" name="__codelineno-0-100"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="o">=</span> <span class="n">VisualParticleSystem</span><span class="o">.</span><span class="n">get_group_name</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
-<a id="__codelineno-0-101" name="__codelineno-0-101"></a>
-<a id="__codelineno-0-102" name="__codelineno-0-102"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-103" name="__codelineno-0-103"></a>    <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-104" name="__codelineno-0-104"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-105" name="__codelineno-0-105"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-106" name="__codelineno-0-106"></a><span class="sd">            float: Total volume for this container</span>
-<a id="__codelineno-0-107" name="__codelineno-0-107"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-108" name="__codelineno-0-108"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span>
-<a id="__codelineno-0-109" name="__codelineno-0-109"></a>
-<a id="__codelineno-0-110" name="__codelineno-0-110"></a>    <span class="nd">@staticmethod</span>
-<a id="__codelineno-0-111" name="__codelineno-0-111"></a>    <span class="k">def</span> <span class="nf">get_optional_dependencies</span><span class="p">():</span>
-<a id="__codelineno-0-112" name="__codelineno-0-112"></a>        <span class="k">return</span> <span class="p">[]</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92"></a>        <span class="c1"># Calculate volume</span>
+<a id="__codelineno-0-93" name="__codelineno-0-93"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span> <span class="o">=</span> <span class="n">calculate_volume</span><span class="p">()</span>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a>
+<a id="__codelineno-0-95" name="__codelineno-0-95"></a>        <span class="c1"># Grab group name</span>
+<a id="__codelineno-0-96" name="__codelineno-0-96"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="o">=</span> <span class="n">VisualParticleSystem</span><span class="o">.</span><span class="n">get_group_name</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+<a id="__codelineno-0-97" name="__codelineno-0-97"></a>
+<a id="__codelineno-0-98" name="__codelineno-0-98"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-99" name="__codelineno-0-99"></a>    <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-100" name="__codelineno-0-100"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-101" name="__codelineno-0-101"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-102" name="__codelineno-0-102"></a><span class="sd">            float: Total volume for this container</span>
+<a id="__codelineno-0-103" name="__codelineno-0-103"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-104" name="__codelineno-0-104"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span>
+<a id="__codelineno-0-105" name="__codelineno-0-105"></a>
+<a id="__codelineno-0-106" name="__codelineno-0-106"></a>    <span class="nd">@staticmethod</span>
+<a id="__codelineno-0-107" name="__codelineno-0-107"></a>    <span class="k">def</span> <span class="nf">get_optional_dependencies</span><span class="p">():</span>
+<a id="__codelineno-0-108" name="__codelineno-0-108"></a>        <span class="k">return</span> <span class="p">[]</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
