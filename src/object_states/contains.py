@@ -81,13 +81,17 @@ class ContainedParticles(RelativeObjectState, LinkBasedStateMixin):
 
         return ContainedParticlesData(n_particles_in_volume, raw_positions, particles_in_volume)
 
+    def _set_value(self, system, new_value):
+        # Cannot set this value
+        raise ValueError("set_value not supported for ContainedParticles state.")
+
     def _initialize(self):
         super()._initialize()
         self.initialize_link_mixin()
 
         # Generate volume checker function for this object
         self.check_in_volume, calculate_volume = \
-            generate_points_in_volume_checker_function(obj=self.obj, volume_link=self.link)
+            generate_points_in_volume_checker_function(obj=self.obj, volume_link=self.link, mesh_name_prefixes="container")
 
         # Calculate volume
         self._volume = calculate_volume()
@@ -112,6 +116,10 @@ class Contains(RelativeObjectState, BooleanState):
     def _get_value(self, system):
         # Grab value from Contains state; True if value is greater than 0
         return self.obj.states[ContainedParticles].get_value(system=system).n_in_volume > 0
+
+    def _set_value(self, system, new_value):
+        # Cannot set this value
+        raise ValueError("set_value not supported for Contains state.")
 
     @staticmethod
     def get_dependencies():

@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 import inspect
 import omnigibson as og
 from omnigibson.utils.python_utils import classproperty, Serializable, Registerable, Recreatable
@@ -64,40 +64,10 @@ class BaseObjectState(Serializable, Registerable, Recreatable, ABC):
                 - bool: Whether the given object is compatible with this object state or not
                 - None or str: If not compatible, the reason why it is not compatible. Otherwise, None
         """
-        # Make sure all required dependencies are included in this object's state dictionary
-        for dep in cls.get_dependencies():
-            if dep not in obj.states:
-                return False, f"Missing required dependency state {dep.__name__}"
         # Make sure all required kwargs are specified
         default_kwargs = inspect.signature(cls.__init__).parameters
         for kwarg, val in default_kwargs.items():
             if val.default == inspect._empty and kwarg not in kwargs and kwarg not in {"obj", "self", "args", "kwargs"}:
-                return False, f"Missing required kwarg '{kwarg}'"
-        # Default is True if all kwargs are met
-        return True, None
-
-    @classmethod
-    def is_compatible_asset(cls, prim, **kwargs):
-        """
-        Determines whether this object state is compatible with object with corresponding prim @prim or not
-        (i.e.: whether the state can be successfully instantiated with @self.obj given other constructor
-        arguments **kwargs. This is a useful check to evaluate an object's USD that hasn't been explicitly imported
-        into OmniGibson yet.
-
-        NOTE: Can be further extended by subclass
-
-        Args:
-            prim (Usd.Prim): Object prim whose compatibility with this state should be checked
-
-        Returns:
-            2-tuple:
-                - bool: Whether the given object is compatible with this object state or not
-                - None or str: If not compatible, the reason why it is not compatible. Otherwise, None
-        """
-        # Make sure all required kwargs are specified
-        default_kwargs = inspect.signature(cls.__init__).parameters
-        for kwarg, val in default_kwargs.items():
-            if val.default == inspect._empty and kwarg not in kwargs and kwarg not in {"obj", "self"}:
                 return False, f"Missing required kwarg '{kwarg}'"
         # Default is True if all kwargs are met
         return True, None
@@ -304,7 +274,7 @@ class BaseObjectState(Serializable, Registerable, Recreatable, ABC):
         return val
 
     def _get_value(self, *args, **kwargs):
-        raise NotImplementedError(f"_get_value not implemented for {self.__class__.__name__} state.")
+        raise NotImplementedError
 
     def set_value(self, *args, **kwargs):
         """
@@ -321,7 +291,7 @@ class BaseObjectState(Serializable, Registerable, Recreatable, ABC):
         return val
 
     def _set_value(self, *args, **kwargs):
-        raise NotImplementedError(f"_set_value not implemented for {self.__class__.__name__} state.")
+        raise NotImplementedError
 
     def remove(self):
         """
@@ -354,11 +324,13 @@ class AbsoluteObjectState(BaseObjectState):
     the value.
     """
 
+    @abstractmethod
     def _get_value(self):
-        raise NotImplementedError(f"_get_value not implemented for {self.__class__.__name__} state.")
+        raise NotImplementedError()
 
+    @abstractmethod
     def _set_value(self, new_value):
-        raise NotImplementedError(f"_set_value not implemented for {self.__class__.__name__} state.")
+        raise NotImplementedError()
 
     @classproperty
     def _do_not_register_classes(cls):
@@ -374,11 +346,13 @@ class RelativeObjectState(BaseObjectState):
     Note that subclasses will typically compute values on-the-fly.
     """
 
+    @abstractmethod
     def _get_value(self, other):
-        raise NotImplementedError(f"_get_value not implemented for {self.__class__.__name__} state.")
+        raise NotImplementedError()
 
+    @abstractmethod
     def _set_value(self, other, new_value):
-        raise NotImplementedError(f"_set_value not implemented for {self.__class__.__name__} state.")
+        raise NotImplementedError()
 
     @classproperty
     def _do_not_register_classes(cls):

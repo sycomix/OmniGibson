@@ -97,13 +97,12 @@ class DatasetObject(USDObject):
                 -- not both!
             fit_avg_dim_volume (bool): whether to fit the object to have the same volume as the average dimension
                 while keeping the aspect ratio. Note that if this is set, it will override both @scale and @bounding_box
-            in_rooms (None or str or list): If specified, sets the room(s) that this object should belong to. Either
-                a list of room type(s) or a single comma-delimited string of room type(s)
+            in_rooms (None or list): If specified, sets the rooms that this object should belong to
             kwargs (dict): Additional keyword arguments that are used for other super() calls from subclasses, allowing
                 for flexible compositions of various object subclasses (e.g.: Robot is USDObject + ControllableObject).
         """
         # Store variables
-        self._in_rooms = in_rooms.split(",") if isinstance(in_rooms, str) else in_rooms
+        self._in_rooms = in_rooms
 
         # Make sure only one of bounding_box and scale are specified
         if bounding_box is not None and scale is not None:
@@ -204,8 +203,10 @@ class DatasetObject(USDObject):
 
         # Apply any forced roughness updates
         for material in self.materials:
-            material.reflection_roughness_texture_influence = 0.0
-            material.reflection_roughness_constant = gm.FORCE_ROUGHNESS
+            if ("reflection_roughness_texture_influence" in material.shader_input_names and
+                "reflection_roughness_constant" in material.shader_input_names):
+                material.reflection_roughness_texture_influence = 0.0
+                material.reflection_roughness_constant = gm.FORCE_ROUGHNESS
 
         # Set the joint frictions based on category
         friction = SPECIAL_JOINT_FRICTIONS.get(self.category, DEFAULT_JOINT_FRICTION)
@@ -475,7 +476,7 @@ class DatasetObject(USDObject):
             4-tuple:
                 - 3-array: (x,y,z) bbox center position in world frame
                 - 3-array: (x,y,z,w) bbox quaternion orientation in world frame
-                - 3-array: (x,y,z) bbox extent in desired frame
+                - 3-array: (x,y,z) bbox extent in world frame
                 - 3-array: (x,y,z) bbox center in desired frame
         """
         assert self.prim_type == PrimType.RIGID, "get_base_aligned_bbox is only supported for rigid objects."
@@ -547,9 +548,6 @@ class DatasetObject(USDObject):
                 # Add the points to our collection of points.
                 points.extend(trimesh.transformations.transform_points(vertices_in_base_frame, bbox_center_in_base_frame))
             elif fallback_to_aabb:
-                # If we're visual and the mesh is not visible, there is no fallback so continue
-                if bbox_type == "visual" and not np.all(tuple(mesh.visible for mesh in meshes.values())):
-                    continue
                 # If no BB annotation is available, get the AABB for this link.
                 aabb_center, aabb_extent = BoundingBoxAPI.compute_center_extent(prim=link)
                 aabb_vertices_in_world = aabb_center + np.array(list(itertools.product((1, -1), repeat=3))) * (

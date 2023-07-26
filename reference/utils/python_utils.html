@@ -15,7 +15,7 @@
         <link rel="next" href="registry_utils.html">
       
       <link rel="icon" href="../../assets/OmniGibson_logo.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.19">
+      <meta name="generator" content="mkdocs-1.5.0, mkdocs-material-9.1.19">
     
     
       
@@ -6992,21 +6992,7 @@ to any attributes found (this compares id(attr) to @skip_ids).</p>
 <span class="normal"><a href="#__codelineno-0-780">780</a></span>
 <span class="normal"><a href="#__codelineno-0-781">781</a></span>
 <span class="normal"><a href="#__codelineno-0-782">782</a></span>
-<span class="normal"><a href="#__codelineno-0-783">783</a></span>
-<span class="normal"><a href="#__codelineno-0-784">784</a></span>
-<span class="normal"><a href="#__codelineno-0-785">785</a></span>
-<span class="normal"><a href="#__codelineno-0-786">786</a></span>
-<span class="normal"><a href="#__codelineno-0-787">787</a></span>
-<span class="normal"><a href="#__codelineno-0-788">788</a></span>
-<span class="normal"><a href="#__codelineno-0-789">789</a></span>
-<span class="normal"><a href="#__codelineno-0-790">790</a></span>
-<span class="normal"><a href="#__codelineno-0-791">791</a></span>
-<span class="normal"><a href="#__codelineno-0-792">792</a></span>
-<span class="normal"><a href="#__codelineno-0-793">793</a></span>
-<span class="normal"><a href="#__codelineno-0-794">794</a></span>
-<span class="normal"><a href="#__codelineno-0-795">795</a></span>
-<span class="normal"><a href="#__codelineno-0-796">796</a></span>
-<span class="normal"><a href="#__codelineno-0-797">797</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-728" name="__codelineno-0-728"></a><span class="k">class</span> <span class="nc">Wrapper</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-783">783</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-728" name="__codelineno-0-728"></a><span class="k">class</span> <span class="nc">Wrapper</span><span class="p">:</span>
 <a id="__codelineno-0-729" name="__codelineno-0-729"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-730" name="__codelineno-0-730"></a><span class="sd">    Base class for all wrappers in OmniGibson</span>
 <a id="__codelineno-0-731" name="__codelineno-0-731"></a>
@@ -7049,33 +7035,19 @@ to any attributes found (this compares id(attr) to @skip_ids).</p>
 <a id="__codelineno-0-768" name="__codelineno-0-768"></a>
 <a id="__codelineno-0-769" name="__codelineno-0-769"></a>    <span class="c1"># this method is a fallback option on any methods the original env might support</span>
 <a id="__codelineno-0-770" name="__codelineno-0-770"></a>    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
-<a id="__codelineno-0-771" name="__codelineno-0-771"></a>        <span class="c1"># If we&#39;re querying wrapped_obj, raise an error</span>
-<a id="__codelineno-0-772" name="__codelineno-0-772"></a>        <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;wrapped_obj&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-773" name="__codelineno-0-773"></a>            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;wrapped_obj attribute not initialized yet!&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-774" name="__codelineno-0-774"></a>
-<a id="__codelineno-0-775" name="__codelineno-0-775"></a>        <span class="c1"># Sanity check to make sure wrapped obj is not None -- if so, raise error</span>
-<a id="__codelineno-0-776" name="__codelineno-0-776"></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Cannot access attribute </span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2"> since wrapped_obj is None!&quot;</span>
-<a id="__codelineno-0-777" name="__codelineno-0-777"></a>
-<a id="__codelineno-0-778" name="__codelineno-0-778"></a>        <span class="c1"># using getattr ensures that both __getattribute__ and __getattr__ (fallback) get called</span>
-<a id="__codelineno-0-779" name="__codelineno-0-779"></a>        <span class="c1"># (see https://stackoverflow.com/questions/3278077/difference-between-getattr-vs-getattribute)</span>
-<a id="__codelineno-0-780" name="__codelineno-0-780"></a>        <span class="n">orig_attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-<a id="__codelineno-0-781" name="__codelineno-0-781"></a>        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">orig_attr</span><span class="p">):</span>
-<a id="__codelineno-0-782" name="__codelineno-0-782"></a>            <span class="k">def</span> <span class="nf">hooked</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<a id="__codelineno-0-783" name="__codelineno-0-783"></a>                <span class="n">result</span> <span class="o">=</span> <span class="n">orig_attr</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<a id="__codelineno-0-784" name="__codelineno-0-784"></a>                <span class="c1"># prevent wrapped_class from becoming unwrapped</span>
-<a id="__codelineno-0-785" name="__codelineno-0-785"></a>                <span class="k">if</span> <span class="nb">id</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span><span class="p">):</span>
-<a id="__codelineno-0-786" name="__codelineno-0-786"></a>                    <span class="k">return</span> <span class="bp">self</span>
-<a id="__codelineno-0-787" name="__codelineno-0-787"></a>                <span class="k">return</span> <span class="n">result</span>
-<a id="__codelineno-0-788" name="__codelineno-0-788"></a>            <span class="k">return</span> <span class="n">hooked</span>
-<a id="__codelineno-0-789" name="__codelineno-0-789"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-790" name="__codelineno-0-790"></a>            <span class="k">return</span> <span class="n">orig_attr</span>
-<a id="__codelineno-0-791" name="__codelineno-0-791"></a>
-<a id="__codelineno-0-792" name="__codelineno-0-792"></a>    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<a id="__codelineno-0-793" name="__codelineno-0-793"></a>        <span class="c1"># Call setattr on wrapped obj if it has the attribute, otherwise, operate on this object</span>
-<a id="__codelineno-0-794" name="__codelineno-0-794"></a>        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;wrapped_obj&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-<a id="__codelineno-0-795" name="__codelineno-0-795"></a>            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-<a id="__codelineno-0-796" name="__codelineno-0-796"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-797" name="__codelineno-0-797"></a>            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<a id="__codelineno-0-771" name="__codelineno-0-771"></a>        <span class="c1"># using getattr ensures that both __getattribute__ and __getattr__ (fallback) get called</span>
+<a id="__codelineno-0-772" name="__codelineno-0-772"></a>        <span class="c1"># (see https://stackoverflow.com/questions/3278077/difference-between-getattr-vs-getattribute)</span>
+<a id="__codelineno-0-773" name="__codelineno-0-773"></a>        <span class="n">orig_attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+<a id="__codelineno-0-774" name="__codelineno-0-774"></a>        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">orig_attr</span><span class="p">):</span>
+<a id="__codelineno-0-775" name="__codelineno-0-775"></a>            <span class="k">def</span> <span class="nf">hooked</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<a id="__codelineno-0-776" name="__codelineno-0-776"></a>                <span class="n">result</span> <span class="o">=</span> <span class="n">orig_attr</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<a id="__codelineno-0-777" name="__codelineno-0-777"></a>                <span class="c1"># prevent wrapped_class from becoming unwrapped</span>
+<a id="__codelineno-0-778" name="__codelineno-0-778"></a>                <span class="k">if</span> <span class="nb">id</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span><span class="p">):</span>
+<a id="__codelineno-0-779" name="__codelineno-0-779"></a>                    <span class="k">return</span> <span class="bp">self</span>
+<a id="__codelineno-0-780" name="__codelineno-0-780"></a>                <span class="k">return</span> <span class="n">result</span>
+<a id="__codelineno-0-781" name="__codelineno-0-781"></a>            <span class="k">return</span> <span class="n">hooked</span>
+<a id="__codelineno-0-782" name="__codelineno-0-782"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-783" name="__codelineno-0-783"></a>            <span class="k">return</span> <span class="n">orig_attr</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -7356,17 +7328,15 @@ key is not found. If None, default is "value"</p>
 
       <details class="quote">
         <summary>Source code in <code>omnigibson/utils/python_utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-800">800</a></span>
-<span class="normal"><a href="#__codelineno-0-801">801</a></span>
-<span class="normal"><a href="#__codelineno-0-802">802</a></span>
-<span class="normal"><a href="#__codelineno-0-803">803</a></span>
-<span class="normal"><a href="#__codelineno-0-804">804</a></span>
-<span class="normal"><a href="#__codelineno-0-805">805</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-800" name="__codelineno-0-800"></a><span class="k">def</span> <span class="nf">clear</span><span class="p">():</span>
-<a id="__codelineno-0-801" name="__codelineno-0-801"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-802" name="__codelineno-0-802"></a><span class="sd">    Clear state tied to singleton classes</span>
-<a id="__codelineno-0-803" name="__codelineno-0-803"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-804" name="__codelineno-0-804"></a>    <span class="n">NAMES</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-<a id="__codelineno-0-805" name="__codelineno-0-805"></a>    <span class="n">CLASS_NAMES</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-786">786</a></span>
+<span class="normal"><a href="#__codelineno-0-787">787</a></span>
+<span class="normal"><a href="#__codelineno-0-788">788</a></span>
+<span class="normal"><a href="#__codelineno-0-789">789</a></span>
+<span class="normal"><a href="#__codelineno-0-790">790</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-786" name="__codelineno-0-786"></a><span class="k">def</span> <span class="nf">clear</span><span class="p">():</span>
+<a id="__codelineno-0-787" name="__codelineno-0-787"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-788" name="__codelineno-0-788"></a><span class="sd">    Clear state tied to singleton classes</span>
+<a id="__codelineno-0-789" name="__codelineno-0-789"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-790" name="__codelineno-0-790"></a>    <span class="n">NAMES</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>

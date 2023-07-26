@@ -34,7 +34,6 @@ FoldedLevelData contains the following fields:
 """
 FoldedLevelData = namedtuple("FoldedLevelData", ("smoothness", "area", "diagonal"))
 
-
 class FoldedLevel(AbsoluteObjectState, ClothState):
     """
     State representing the object's folded level.
@@ -50,12 +49,15 @@ class FoldedLevel(AbsoluteObjectState, ClothState):
         area, diagonal = self.calculate_projection_area_and_diagonal([0, 1])
         return FoldedLevelData(smoothness, area / self.area_unfolded, diagonal / self.diagonal_unfolded)
 
+    def _set_value(self, new_value):
+        raise NotImplementedError("FoldedLevel state currently does not support setting.")
+
     def calculate_smoothness(self):
         """
         Calculate the percantage of surface normals that are sufficiently close to the z-axis.
         """
         cloth = self.obj.root_link
-        normals = cloth.compute_face_normals(face_ids=cloth.keyface_idx)
+        normals = cloth.compute_face_normals(face_ids=cloth.keyfaces)
 
         # projection onto the z-axis
         proj = np.abs(np.dot(normals, np.array([0.0, 0.0, 1.0])))
@@ -153,7 +155,5 @@ class Unfolded(AbsoluteObjectState, BooleanState, ClothState):
             raise NotImplementedError("Unfolded does not support set_value(False)")
 
         self.obj.root_link.reset()
-
-        return True
 
     # We don't need to dump / load anything since the cloth objects should handle it themselves
