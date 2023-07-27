@@ -15,7 +15,7 @@
         <link rel="next" href="ui_utils.html">
       
       <link rel="icon" href="../../assets/OmniGibson_logo.png">
-      <meta name="generator" content="mkdocs-1.5.0, mkdocs-material-9.1.19">
+      <meta name="generator" content="mkdocs-1.5.1, mkdocs-material-9.1.21">
     
     
       
@@ -4661,7 +4661,7 @@
 
 
 <h2 class="doc doc-heading" id="utils.transform_utils.check_quat_right_angle">
-<code class="highlight language-python"><span class="n">check_quat_right_angle</span><span class="p">(</span><span class="n">quat</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">check_quat_right_angle</span><span class="p">(</span><span class="n">quat</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span></code>
 
 </h2>
 
@@ -4709,7 +4709,7 @@ So we check the L1-norm of the absolute value of the orientation as a proxy for 
             </div>
           </td>
           <td>
-                <code>0.01</code>
+                <code>0.05</code>
           </td>
         </tr>
     </tbody>
@@ -4752,7 +4752,7 @@ So we check the L1-norm of the absolute value of the orientation as a proxy for 
 <span class="normal"><a href="#__codelineno-0-1110">1110</a></span>
 <span class="normal"><a href="#__codelineno-0-1111">1111</a></span>
 <span class="normal"><a href="#__codelineno-0-1112">1112</a></span>
-<span class="normal"><a href="#__codelineno-0-1113">1113</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1099" name="__codelineno-0-1099"></a><span class="k">def</span> <span class="nf">check_quat_right_angle</span><span class="p">(</span><span class="n">quat</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-1113">1113</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1099" name="__codelineno-0-1099"></a><span class="k">def</span> <span class="nf">check_quat_right_angle</span><span class="p">(</span><span class="n">quat</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">5e-2</span><span class="p">):</span>
 <a id="__codelineno-0-1100" name="__codelineno-0-1100"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-1101" name="__codelineno-0-1101"></a><span class="sd">    Check by making sure the quaternion is some permutation of +/- (1, 0, 0, 0),</span>
 <a id="__codelineno-0-1102" name="__codelineno-0-1102"></a><span class="sd">    +/- (0.707, 0.707, 0, 0), or +/- (0.5, 0.5, 0.5, 0.5)</span>
