@@ -1647,8 +1647,8 @@
   
   
     <li class="md-nav__item">
-      <a href="cloth.html" class="md-nav__link">
-        cloth
+      <a href="cloth_mixin.html" class="md-nav__link">
+        cloth_mixin
       </a>
     </li>
   
@@ -1871,8 +1871,8 @@
   
   
     <li class="md-nav__item">
-      <a href="kinematics.html" class="md-nav__link">
-        kinematics
+      <a href="kinematics_mixin.html" class="md-nav__link">
+        kinematics_mixin
       </a>
     </li>
   
@@ -4114,7 +4114,7 @@
 
   <div class="doc doc-contents ">
       <p class="doc doc-class-bases">
-        Bases: <code><span title="omnigibson.object_states.object_state_base.RelativeObjectState">RelativeObjectState</span></code>, <code><span title="omnigibson.object_states.object_state_base.BooleanState">BooleanState</span></code></p>
+        Bases: <code><span title="omnigibson.object_states.object_state_base.RelativeObjectState">RelativeObjectState</span></code>, <code><span title="omnigibson.object_states.object_state_base.BooleanStateMixin">BooleanStateMixin</span></code></p>
 
 
 
@@ -4257,7 +4257,9 @@
 <span class="normal"><a href="#__codelineno-0-224">224</a></span>
 <span class="normal"><a href="#__codelineno-0-225">225</a></span>
 <span class="normal"><a href="#__codelineno-0-226">226</a></span>
-<span class="normal"><a href="#__codelineno-0-227">227</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-90" name="__codelineno-0-90"></a><span class="k">class</span> <span class="nc">Saturated</span><span class="p">(</span><span class="n">RelativeObjectState</span><span class="p">,</span> <span class="n">BooleanState</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-227">227</a></span>
+<span class="normal"><a href="#__codelineno-0-228">228</a></span>
+<span class="normal"><a href="#__codelineno-0-229">229</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-90" name="__codelineno-0-90"></a><span class="k">class</span> <span class="nc">Saturated</span><span class="p">(</span><span class="n">RelativeObjectState</span><span class="p">,</span> <span class="n">BooleanStateMixin</span><span class="p">):</span>
 <a id="__codelineno-0-91" name="__codelineno-0-91"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">default_limit</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_SATURATION_LIMIT</span><span class="p">):</span>
 <a id="__codelineno-0-92" name="__codelineno-0-92"></a>        <span class="c1"># Run super first</span>
 <a id="__codelineno-0-93" name="__codelineno-0-93"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">)</span>
@@ -4335,66 +4337,68 @@
 <a id="__codelineno-0-165" name="__codelineno-0-165"></a>
 <a id="__codelineno-0-166" name="__codelineno-0-166"></a>        <span class="k">return</span> <span class="n">albedo_add</span><span class="p">,</span> <span class="n">diffuse_tint</span>
 <a id="__codelineno-0-167" name="__codelineno-0-167"></a>
-<a id="__codelineno-0-168" name="__codelineno-0-168"></a>    <span class="nd">@staticmethod</span>
-<a id="__codelineno-0-169" name="__codelineno-0-169"></a>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">():</span>
-<a id="__codelineno-0-170" name="__codelineno-0-170"></a>        <span class="k">return</span> <span class="n">RelativeObjectState</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">ModifiedParticles</span><span class="p">]</span>
-<a id="__codelineno-0-171" name="__codelineno-0-171"></a>
-<a id="__codelineno-0-172" name="__codelineno-0-172"></a>    <span class="k">def</span> <span class="nf">_sync_systems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systems</span><span class="p">):</span>
-<a id="__codelineno-0-173" name="__codelineno-0-173"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-174" name="__codelineno-0-174"></a><span class="sd">        Helper function for forcing internal systems to be synchronized with external list of @systems.</span>
-<a id="__codelineno-0-175" name="__codelineno-0-175"></a>
-<a id="__codelineno-0-176" name="__codelineno-0-176"></a><span class="sd">        NOTE: This may override internal state</span>
+<a id="__codelineno-0-168" name="__codelineno-0-168"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-0-169" name="__codelineno-0-169"></a>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<a id="__codelineno-0-170" name="__codelineno-0-170"></a>        <span class="n">deps</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">()</span>
+<a id="__codelineno-0-171" name="__codelineno-0-171"></a>        <span class="n">deps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ModifiedParticles</span><span class="p">)</span>
+<a id="__codelineno-0-172" name="__codelineno-0-172"></a>        <span class="k">return</span> <span class="n">deps</span>
+<a id="__codelineno-0-173" name="__codelineno-0-173"></a>
+<a id="__codelineno-0-174" name="__codelineno-0-174"></a>    <span class="k">def</span> <span class="nf">_sync_systems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">systems</span><span class="p">):</span>
+<a id="__codelineno-0-175" name="__codelineno-0-175"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-176" name="__codelineno-0-176"></a><span class="sd">        Helper function for forcing internal systems to be synchronized with external list of @systems.</span>
 <a id="__codelineno-0-177" name="__codelineno-0-177"></a>
-<a id="__codelineno-0-178" name="__codelineno-0-178"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-179" name="__codelineno-0-179"></a><span class="sd">            systems (list of BaseSystem): List of system(s) that should be actively tracked internally</span>
-<a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-181" name="__codelineno-0-181"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_limits</span> <span class="o">=</span> <span class="p">{</span><span class="n">system</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_SATURATION_LIMIT</span> <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">systems</span><span class="p">}</span>
-<a id="__codelineno-0-182" name="__codelineno-0-182"></a>
-<a id="__codelineno-0-183" name="__codelineno-0-183"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-184" name="__codelineno-0-184"></a>    <span class="k">def</span> <span class="nf">state_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-185" name="__codelineno-0-185"></a>        <span class="c1"># Limit per entry * 2 (UUID, value) + default limit + n limits</span>
-<a id="__codelineno-0-186" name="__codelineno-0-186"></a>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_limits</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span>
-<a id="__codelineno-0-187" name="__codelineno-0-187"></a>
-<a id="__codelineno-0-188" name="__codelineno-0-188"></a>    <span class="k">def</span> <span class="nf">_dump_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-189" name="__codelineno-0-189"></a>        <span class="n">state</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">n_systems</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_limits</span><span class="p">),</span> <span class="n">default_limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_limit</span><span class="p">)</span>
-<a id="__codelineno-0-190" name="__codelineno-0-190"></a>        <span class="k">for</span> <span class="n">system</span><span class="p">,</span> <span class="n">limit</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limits</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-191" name="__codelineno-0-191"></a>            <span class="n">state</span><span class="p">[</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
-<a id="__codelineno-0-192" name="__codelineno-0-192"></a>        <span class="k">return</span> <span class="n">state</span>
-<a id="__codelineno-0-193" name="__codelineno-0-193"></a>
-<a id="__codelineno-0-194" name="__codelineno-0-194"></a>    <span class="k">def</span> <span class="nf">_load_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-195" name="__codelineno-0-195"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_limits</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-<a id="__codelineno-0-196" name="__codelineno-0-196"></a>        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-197" name="__codelineno-0-197"></a>            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;n_systems&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-198" name="__codelineno-0-198"></a>                <span class="k">continue</span>
-<a id="__codelineno-0-199" name="__codelineno-0-199"></a>            <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;default_limit&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-200" name="__codelineno-0-200"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_default_limit</span> <span class="o">=</span> <span class="n">v</span>
-<a id="__codelineno-0-201" name="__codelineno-0-201"></a>            <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-202" name="__codelineno-0-202"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_limits</span><span class="p">[</span><span class="n">REGISTERED_SYSTEMS</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="o">=</span> <span class="n">v</span>
-<a id="__codelineno-0-203" name="__codelineno-0-203"></a>
-<a id="__codelineno-0-204" name="__codelineno-0-204"></a>    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-205" name="__codelineno-0-205"></a>        <span class="n">state_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;n_systems&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;default_limit&quot;</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<a id="__codelineno-0-206" name="__codelineno-0-206"></a>        <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;n_systems&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-0-207" name="__codelineno-0-207"></a>            <span class="n">system_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">2</span><span class="p">:]</span>
-<a id="__codelineno-0-208" name="__codelineno-0-208"></a>            <span class="n">state_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-<a id="__codelineno-0-209" name="__codelineno-0-209"></a>                <span class="p">[</span><span class="n">state_flat</span><span class="p">,</span>
-<a id="__codelineno-0-210" name="__codelineno-0-210"></a>                 <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([(</span><span class="n">get_uuid</span><span class="p">(</span><span class="n">system_name</span><span class="p">),</span> <span class="n">state</span><span class="p">[</span><span class="n">system_name</span><span class="p">])</span> <span class="k">for</span> <span class="n">system_name</span> <span class="ow">in</span> <span class="n">system_names</span><span class="p">])]</span>
-<a id="__codelineno-0-211" name="__codelineno-0-211"></a>            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-<a id="__codelineno-0-212" name="__codelineno-0-212"></a>        <span class="k">return</span> <span class="n">state_flat</span>
-<a id="__codelineno-0-213" name="__codelineno-0-213"></a>
-<a id="__codelineno-0-214" name="__codelineno-0-214"></a>    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-215" name="__codelineno-0-215"></a>        <span class="n">n_systems</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<a id="__codelineno-0-216" name="__codelineno-0-216"></a>        <span class="n">state_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">n_systems</span><span class="o">=</span><span class="n">n_systems</span><span class="p">,</span> <span class="n">default_limit</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-<a id="__codelineno-0-217" name="__codelineno-0-217"></a>        <span class="n">state_shaped</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="o">+</span> <span class="n">n_systems</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<a id="__codelineno-0-218" name="__codelineno-0-218"></a>        <span class="n">systems</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-219" name="__codelineno-0-219"></a>        <span class="k">for</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">state_shaped</span><span class="p">:</span>
-<a id="__codelineno-0-220" name="__codelineno-0-220"></a>            <span class="n">system</span> <span class="o">=</span> <span class="n">UUID_TO_SYSTEMS</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">uuid</span><span class="p">)]</span>
-<a id="__codelineno-0-221" name="__codelineno-0-221"></a>            <span class="n">state_dict</span><span class="p">[</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-<a id="__codelineno-0-222" name="__codelineno-0-222"></a>            <span class="n">systems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
-<a id="__codelineno-0-223" name="__codelineno-0-223"></a>
-<a id="__codelineno-0-224" name="__codelineno-0-224"></a>        <span class="c1"># Sync systems so that state size sanity check succeeds</span>
-<a id="__codelineno-0-225" name="__codelineno-0-225"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_sync_systems</span><span class="p">(</span><span class="n">systems</span><span class="o">=</span><span class="n">systems</span><span class="p">)</span>
-<a id="__codelineno-0-226" name="__codelineno-0-226"></a>
-<a id="__codelineno-0-227" name="__codelineno-0-227"></a>        <span class="k">return</span> <span class="n">state_dict</span><span class="p">,</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">n_systems</span> <span class="o">*</span> <span class="mi">2</span>
+<a id="__codelineno-0-178" name="__codelineno-0-178"></a><span class="sd">        NOTE: This may override internal state</span>
+<a id="__codelineno-0-179" name="__codelineno-0-179"></a>
+<a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-181" name="__codelineno-0-181"></a><span class="sd">            systems (list of BaseSystem): List of system(s) that should be actively tracked internally</span>
+<a id="__codelineno-0-182" name="__codelineno-0-182"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-183" name="__codelineno-0-183"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_limits</span> <span class="o">=</span> <span class="p">{</span><span class="n">system</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">DEFAULT_SATURATION_LIMIT</span> <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">systems</span><span class="p">}</span>
+<a id="__codelineno-0-184" name="__codelineno-0-184"></a>
+<a id="__codelineno-0-185" name="__codelineno-0-185"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-186" name="__codelineno-0-186"></a>    <span class="k">def</span> <span class="nf">state_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-187" name="__codelineno-0-187"></a>        <span class="c1"># Limit per entry * 2 (UUID, value) + default limit + n limits</span>
+<a id="__codelineno-0-188" name="__codelineno-0-188"></a>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_limits</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span>
+<a id="__codelineno-0-189" name="__codelineno-0-189"></a>
+<a id="__codelineno-0-190" name="__codelineno-0-190"></a>    <span class="k">def</span> <span class="nf">_dump_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-191" name="__codelineno-0-191"></a>        <span class="n">state</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">n_systems</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_limits</span><span class="p">),</span> <span class="n">default_limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_limit</span><span class="p">)</span>
+<a id="__codelineno-0-192" name="__codelineno-0-192"></a>        <span class="k">for</span> <span class="n">system</span><span class="p">,</span> <span class="n">limit</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limits</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-193" name="__codelineno-0-193"></a>            <span class="n">state</span><span class="p">[</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
+<a id="__codelineno-0-194" name="__codelineno-0-194"></a>        <span class="k">return</span> <span class="n">state</span>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a>
+<a id="__codelineno-0-196" name="__codelineno-0-196"></a>    <span class="k">def</span> <span class="nf">_load_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-197" name="__codelineno-0-197"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_limits</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<a id="__codelineno-0-198" name="__codelineno-0-198"></a>        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-199" name="__codelineno-0-199"></a>            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;n_systems&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-200" name="__codelineno-0-200"></a>                <span class="k">continue</span>
+<a id="__codelineno-0-201" name="__codelineno-0-201"></a>            <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;default_limit&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-202" name="__codelineno-0-202"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_default_limit</span> <span class="o">=</span> <span class="n">v</span>
+<a id="__codelineno-0-203" name="__codelineno-0-203"></a>            <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-204" name="__codelineno-0-204"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_limits</span><span class="p">[</span><span class="n">REGISTERED_SYSTEMS</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="o">=</span> <span class="n">v</span>
+<a id="__codelineno-0-205" name="__codelineno-0-205"></a>
+<a id="__codelineno-0-206" name="__codelineno-0-206"></a>    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-207" name="__codelineno-0-207"></a>        <span class="n">state_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;n_systems&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;default_limit&quot;</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<a id="__codelineno-0-208" name="__codelineno-0-208"></a>        <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;n_systems&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-209" name="__codelineno-0-209"></a>            <span class="n">system_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">2</span><span class="p">:]</span>
+<a id="__codelineno-0-210" name="__codelineno-0-210"></a>            <span class="n">state_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+<a id="__codelineno-0-211" name="__codelineno-0-211"></a>                <span class="p">[</span><span class="n">state_flat</span><span class="p">,</span>
+<a id="__codelineno-0-212" name="__codelineno-0-212"></a>                 <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([(</span><span class="n">get_uuid</span><span class="p">(</span><span class="n">system_name</span><span class="p">),</span> <span class="n">state</span><span class="p">[</span><span class="n">system_name</span><span class="p">])</span> <span class="k">for</span> <span class="n">system_name</span> <span class="ow">in</span> <span class="n">system_names</span><span class="p">])]</span>
+<a id="__codelineno-0-213" name="__codelineno-0-213"></a>            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<a id="__codelineno-0-214" name="__codelineno-0-214"></a>        <span class="k">return</span> <span class="n">state_flat</span>
+<a id="__codelineno-0-215" name="__codelineno-0-215"></a>
+<a id="__codelineno-0-216" name="__codelineno-0-216"></a>    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-217" name="__codelineno-0-217"></a>        <span class="n">n_systems</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<a id="__codelineno-0-218" name="__codelineno-0-218"></a>        <span class="n">state_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">n_systems</span><span class="o">=</span><span class="n">n_systems</span><span class="p">,</span> <span class="n">default_limit</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<a id="__codelineno-0-219" name="__codelineno-0-219"></a>        <span class="n">state_shaped</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="o">+</span> <span class="n">n_systems</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-0-220" name="__codelineno-0-220"></a>        <span class="n">systems</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-221" name="__codelineno-0-221"></a>        <span class="k">for</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">state_shaped</span><span class="p">:</span>
+<a id="__codelineno-0-222" name="__codelineno-0-222"></a>            <span class="n">system</span> <span class="o">=</span> <span class="n">UUID_TO_SYSTEMS</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">uuid</span><span class="p">)]</span>
+<a id="__codelineno-0-223" name="__codelineno-0-223"></a>            <span class="n">state_dict</span><span class="p">[</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+<a id="__codelineno-0-224" name="__codelineno-0-224"></a>            <span class="n">systems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
+<a id="__codelineno-0-225" name="__codelineno-0-225"></a>
+<a id="__codelineno-0-226" name="__codelineno-0-226"></a>        <span class="c1"># Sync systems so that state size sanity check succeeds</span>
+<a id="__codelineno-0-227" name="__codelineno-0-227"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_sync_systems</span><span class="p">(</span><span class="n">systems</span><span class="o">=</span><span class="n">systems</span><span class="p">)</span>
+<a id="__codelineno-0-228" name="__codelineno-0-228"></a>
+<a id="__codelineno-0-229" name="__codelineno-0-229"></a>        <span class="k">return</span> <span class="n">state_dict</span><span class="p">,</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">n_systems</span> <span class="o">*</span> <span class="mi">2</span>
 </code></pre></div></td></tr></table></div>
         </details>
 

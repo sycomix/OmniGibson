@@ -19,7 +19,7 @@
     
     
       
-        <title>cloth - OmniGibson Documentation</title>
+        <title>cloth_mixin - OmniGibson Documentation</title>
       
     
     
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cloth" class="md-skip">
+        <a href="#cloth_mixin" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              cloth
+              cloth_mixin
             
           </span>
         </div>
@@ -1657,12 +1657,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          cloth
+          cloth_mixin
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="cloth.html" class="md-nav__link md-nav__link--active">
-        cloth
+      <a href="cloth_mixin.html" class="md-nav__link md-nav__link--active">
+        cloth_mixin
       </a>
       
         
@@ -1681,15 +1681,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#object_states.cloth" class="md-nav__link">
-    object_states.cloth
+  <a href="#object_states.cloth_mixin" class="md-nav__link">
+    object_states.cloth_mixin
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#object_states.cloth.ClothState" class="md-nav__link">
-    ClothState
+  <a href="#object_states.cloth_mixin.ClothStateMixin" class="md-nav__link">
+    ClothStateMixin
   </a>
   
 </li>
@@ -1919,8 +1919,8 @@
   
   
     <li class="md-nav__item">
-      <a href="kinematics.html" class="md-nav__link">
-        kinematics
+      <a href="kinematics_mixin.html" class="md-nav__link">
+        kinematics_mixin
       </a>
     </li>
   
@@ -3807,15 +3807,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#object_states.cloth" class="md-nav__link">
-    object_states.cloth
+  <a href="#object_states.cloth_mixin" class="md-nav__link">
+    object_states.cloth_mixin
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#object_states.cloth.ClothState" class="md-nav__link">
-    ClothState
+  <a href="#object_states.cloth_mixin.ClothStateMixin" class="md-nav__link">
+    ClothStateMixin
   </a>
   
 </li>
@@ -3838,13 +3838,13 @@
   
 
 
-<h1 id="cloth">cloth</h1>
+<h1 id="cloth_mixin">cloth_mixin</h1>
 
 
 <div class="doc doc-object doc-module">
 
 
-<a id="object_states.cloth"></a>
+<a id="object_states.cloth_mixin"></a>
   <div class="doc doc-contents first">
 
   
@@ -3862,8 +3862,8 @@
 
 
 
-<h2 class="doc doc-heading" id="object_states.cloth.ClothState">
-        <code>ClothState</code>
+<h2 class="doc doc-heading" id="object_states.cloth_mixin.ClothStateMixin">
+        <code>ClothStateMixin</code>
 
 
 </h2>
@@ -3874,12 +3874,11 @@
         Bases: <code><span title="omnigibson.object_states.object_state_base.BaseObjectState">BaseObjectState</span></code></p>
 
   
-      <p>This class is a subclass of BaseObjectState that adds dependencies
-on the default kinematics states.</p>
+      <p>This class is a subclass of BaseObjectState that adds dependencies assuming the owned object is PrimType.CLOTH</p>
 
 
         <details class="quote">
-          <summary>Source code in <code>omnigibson/object_states/cloth.py</code></summary>
+          <summary>Source code in <code>omnigibson/object_states/cloth_mixin.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
 <span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
 <span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
@@ -3908,37 +3907,35 @@ on the default kinematics states.</p>
 <span class="normal"><a href="#__codelineno-0-32">32</a></span>
 <span class="normal"><a href="#__codelineno-0-33">33</a></span>
 <span class="normal"><a href="#__codelineno-0-34">34</a></span>
-<span class="normal"><a href="#__codelineno-0-35">35</a></span>
-<span class="normal"><a href="#__codelineno-0-36">36</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">class</span> <span class="nc">ClothState</span><span class="p">(</span><span class="n">BaseObjectState</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-35">35</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">class</span> <span class="nc">ClothStateMixin</span><span class="p">(</span><span class="n">BaseObjectState</span><span class="p">):</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="sd">    This class is a subclass of BaseObjectState that adds dependencies</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="sd">    on the default kinematics states.</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12"></a>
-<a id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="nd">@classmethod</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14"></a>    <span class="k">def</span> <span class="nf">is_compatible</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15"></a>        <span class="c1"># Only compatible with cloth objects</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16"></a>        <span class="n">compatible</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">is_compatible</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">compatible</span><span class="p">:</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18"></a>            <span class="k">return</span> <span class="n">compatible</span><span class="p">,</span> <span class="n">reason</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19"></a>
-<a id="__codelineno-0-20" name="__codelineno-0-20"></a>        <span class="c1"># Check for cloth type</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21"></a>        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">prim_type</span> <span class="o">!=</span> <span class="n">PrimType</span><span class="o">.</span><span class="n">CLOTH</span><span class="p">:</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22"></a>            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Cannot use ClothState </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> with rigid object, make sure object is created &quot;</span> \
-<a id="__codelineno-0-23" name="__codelineno-0-23"></a>                          <span class="sa">f</span><span class="s2">&quot;with prim_type=PrimType.CLOTH!&quot;</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24"></a>
-<a id="__codelineno-0-25" name="__codelineno-0-25"></a>        <span class="c1"># Check for GPU dynamics</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">gm</span><span class="o">.</span><span class="n">USE_GPU_DYNAMICS</span><span class="p">:</span>
-<a id="__codelineno-0-27" name="__codelineno-0-27"></a>            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;gm.USE_GPU_DYNAMICS must be True in order to use object state </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.&quot;</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28"></a>
-<a id="__codelineno-0-29" name="__codelineno-0-29"></a>        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">None</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30"></a>
-<a id="__codelineno-0-31" name="__codelineno-0-31"></a>    <span class="nd">@classproperty</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32"></a>    <span class="k">def</span> <span class="nf">_do_not_register_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-<a id="__codelineno-0-33" name="__codelineno-0-33"></a>        <span class="c1"># Don&#39;t register this class since it&#39;s an abstract template</span>
-<a id="__codelineno-0-34" name="__codelineno-0-34"></a>        <span class="n">classes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_do_not_register_classes</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35"></a>        <span class="n">classes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;ClothState&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-36" name="__codelineno-0-36"></a>        <span class="k">return</span> <span class="n">classes</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="sd">    This class is a subclass of BaseObjectState that adds dependencies assuming the owned object is PrimType.CLOTH</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="k">def</span> <span class="nf">is_compatible</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a>        <span class="c1"># Only compatible with cloth objects</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a>        <span class="n">compatible</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">is_compatible</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">compatible</span><span class="p">:</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a>            <span class="k">return</span> <span class="n">compatible</span><span class="p">,</span> <span class="n">reason</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a>        <span class="c1"># Check for cloth type</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a>        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">prim_type</span> <span class="o">!=</span> <span class="n">PrimType</span><span class="o">.</span><span class="n">CLOTH</span><span class="p">:</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a>            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Cannot use ClothStateMixin </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> with rigid object, make sure object is created &quot;</span> \
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a>                          <span class="sa">f</span><span class="s2">&quot;with prim_type=PrimType.CLOTH!&quot;</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a>        <span class="c1"># Check for GPU dynamics</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">gm</span><span class="o">.</span><span class="n">USE_GPU_DYNAMICS</span><span class="p">:</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a>            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;gm.USE_GPU_DYNAMICS must be True in order to use object state </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.&quot;</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">None</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29"></a>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="nd">@classproperty</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a>    <span class="k">def</span> <span class="nf">_do_not_register_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a>        <span class="c1"># Don&#39;t register this class since it&#39;s an abstract template</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a>        <span class="n">classes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_do_not_register_classes</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a>        <span class="n">classes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;ClothStateMixin&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a>        <span class="k">return</span> <span class="n">classes</span>
 </code></pre></div></td></tr></table></div>
         </details>
 

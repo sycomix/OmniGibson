@@ -1647,8 +1647,8 @@
   
   
     <li class="md-nav__item">
-      <a href="cloth.html" class="md-nav__link">
-        cloth
+      <a href="cloth_mixin.html" class="md-nav__link">
+        cloth_mixin
       </a>
     </li>
   
@@ -1953,8 +1953,8 @@
   
   
     <li class="md-nav__item">
-      <a href="kinematics.html" class="md-nav__link">
-        kinematics
+      <a href="kinematics_mixin.html" class="md-nav__link">
+        kinematics_mixin
       </a>
     </li>
   
@@ -4127,7 +4127,11 @@ on a microwave object, True and None will be returned.</p>
 <span class="normal"><a href="#__codelineno-0-196">196</a></span>
 <span class="normal"><a href="#__codelineno-0-197">197</a></span>
 <span class="normal"><a href="#__codelineno-0-198">198</a></span>
-<span class="normal"><a href="#__codelineno-0-199">199</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="k">class</span> <span class="nc">HeatSourceOrSink</span><span class="p">(</span><span class="n">AbsoluteObjectState</span><span class="p">,</span> <span class="n">LinkBasedStateMixin</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-199">199</a></span>
+<span class="normal"><a href="#__codelineno-0-200">200</a></span>
+<span class="normal"><a href="#__codelineno-0-201">201</a></span>
+<span class="normal"><a href="#__codelineno-0-202">202</a></span>
+<span class="normal"><a href="#__codelineno-0-203">203</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="k">class</span> <span class="nc">HeatSourceOrSink</span><span class="p">(</span><span class="n">AbsoluteObjectState</span><span class="p">,</span> <span class="n">LinkBasedStateMixin</span><span class="p">):</span>
 <a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="sd">    This state indicates the heat source or heat sink state of the object.</span>
 <a id="__codelineno-0-27" name="__codelineno-0-27"></a>
@@ -4245,64 +4249,68 @@ on a microwave object, True and None will be returned.</p>
 <a id="__codelineno-0-139" name="__codelineno-0-139"></a><span class="sd">        &quot;&quot;&quot;</span>
 <a id="__codelineno-0-140" name="__codelineno-0-140"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_temperature</span>
 <a id="__codelineno-0-141" name="__codelineno-0-141"></a>
-<a id="__codelineno-0-142" name="__codelineno-0-142"></a>    <span class="nd">@staticmethod</span>
-<a id="__codelineno-0-143" name="__codelineno-0-143"></a>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">():</span>
-<a id="__codelineno-0-144" name="__codelineno-0-144"></a>        <span class="k">return</span> <span class="n">AbsoluteObjectState</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">AABB</span><span class="p">,</span> <span class="n">Inside</span><span class="p">]</span>
-<a id="__codelineno-0-145" name="__codelineno-0-145"></a>
-<a id="__codelineno-0-146" name="__codelineno-0-146"></a>    <span class="nd">@staticmethod</span>
-<a id="__codelineno-0-147" name="__codelineno-0-147"></a>    <span class="k">def</span> <span class="nf">get_optional_dependencies</span><span class="p">():</span>
-<a id="__codelineno-0-148" name="__codelineno-0-148"></a>        <span class="k">return</span> <span class="n">AbsoluteObjectState</span><span class="o">.</span><span class="n">get_optional_dependencies</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">ToggledOn</span><span class="p">,</span> <span class="n">Open</span><span class="p">]</span>
-<a id="__codelineno-0-149" name="__codelineno-0-149"></a>
-<a id="__codelineno-0-150" name="__codelineno-0-150"></a>    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-151" name="__codelineno-0-151"></a>        <span class="c1"># Run super first</span>
-<a id="__codelineno-0-152" name="__codelineno-0-152"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
-<a id="__codelineno-0-153" name="__codelineno-0-153"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_link_mixin</span><span class="p">()</span>
-<a id="__codelineno-0-154" name="__codelineno-0-154"></a>
-<a id="__codelineno-0-155" name="__codelineno-0-155"></a>    <span class="k">def</span> <span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-156" name="__codelineno-0-156"></a>        <span class="c1"># Check the toggle state.</span>
-<a id="__codelineno-0-157" name="__codelineno-0-157"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires_toggled_on</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ToggledOn</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
-<a id="__codelineno-0-158" name="__codelineno-0-158"></a>            <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-0-159" name="__codelineno-0-159"></a>
-<a id="__codelineno-0-160" name="__codelineno-0-160"></a>        <span class="c1"># Check the open state.</span>
-<a id="__codelineno-0-161" name="__codelineno-0-161"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires_closed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Open</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
+<a id="__codelineno-0-142" name="__codelineno-0-142"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-0-143" name="__codelineno-0-143"></a>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<a id="__codelineno-0-144" name="__codelineno-0-144"></a>        <span class="n">deps</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">()</span>
+<a id="__codelineno-0-145" name="__codelineno-0-145"></a>        <span class="n">deps</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">AABB</span><span class="p">,</span> <span class="n">Inside</span><span class="p">})</span>
+<a id="__codelineno-0-146" name="__codelineno-0-146"></a>        <span class="k">return</span> <span class="n">deps</span>
+<a id="__codelineno-0-147" name="__codelineno-0-147"></a>
+<a id="__codelineno-0-148" name="__codelineno-0-148"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-0-149" name="__codelineno-0-149"></a>    <span class="k">def</span> <span class="nf">get_optional_dependencies</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<a id="__codelineno-0-150" name="__codelineno-0-150"></a>        <span class="n">deps</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_optional_dependencies</span><span class="p">()</span>
+<a id="__codelineno-0-151" name="__codelineno-0-151"></a>        <span class="n">deps</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">ToggledOn</span><span class="p">,</span> <span class="n">Open</span><span class="p">})</span>
+<a id="__codelineno-0-152" name="__codelineno-0-152"></a>        <span class="k">return</span> <span class="n">deps</span>
+<a id="__codelineno-0-153" name="__codelineno-0-153"></a>
+<a id="__codelineno-0-154" name="__codelineno-0-154"></a>    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-155" name="__codelineno-0-155"></a>        <span class="c1"># Run super first</span>
+<a id="__codelineno-0-156" name="__codelineno-0-156"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
+<a id="__codelineno-0-157" name="__codelineno-0-157"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_link_mixin</span><span class="p">()</span>
+<a id="__codelineno-0-158" name="__codelineno-0-158"></a>
+<a id="__codelineno-0-159" name="__codelineno-0-159"></a>    <span class="k">def</span> <span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-160" name="__codelineno-0-160"></a>        <span class="c1"># Check the toggle state.</span>
+<a id="__codelineno-0-161" name="__codelineno-0-161"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires_toggled_on</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ToggledOn</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
 <a id="__codelineno-0-162" name="__codelineno-0-162"></a>            <span class="k">return</span> <span class="kc">False</span>
 <a id="__codelineno-0-163" name="__codelineno-0-163"></a>
-<a id="__codelineno-0-164" name="__codelineno-0-164"></a>        <span class="k">return</span> <span class="kc">True</span>
-<a id="__codelineno-0-165" name="__codelineno-0-165"></a>
-<a id="__codelineno-0-166" name="__codelineno-0-166"></a>    <span class="k">def</span> <span class="nf">affects_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-<a id="__codelineno-0-167" name="__codelineno-0-167"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-168" name="__codelineno-0-168"></a><span class="sd">        Computes whether this heat source or sink object is affecting object @obj</span>
-<a id="__codelineno-0-169" name="__codelineno-0-169"></a><span class="sd">        Computes the temperature delta that may be applied to object @obj. NOTE: This value is agnostic to simulation</span>
-<a id="__codelineno-0-170" name="__codelineno-0-170"></a><span class="sd">        stepping speed, and should be scaled accordingly</span>
-<a id="__codelineno-0-171" name="__codelineno-0-171"></a>
-<a id="__codelineno-0-172" name="__codelineno-0-172"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-173" name="__codelineno-0-173"></a><span class="sd">            obj (StatefulObject): Object whose temperature delta should be computed</span>
-<a id="__codelineno-0-174" name="__codelineno-0-174"></a>
-<a id="__codelineno-0-175" name="__codelineno-0-175"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-176" name="__codelineno-0-176"></a><span class="sd">            bool: Whether this heat source or sink is currently affecting @obj&#39;s temperature</span>
-<a id="__codelineno-0-177" name="__codelineno-0-177"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-178" name="__codelineno-0-178"></a>        <span class="c1"># No change if we&#39;re not on</span>
-<a id="__codelineno-0-179" name="__codelineno-0-179"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
-<a id="__codelineno-0-180" name="__codelineno-0-180"></a>            <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-0-181" name="__codelineno-0-181"></a>
-<a id="__codelineno-0-182" name="__codelineno-0-182"></a>        <span class="c1"># Otherwise, check for other edge cases</span>
-<a id="__codelineno-0-183" name="__codelineno-0-183"></a>        <span class="c1"># If we require the object to be inside, make sure the object is inside, otherwise, we return 0</span>
-<a id="__codelineno-0-184" name="__codelineno-0-184"></a>        <span class="c1"># Otherwise, make sure the object is within close proximity of this heat source</span>
-<a id="__codelineno-0-185" name="__codelineno-0-185"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires_inside</span><span class="p">:</span>
-<a id="__codelineno-0-186" name="__codelineno-0-186"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Inside</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
-<a id="__codelineno-0-187" name="__codelineno-0-187"></a>                <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-0-188" name="__codelineno-0-188"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-189" name="__codelineno-0-189"></a>            <span class="n">aabb_lower</span><span class="p">,</span> <span class="n">aabb_upper</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">AABB</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
-<a id="__codelineno-0-190" name="__codelineno-0-190"></a>            <span class="n">obj_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">aabb_lower</span> <span class="o">+</span> <span class="n">aabb_upper</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
-<a id="__codelineno-0-191" name="__codelineno-0-191"></a>            <span class="c1"># Position is either the AABB center of the default link or the metalink position itself</span>
-<a id="__codelineno-0-192" name="__codelineno-0-192"></a>            <span class="n">heat_source_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">aabb_center</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_link</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
-<a id="__codelineno-0-193" name="__codelineno-0-193"></a>            <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">l2_distance</span><span class="p">(</span><span class="n">heat_source_pos</span><span class="p">,</span> <span class="n">obj_pos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_threshold</span><span class="p">:</span>
-<a id="__codelineno-0-194" name="__codelineno-0-194"></a>                <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-0-195" name="__codelineno-0-195"></a>
-<a id="__codelineno-0-196" name="__codelineno-0-196"></a>        <span class="c1"># If all checks pass, we&#39;re actively influencing the object!</span>
-<a id="__codelineno-0-197" name="__codelineno-0-197"></a>        <span class="k">return</span> <span class="kc">True</span>
-<a id="__codelineno-0-198" name="__codelineno-0-198"></a>
-<a id="__codelineno-0-199" name="__codelineno-0-199"></a>    <span class="c1"># Nothing needs to be done to save/load HeatSource</span>
+<a id="__codelineno-0-164" name="__codelineno-0-164"></a>        <span class="c1"># Check the open state.</span>
+<a id="__codelineno-0-165" name="__codelineno-0-165"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires_closed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Open</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
+<a id="__codelineno-0-166" name="__codelineno-0-166"></a>            <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-0-167" name="__codelineno-0-167"></a>
+<a id="__codelineno-0-168" name="__codelineno-0-168"></a>        <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-0-169" name="__codelineno-0-169"></a>
+<a id="__codelineno-0-170" name="__codelineno-0-170"></a>    <span class="k">def</span> <span class="nf">affects_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<a id="__codelineno-0-171" name="__codelineno-0-171"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-172" name="__codelineno-0-172"></a><span class="sd">        Computes whether this heat source or sink object is affecting object @obj</span>
+<a id="__codelineno-0-173" name="__codelineno-0-173"></a><span class="sd">        Computes the temperature delta that may be applied to object @obj. NOTE: This value is agnostic to simulation</span>
+<a id="__codelineno-0-174" name="__codelineno-0-174"></a><span class="sd">        stepping speed, and should be scaled accordingly</span>
+<a id="__codelineno-0-175" name="__codelineno-0-175"></a>
+<a id="__codelineno-0-176" name="__codelineno-0-176"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-177" name="__codelineno-0-177"></a><span class="sd">            obj (StatefulObject): Object whose temperature delta should be computed</span>
+<a id="__codelineno-0-178" name="__codelineno-0-178"></a>
+<a id="__codelineno-0-179" name="__codelineno-0-179"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="sd">            bool: Whether this heat source or sink is currently affecting @obj&#39;s temperature</span>
+<a id="__codelineno-0-181" name="__codelineno-0-181"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-182" name="__codelineno-0-182"></a>        <span class="c1"># No change if we&#39;re not on</span>
+<a id="__codelineno-0-183" name="__codelineno-0-183"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
+<a id="__codelineno-0-184" name="__codelineno-0-184"></a>            <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-0-185" name="__codelineno-0-185"></a>
+<a id="__codelineno-0-186" name="__codelineno-0-186"></a>        <span class="c1"># Otherwise, check for other edge cases</span>
+<a id="__codelineno-0-187" name="__codelineno-0-187"></a>        <span class="c1"># If we require the object to be inside, make sure the object is inside, otherwise, we return 0</span>
+<a id="__codelineno-0-188" name="__codelineno-0-188"></a>        <span class="c1"># Otherwise, make sure the object is within close proximity of this heat source</span>
+<a id="__codelineno-0-189" name="__codelineno-0-189"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires_inside</span><span class="p">:</span>
+<a id="__codelineno-0-190" name="__codelineno-0-190"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Inside</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+<a id="__codelineno-0-191" name="__codelineno-0-191"></a>                <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-0-192" name="__codelineno-0-192"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-193" name="__codelineno-0-193"></a>            <span class="n">aabb_lower</span><span class="p">,</span> <span class="n">aabb_upper</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">AABB</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+<a id="__codelineno-0-194" name="__codelineno-0-194"></a>            <span class="n">obj_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">aabb_lower</span> <span class="o">+</span> <span class="n">aabb_upper</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a>            <span class="c1"># Position is either the AABB center of the default link or the metalink position itself</span>
+<a id="__codelineno-0-196" name="__codelineno-0-196"></a>            <span class="n">heat_source_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">aabb_center</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_link</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+<a id="__codelineno-0-197" name="__codelineno-0-197"></a>            <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">l2_distance</span><span class="p">(</span><span class="n">heat_source_pos</span><span class="p">,</span> <span class="n">obj_pos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_threshold</span><span class="p">:</span>
+<a id="__codelineno-0-198" name="__codelineno-0-198"></a>                <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-0-199" name="__codelineno-0-199"></a>
+<a id="__codelineno-0-200" name="__codelineno-0-200"></a>        <span class="c1"># If all checks pass, we&#39;re actively influencing the object!</span>
+<a id="__codelineno-0-201" name="__codelineno-0-201"></a>        <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-0-202" name="__codelineno-0-202"></a>
+<a id="__codelineno-0-203" name="__codelineno-0-203"></a>    <span class="c1"># Nothing needs to be done to save/load HeatSource</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -4703,11 +4711,7 @@ stepping speed, and should be scaled accordingly</p>
 
       <details class="quote">
         <summary>Source code in <code>omnigibson/object_states/heat_source_or_sink.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-166">166</a></span>
-<span class="normal"><a href="#__codelineno-0-167">167</a></span>
-<span class="normal"><a href="#__codelineno-0-168">168</a></span>
-<span class="normal"><a href="#__codelineno-0-169">169</a></span>
-<span class="normal"><a href="#__codelineno-0-170">170</a></span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-170">170</a></span>
 <span class="normal"><a href="#__codelineno-0-171">171</a></span>
 <span class="normal"><a href="#__codelineno-0-172">172</a></span>
 <span class="normal"><a href="#__codelineno-0-173">173</a></span>
@@ -4736,40 +4740,44 @@ stepping speed, and should be scaled accordingly</p>
 <span class="normal"><a href="#__codelineno-0-196">196</a></span>
 <span class="normal"><a href="#__codelineno-0-197">197</a></span>
 <span class="normal"><a href="#__codelineno-0-198">198</a></span>
-<span class="normal"><a href="#__codelineno-0-199">199</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-166" name="__codelineno-0-166"></a><span class="k">def</span> <span class="nf">affects_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-<a id="__codelineno-0-167" name="__codelineno-0-167"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-168" name="__codelineno-0-168"></a><span class="sd">    Computes whether this heat source or sink object is affecting object @obj</span>
-<a id="__codelineno-0-169" name="__codelineno-0-169"></a><span class="sd">    Computes the temperature delta that may be applied to object @obj. NOTE: This value is agnostic to simulation</span>
-<a id="__codelineno-0-170" name="__codelineno-0-170"></a><span class="sd">    stepping speed, and should be scaled accordingly</span>
-<a id="__codelineno-0-171" name="__codelineno-0-171"></a>
-<a id="__codelineno-0-172" name="__codelineno-0-172"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-173" name="__codelineno-0-173"></a><span class="sd">        obj (StatefulObject): Object whose temperature delta should be computed</span>
-<a id="__codelineno-0-174" name="__codelineno-0-174"></a>
-<a id="__codelineno-0-175" name="__codelineno-0-175"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-176" name="__codelineno-0-176"></a><span class="sd">        bool: Whether this heat source or sink is currently affecting @obj&#39;s temperature</span>
-<a id="__codelineno-0-177" name="__codelineno-0-177"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-178" name="__codelineno-0-178"></a>    <span class="c1"># No change if we&#39;re not on</span>
-<a id="__codelineno-0-179" name="__codelineno-0-179"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
-<a id="__codelineno-0-180" name="__codelineno-0-180"></a>        <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-0-181" name="__codelineno-0-181"></a>
-<a id="__codelineno-0-182" name="__codelineno-0-182"></a>    <span class="c1"># Otherwise, check for other edge cases</span>
-<a id="__codelineno-0-183" name="__codelineno-0-183"></a>    <span class="c1"># If we require the object to be inside, make sure the object is inside, otherwise, we return 0</span>
-<a id="__codelineno-0-184" name="__codelineno-0-184"></a>    <span class="c1"># Otherwise, make sure the object is within close proximity of this heat source</span>
-<a id="__codelineno-0-185" name="__codelineno-0-185"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires_inside</span><span class="p">:</span>
-<a id="__codelineno-0-186" name="__codelineno-0-186"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Inside</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
-<a id="__codelineno-0-187" name="__codelineno-0-187"></a>            <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-0-188" name="__codelineno-0-188"></a>    <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-189" name="__codelineno-0-189"></a>        <span class="n">aabb_lower</span><span class="p">,</span> <span class="n">aabb_upper</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">AABB</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
-<a id="__codelineno-0-190" name="__codelineno-0-190"></a>        <span class="n">obj_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">aabb_lower</span> <span class="o">+</span> <span class="n">aabb_upper</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
-<a id="__codelineno-0-191" name="__codelineno-0-191"></a>        <span class="c1"># Position is either the AABB center of the default link or the metalink position itself</span>
-<a id="__codelineno-0-192" name="__codelineno-0-192"></a>        <span class="n">heat_source_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">aabb_center</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_link</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
-<a id="__codelineno-0-193" name="__codelineno-0-193"></a>        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">l2_distance</span><span class="p">(</span><span class="n">heat_source_pos</span><span class="p">,</span> <span class="n">obj_pos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_threshold</span><span class="p">:</span>
-<a id="__codelineno-0-194" name="__codelineno-0-194"></a>            <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-0-195" name="__codelineno-0-195"></a>
-<a id="__codelineno-0-196" name="__codelineno-0-196"></a>    <span class="c1"># If all checks pass, we&#39;re actively influencing the object!</span>
-<a id="__codelineno-0-197" name="__codelineno-0-197"></a>    <span class="k">return</span> <span class="kc">True</span>
-<a id="__codelineno-0-198" name="__codelineno-0-198"></a>
-<a id="__codelineno-0-199" name="__codelineno-0-199"></a><span class="c1"># Nothing needs to be done to save/load HeatSource</span>
+<span class="normal"><a href="#__codelineno-0-199">199</a></span>
+<span class="normal"><a href="#__codelineno-0-200">200</a></span>
+<span class="normal"><a href="#__codelineno-0-201">201</a></span>
+<span class="normal"><a href="#__codelineno-0-202">202</a></span>
+<span class="normal"><a href="#__codelineno-0-203">203</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-170" name="__codelineno-0-170"></a><span class="k">def</span> <span class="nf">affects_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<a id="__codelineno-0-171" name="__codelineno-0-171"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-172" name="__codelineno-0-172"></a><span class="sd">    Computes whether this heat source or sink object is affecting object @obj</span>
+<a id="__codelineno-0-173" name="__codelineno-0-173"></a><span class="sd">    Computes the temperature delta that may be applied to object @obj. NOTE: This value is agnostic to simulation</span>
+<a id="__codelineno-0-174" name="__codelineno-0-174"></a><span class="sd">    stepping speed, and should be scaled accordingly</span>
+<a id="__codelineno-0-175" name="__codelineno-0-175"></a>
+<a id="__codelineno-0-176" name="__codelineno-0-176"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-177" name="__codelineno-0-177"></a><span class="sd">        obj (StatefulObject): Object whose temperature delta should be computed</span>
+<a id="__codelineno-0-178" name="__codelineno-0-178"></a>
+<a id="__codelineno-0-179" name="__codelineno-0-179"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="sd">        bool: Whether this heat source or sink is currently affecting @obj&#39;s temperature</span>
+<a id="__codelineno-0-181" name="__codelineno-0-181"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-182" name="__codelineno-0-182"></a>    <span class="c1"># No change if we&#39;re not on</span>
+<a id="__codelineno-0-183" name="__codelineno-0-183"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
+<a id="__codelineno-0-184" name="__codelineno-0-184"></a>        <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-0-185" name="__codelineno-0-185"></a>
+<a id="__codelineno-0-186" name="__codelineno-0-186"></a>    <span class="c1"># Otherwise, check for other edge cases</span>
+<a id="__codelineno-0-187" name="__codelineno-0-187"></a>    <span class="c1"># If we require the object to be inside, make sure the object is inside, otherwise, we return 0</span>
+<a id="__codelineno-0-188" name="__codelineno-0-188"></a>    <span class="c1"># Otherwise, make sure the object is within close proximity of this heat source</span>
+<a id="__codelineno-0-189" name="__codelineno-0-189"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires_inside</span><span class="p">:</span>
+<a id="__codelineno-0-190" name="__codelineno-0-190"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Inside</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+<a id="__codelineno-0-191" name="__codelineno-0-191"></a>            <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-0-192" name="__codelineno-0-192"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-193" name="__codelineno-0-193"></a>        <span class="n">aabb_lower</span><span class="p">,</span> <span class="n">aabb_upper</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">AABB</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+<a id="__codelineno-0-194" name="__codelineno-0-194"></a>        <span class="n">obj_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">aabb_lower</span> <span class="o">+</span> <span class="n">aabb_upper</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a>        <span class="c1"># Position is either the AABB center of the default link or the metalink position itself</span>
+<a id="__codelineno-0-196" name="__codelineno-0-196"></a>        <span class="n">heat_source_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">aabb_center</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_link</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+<a id="__codelineno-0-197" name="__codelineno-0-197"></a>        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">l2_distance</span><span class="p">(</span><span class="n">heat_source_pos</span><span class="p">,</span> <span class="n">obj_pos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_threshold</span><span class="p">:</span>
+<a id="__codelineno-0-198" name="__codelineno-0-198"></a>            <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-0-199" name="__codelineno-0-199"></a>
+<a id="__codelineno-0-200" name="__codelineno-0-200"></a>    <span class="c1"># If all checks pass, we&#39;re actively influencing the object!</span>
+<a id="__codelineno-0-201" name="__codelineno-0-201"></a>    <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-0-202" name="__codelineno-0-202"></a>
+<a id="__codelineno-0-203" name="__codelineno-0-203"></a><span class="c1"># Nothing needs to be done to save/load HeatSource</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>

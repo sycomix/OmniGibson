@@ -1647,8 +1647,8 @@
   
   
     <li class="md-nav__item">
-      <a href="cloth.html" class="md-nav__link">
-        cloth
+      <a href="cloth_mixin.html" class="md-nav__link">
+        cloth_mixin
       </a>
     </li>
   
@@ -1919,8 +1919,8 @@
   
   
     <li class="md-nav__item">
-      <a href="kinematics.html" class="md-nav__link">
-        kinematics
+      <a href="kinematics_mixin.html" class="md-nav__link">
+        kinematics_mixin
       </a>
     </li>
   
@@ -3871,13 +3871,17 @@
 
   <div class="doc doc-contents ">
       <p class="doc doc-class-bases">
-        Bases: <code><span title="omnigibson.object_states.object_state_base.RelativeObjectState">RelativeObjectState</span></code>, <code><span title="omnigibson.object_states.object_state_base.BooleanState">BooleanState</span></code></p>
+        Bases: <code><span title="omnigibson.object_states.object_state_base.RelativeObjectState">RelativeObjectState</span></code>, <code><span title="omnigibson.object_states.object_state_base.BooleanStateMixin">BooleanStateMixin</span></code></p>
 
 
 
         <details class="quote">
           <summary>Source code in <code>omnigibson/object_states/covered.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-28"> 28</a></span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-0-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-0-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-0-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-0-28"> 28</a></span>
 <span class="normal"><a href="#__codelineno-0-29"> 29</a></span>
 <span class="normal"><a href="#__codelineno-0-30"> 30</a></span>
 <span class="normal"><a href="#__codelineno-0-31"> 31</a></span>
@@ -3967,103 +3971,101 @@
 <span class="normal"><a href="#__codelineno-0-115">115</a></span>
 <span class="normal"><a href="#__codelineno-0-116">116</a></span>
 <span class="normal"><a href="#__codelineno-0-117">117</a></span>
-<span class="normal"><a href="#__codelineno-0-118">118</a></span>
-<span class="normal"><a href="#__codelineno-0-119">119</a></span>
-<span class="normal"><a href="#__codelineno-0-120">120</a></span>
-<span class="normal"><a href="#__codelineno-0-121">121</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="k">class</span> <span class="nc">Covered</span><span class="p">(</span><span class="n">RelativeObjectState</span><span class="p">,</span> <span class="n">BooleanState</span><span class="p">):</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30"></a>        <span class="c1"># Run super first</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32"></a>
-<a id="__codelineno-0-33" name="__codelineno-0-33"></a>        <span class="c1"># Set internal values</span>
-<a id="__codelineno-0-34" name="__codelineno-0-34"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35"></a>
-<a id="__codelineno-0-36" name="__codelineno-0-36"></a>    <span class="nd">@staticmethod</span>
-<a id="__codelineno-0-37" name="__codelineno-0-37"></a>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">():</span>
-<a id="__codelineno-0-38" name="__codelineno-0-38"></a>        <span class="c1"># AABB needed for sampling visual particles on an object</span>
-<a id="__codelineno-0-39" name="__codelineno-0-39"></a>        <span class="k">return</span> <span class="n">RelativeObjectState</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">AABB</span><span class="p">,</span> <span class="n">ContactParticles</span><span class="p">]</span>
-<a id="__codelineno-0-40" name="__codelineno-0-40"></a>
-<a id="__codelineno-0-41" name="__codelineno-0-41"></a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span><span class="p">:</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_clear_attachment_groups</span><span class="p">()</span>
-<a id="__codelineno-0-44" name="__codelineno-0-44"></a>
-<a id="__codelineno-0-45" name="__codelineno-0-45"></a>    <span class="k">def</span> <span class="nf">_clear_attachment_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">        Utility function to destroy all corresponding attachment groups for this object</span>
-<a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-49" name="__codelineno-0-49"></a>        <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">VisualParticleSystem</span><span class="o">.</span><span class="n">get_active_systems</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-<a id="__codelineno-0-50" name="__codelineno-0-50"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
-<a id="__codelineno-0-51" name="__codelineno-0-51"></a>                <span class="n">system</span><span class="o">.</span><span class="n">remove_attachment_group</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span><span class="p">)</span>
-<a id="__codelineno-0-52" name="__codelineno-0-52"></a>
-<a id="__codelineno-0-53" name="__codelineno-0-53"></a>    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-54" name="__codelineno-0-54"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
-<a id="__codelineno-0-55" name="__codelineno-0-55"></a>        <span class="c1"># Grab group name</span>
-<a id="__codelineno-0-56" name="__codelineno-0-56"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="o">=</span> <span class="n">VisualParticleSystem</span><span class="o">.</span><span class="n">get_group_name</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
-<a id="__codelineno-0-57" name="__codelineno-0-57"></a>
-<a id="__codelineno-0-58" name="__codelineno-0-58"></a>    <span class="k">def</span> <span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
-<a id="__codelineno-0-59" name="__codelineno-0-59"></a>        <span class="c1"># Value is false by default</span>
-<a id="__codelineno-0-60" name="__codelineno-0-60"></a>        <span class="n">value</span> <span class="o">=</span> <span class="kc">False</span>
-<a id="__codelineno-0-61" name="__codelineno-0-61"></a>        <span class="c1"># First, we check what type of system</span>
-<a id="__codelineno-0-62" name="__codelineno-0-62"></a>        <span class="c1"># Currently, we support VisualParticleSystems and PhysicalParticleSystems</span>
-<a id="__codelineno-0-63" name="__codelineno-0-63"></a>        <span class="k">if</span> <span class="n">system</span><span class="o">.</span><span class="n">n_particles</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-0-64" name="__codelineno-0-64"></a>            <span class="k">if</span> <span class="n">is_visual_particle_system</span><span class="p">(</span><span class="n">system_name</span><span class="o">=</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
-<a id="__codelineno-0-65" name="__codelineno-0-65"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
-<a id="__codelineno-0-66" name="__codelineno-0-66"></a>                    <span class="c1"># check whether the current number of particles assigned to the group is greater than the threshold</span>
-<a id="__codelineno-0-67" name="__codelineno-0-67"></a>                    <span class="n">value</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">num_group_particles</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">VISUAL_PARTICLE_THRESHOLD</span>
-<a id="__codelineno-0-68" name="__codelineno-0-68"></a>            <span class="k">elif</span> <span class="n">is_physical_particle_system</span><span class="p">(</span><span class="n">system_name</span><span class="o">=</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
-<a id="__codelineno-0-69" name="__codelineno-0-69"></a>                <span class="c1"># We&#39;ve already cached particle contacts, so we merely search through them to see if any particles are</span>
-<a id="__codelineno-0-70" name="__codelineno-0-70"></a>                <span class="c1"># touching the object and are visible (the non-visible ones are considered already &quot;removed&quot;)</span>
-<a id="__codelineno-0-71" name="__codelineno-0-71"></a>                <span class="n">n_near_particles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ContactParticles</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">system</span><span class="p">))</span>
-<a id="__codelineno-0-72" name="__codelineno-0-72"></a>                <span class="c1"># Heuristic: If the number of near particles is above the threshold, we consdier this covered</span>
-<a id="__codelineno-0-73" name="__codelineno-0-73"></a>                <span class="n">value</span> <span class="o">=</span> <span class="n">n_near_particles</span> <span class="o">&gt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">PHYSICAL_PARTICLE_THRESHOLD</span>
-<a id="__codelineno-0-74" name="__codelineno-0-74"></a>            <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-75" name="__codelineno-0-75"></a>                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid system </span><span class="si">{</span><span class="n">system</span><span class="si">}</span><span class="s2"> received for getting Covered state!&quot;</span>
-<a id="__codelineno-0-76" name="__codelineno-0-76"></a>                                 <span class="sa">f</span><span class="s2">&quot;Currently, only VisualParticleSystems and PhysicalParticleSystems are supported.&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-77" name="__codelineno-0-77"></a>
-<a id="__codelineno-0-78" name="__codelineno-0-78"></a>        <span class="k">return</span> <span class="n">value</span>
-<a id="__codelineno-0-79" name="__codelineno-0-79"></a>
-<a id="__codelineno-0-80" name="__codelineno-0-80"></a>    <span class="k">def</span> <span class="nf">_set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
-<a id="__codelineno-0-81" name="__codelineno-0-81"></a>        <span class="c1"># Default success value is True</span>
-<a id="__codelineno-0-82" name="__codelineno-0-82"></a>        <span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
-<a id="__codelineno-0-83" name="__codelineno-0-83"></a>        <span class="c1"># First, we check what type of system</span>
-<a id="__codelineno-0-84" name="__codelineno-0-84"></a>        <span class="c1"># Currently, we support VisualParticleSystems and PhysicalParticleSystems</span>
-<a id="__codelineno-0-85" name="__codelineno-0-85"></a>        <span class="k">if</span> <span class="n">is_visual_particle_system</span><span class="p">(</span><span class="n">system_name</span><span class="o">=</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
-<a id="__codelineno-0-86" name="__codelineno-0-86"></a>            <span class="c1"># Create the group if it doesn&#39;t exist already</span>
-<a id="__codelineno-0-87" name="__codelineno-0-87"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
-<a id="__codelineno-0-88" name="__codelineno-0-88"></a>                <span class="n">system</span><span class="o">.</span><span class="n">create_attachment_group</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
-<a id="__codelineno-0-89" name="__codelineno-0-89"></a>
-<a id="__codelineno-0-90" name="__codelineno-0-90"></a>            <span class="c1"># Check current state and only do something if we&#39;re changing state</span>
-<a id="__codelineno-0-91" name="__codelineno-0-91"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">system</span><span class="p">)</span> <span class="o">!=</span> <span class="n">new_value</span><span class="p">:</span>
-<a id="__codelineno-0-92" name="__codelineno-0-92"></a>                <span class="k">if</span> <span class="n">new_value</span><span class="p">:</span>
-<a id="__codelineno-0-93" name="__codelineno-0-93"></a>                    <span class="c1"># Generate particles</span>
-<a id="__codelineno-0-94" name="__codelineno-0-94"></a>                    <span class="n">success</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">generate_group_particles_on_object</span><span class="p">(</span>
-<a id="__codelineno-0-95" name="__codelineno-0-95"></a>                        <span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span><span class="p">,</span>
-<a id="__codelineno-0-96" name="__codelineno-0-96"></a>                        <span class="n">max_samples</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">MAX_VISUAL_PARTICLES</span><span class="p">,</span>
-<a id="__codelineno-0-97" name="__codelineno-0-97"></a>                        <span class="n">min_samples_for_success</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">VISUAL_PARTICLE_THRESHOLD</span><span class="p">,</span>
-<a id="__codelineno-0-98" name="__codelineno-0-98"></a>                    <span class="p">)</span>
-<a id="__codelineno-0-99" name="__codelineno-0-99"></a>                <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-100" name="__codelineno-0-100"></a>                    <span class="c1"># We remove all of this group&#39;s particles</span>
-<a id="__codelineno-0-101" name="__codelineno-0-101"></a>                    <span class="n">system</span><span class="o">.</span><span class="n">remove_all_group_particles</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span><span class="p">)</span>
-<a id="__codelineno-0-102" name="__codelineno-0-102"></a>
-<a id="__codelineno-0-103" name="__codelineno-0-103"></a>        <span class="k">elif</span> <span class="n">is_physical_particle_system</span><span class="p">(</span><span class="n">system_name</span><span class="o">=</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
-<a id="__codelineno-0-104" name="__codelineno-0-104"></a>            <span class="c1"># Check current state and only do something if we&#39;re changing state</span>
-<a id="__codelineno-0-105" name="__codelineno-0-105"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">system</span><span class="p">)</span> <span class="o">!=</span> <span class="n">new_value</span><span class="p">:</span>
-<a id="__codelineno-0-106" name="__codelineno-0-106"></a>                <span class="k">if</span> <span class="n">new_value</span><span class="p">:</span>
-<a id="__codelineno-0-107" name="__codelineno-0-107"></a>                    <span class="c1"># Sample particles on top of the object</span>
-<a id="__codelineno-0-108" name="__codelineno-0-108"></a>                    <span class="n">success</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">generate_particles_on_object</span><span class="p">(</span>
-<a id="__codelineno-0-109" name="__codelineno-0-109"></a>                        <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span>
-<a id="__codelineno-0-110" name="__codelineno-0-110"></a>                        <span class="n">max_samples</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">MAX_PHYSICAL_PARTICLES</span><span class="p">,</span>
-<a id="__codelineno-0-111" name="__codelineno-0-111"></a>                        <span class="n">min_samples_for_success</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">PHYSICAL_PARTICLE_THRESHOLD</span><span class="p">,</span>
-<a id="__codelineno-0-112" name="__codelineno-0-112"></a>                    <span class="p">)</span>
-<a id="__codelineno-0-113" name="__codelineno-0-113"></a>                <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-114" name="__codelineno-0-114"></a>                    <span class="c1"># We remove all particles touching this object</span>
-<a id="__codelineno-0-115" name="__codelineno-0-115"></a>                    <span class="n">system</span><span class="o">.</span><span class="n">remove_particles</span><span class="p">(</span><span class="n">idxs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ContactParticles</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">system</span><span class="p">)))</span>
-<a id="__codelineno-0-116" name="__codelineno-0-116"></a>
-<a id="__codelineno-0-117" name="__codelineno-0-117"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-118" name="__codelineno-0-118"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid system </span><span class="si">{</span><span class="n">system</span><span class="si">}</span><span class="s2"> received for setting Covered state!&quot;</span>
-<a id="__codelineno-0-119" name="__codelineno-0-119"></a>                             <span class="sa">f</span><span class="s2">&quot;Currently, only VisualParticleSystems and PhysicalParticleSystems are supported.&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-120" name="__codelineno-0-120"></a>
-<a id="__codelineno-0-121" name="__codelineno-0-121"></a>        <span class="k">return</span> <span class="n">success</span>
+<span class="normal"><a href="#__codelineno-0-118">118</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="k">class</span> <span class="nc">Covered</span><span class="p">(</span><span class="n">RelativeObjectState</span><span class="p">,</span> <span class="n">BooleanStateMixin</span><span class="p">):</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a>        <span class="c1"># Run super first</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a>
+<a id="__codelineno-0-29" name="__codelineno-0-29"></a>        <span class="c1"># Set internal values</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a>        <span class="n">deps</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">()</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a>        <span class="n">deps</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">AABB</span><span class="p">,</span> <span class="n">ContactParticles</span><span class="p">})</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a>        <span class="k">return</span> <span class="n">deps</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span><span class="p">:</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_clear_attachment_groups</span><span class="p">()</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a>    <span class="k">def</span> <span class="nf">_clear_attachment_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="sd">        Utility function to destroy all corresponding attachment groups for this object</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a>        <span class="k">for</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">VisualParticleSystem</span><span class="o">.</span><span class="n">get_active_systems</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48"></a>                <span class="n">system</span><span class="o">.</span><span class="n">remove_attachment_group</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span><span class="p">)</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49"></a>
+<a id="__codelineno-0-50" name="__codelineno-0-50"></a>    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52"></a>        <span class="c1"># Grab group name</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="o">=</span> <span class="n">VisualParticleSystem</span><span class="o">.</span><span class="n">get_group_name</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+<a id="__codelineno-0-54" name="__codelineno-0-54"></a>
+<a id="__codelineno-0-55" name="__codelineno-0-55"></a>    <span class="k">def</span> <span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+<a id="__codelineno-0-56" name="__codelineno-0-56"></a>        <span class="c1"># Value is false by default</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57"></a>        <span class="n">value</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-0-58" name="__codelineno-0-58"></a>        <span class="c1"># First, we check what type of system</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59"></a>        <span class="c1"># Currently, we support VisualParticleSystems and PhysicalParticleSystems</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60"></a>        <span class="k">if</span> <span class="n">system</span><span class="o">.</span><span class="n">n_particles</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61"></a>            <span class="k">if</span> <span class="n">is_visual_particle_system</span><span class="p">(</span><span class="n">system_name</span><span class="o">=</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+<a id="__codelineno-0-63" name="__codelineno-0-63"></a>                    <span class="c1"># check whether the current number of particles assigned to the group is greater than the threshold</span>
+<a id="__codelineno-0-64" name="__codelineno-0-64"></a>                    <span class="n">value</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">num_group_particles</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">VISUAL_PARTICLE_THRESHOLD</span>
+<a id="__codelineno-0-65" name="__codelineno-0-65"></a>            <span class="k">elif</span> <span class="n">is_physical_particle_system</span><span class="p">(</span><span class="n">system_name</span><span class="o">=</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+<a id="__codelineno-0-66" name="__codelineno-0-66"></a>                <span class="c1"># We&#39;ve already cached particle contacts, so we merely search through them to see if any particles are</span>
+<a id="__codelineno-0-67" name="__codelineno-0-67"></a>                <span class="c1"># touching the object and are visible (the non-visible ones are considered already &quot;removed&quot;)</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68"></a>                <span class="n">n_near_particles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ContactParticles</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">system</span><span class="p">))</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69"></a>                <span class="c1"># Heuristic: If the number of near particles is above the threshold, we consdier this covered</span>
+<a id="__codelineno-0-70" name="__codelineno-0-70"></a>                <span class="n">value</span> <span class="o">=</span> <span class="n">n_near_particles</span> <span class="o">&gt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">PHYSICAL_PARTICLE_THRESHOLD</span>
+<a id="__codelineno-0-71" name="__codelineno-0-71"></a>            <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-72" name="__codelineno-0-72"></a>                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid system </span><span class="si">{</span><span class="n">system</span><span class="si">}</span><span class="s2"> received for getting Covered state!&quot;</span>
+<a id="__codelineno-0-73" name="__codelineno-0-73"></a>                                 <span class="sa">f</span><span class="s2">&quot;Currently, only VisualParticleSystems and PhysicalParticleSystems are supported.&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="k">return</span> <span class="n">value</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a>
+<a id="__codelineno-0-77" name="__codelineno-0-77"></a>    <span class="k">def</span> <span class="nf">_set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+<a id="__codelineno-0-78" name="__codelineno-0-78"></a>        <span class="c1"># Default success value is True</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a>        <span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80"></a>        <span class="c1"># First, we check what type of system</span>
+<a id="__codelineno-0-81" name="__codelineno-0-81"></a>        <span class="c1"># Currently, we support VisualParticleSystems and PhysicalParticleSystems</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a>        <span class="k">if</span> <span class="n">is_visual_particle_system</span><span class="p">(</span><span class="n">system_name</span><span class="o">=</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83"></a>            <span class="c1"># Create the group if it doesn&#39;t exist already</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85"></a>                <span class="n">system</span><span class="o">.</span><span class="n">create_attachment_group</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a>
+<a id="__codelineno-0-87" name="__codelineno-0-87"></a>            <span class="c1"># Check current state and only do something if we&#39;re changing state</span>
+<a id="__codelineno-0-88" name="__codelineno-0-88"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">system</span><span class="p">)</span> <span class="o">!=</span> <span class="n">new_value</span><span class="p">:</span>
+<a id="__codelineno-0-89" name="__codelineno-0-89"></a>                <span class="k">if</span> <span class="n">new_value</span><span class="p">:</span>
+<a id="__codelineno-0-90" name="__codelineno-0-90"></a>                    <span class="c1"># Generate particles</span>
+<a id="__codelineno-0-91" name="__codelineno-0-91"></a>                    <span class="n">success</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">generate_group_particles_on_object</span><span class="p">(</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92"></a>                        <span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span><span class="p">,</span>
+<a id="__codelineno-0-93" name="__codelineno-0-93"></a>                        <span class="n">max_samples</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">MAX_VISUAL_PARTICLES</span><span class="p">,</span>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a>                        <span class="n">min_samples_for_success</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">VISUAL_PARTICLE_THRESHOLD</span><span class="p">,</span>
+<a id="__codelineno-0-95" name="__codelineno-0-95"></a>                    <span class="p">)</span>
+<a id="__codelineno-0-96" name="__codelineno-0-96"></a>                <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-97" name="__codelineno-0-97"></a>                    <span class="c1"># We remove all of this group&#39;s particles</span>
+<a id="__codelineno-0-98" name="__codelineno-0-98"></a>                    <span class="n">system</span><span class="o">.</span><span class="n">remove_all_group_particles</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_visual_particle_group</span><span class="p">)</span>
+<a id="__codelineno-0-99" name="__codelineno-0-99"></a>
+<a id="__codelineno-0-100" name="__codelineno-0-100"></a>        <span class="k">elif</span> <span class="n">is_physical_particle_system</span><span class="p">(</span><span class="n">system_name</span><span class="o">=</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+<a id="__codelineno-0-101" name="__codelineno-0-101"></a>            <span class="c1"># Check current state and only do something if we&#39;re changing state</span>
+<a id="__codelineno-0-102" name="__codelineno-0-102"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">system</span><span class="p">)</span> <span class="o">!=</span> <span class="n">new_value</span><span class="p">:</span>
+<a id="__codelineno-0-103" name="__codelineno-0-103"></a>                <span class="k">if</span> <span class="n">new_value</span><span class="p">:</span>
+<a id="__codelineno-0-104" name="__codelineno-0-104"></a>                    <span class="c1"># Sample particles on top of the object</span>
+<a id="__codelineno-0-105" name="__codelineno-0-105"></a>                    <span class="n">success</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">generate_particles_on_object</span><span class="p">(</span>
+<a id="__codelineno-0-106" name="__codelineno-0-106"></a>                        <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span>
+<a id="__codelineno-0-107" name="__codelineno-0-107"></a>                        <span class="n">max_samples</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">MAX_PHYSICAL_PARTICLES</span><span class="p">,</span>
+<a id="__codelineno-0-108" name="__codelineno-0-108"></a>                        <span class="n">min_samples_for_success</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">PHYSICAL_PARTICLE_THRESHOLD</span><span class="p">,</span>
+<a id="__codelineno-0-109" name="__codelineno-0-109"></a>                    <span class="p">)</span>
+<a id="__codelineno-0-110" name="__codelineno-0-110"></a>                <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-111" name="__codelineno-0-111"></a>                    <span class="c1"># We remove all particles touching this object</span>
+<a id="__codelineno-0-112" name="__codelineno-0-112"></a>                    <span class="n">system</span><span class="o">.</span><span class="n">remove_particles</span><span class="p">(</span><span class="n">idxs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">ContactParticles</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">system</span><span class="p">)))</span>
+<a id="__codelineno-0-113" name="__codelineno-0-113"></a>
+<a id="__codelineno-0-114" name="__codelineno-0-114"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-115" name="__codelineno-0-115"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid system </span><span class="si">{</span><span class="n">system</span><span class="si">}</span><span class="s2"> received for setting Covered state!&quot;</span>
+<a id="__codelineno-0-116" name="__codelineno-0-116"></a>                             <span class="sa">f</span><span class="s2">&quot;Currently, only VisualParticleSystems and PhysicalParticleSystems are supported.&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-117" name="__codelineno-0-117"></a>
+<a id="__codelineno-0-118" name="__codelineno-0-118"></a>        <span class="k">return</span> <span class="n">success</span>
 </code></pre></div></td></tr></table></div>
         </details>
 

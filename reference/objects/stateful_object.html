@@ -1645,8 +1645,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../object_states/cloth.html" class="md-nav__link">
-        cloth
+      <a href="../object_states/cloth_mixin.html" class="md-nav__link">
+        cloth_mixin
       </a>
     </li>
   
@@ -1869,8 +1869,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../object_states/kinematics.html" class="md-nav__link">
-        kinematics
+      <a href="../object_states/kinematics_mixin.html" class="md-nav__link">
+        kinematics_mixin
       </a>
     </li>
   
@@ -4886,7 +4886,7 @@
 <a id="__codelineno-0-421" name="__codelineno-0-421"></a><span class="sd">        the current albedo map by adding and scaling the values. See @self._update_albedo_value for details.</span>
 <a id="__codelineno-0-422" name="__codelineno-0-422"></a>
 <a id="__codelineno-0-423" name="__codelineno-0-423"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-424" name="__codelineno-0-424"></a><span class="sd">            object_state (BooleanState or None): the object state that the diffuse color should match to</span>
+<a id="__codelineno-0-424" name="__codelineno-0-424"></a><span class="sd">            object_state (BooleanStateMixin or None): the object state that the diffuse color should match to</span>
 <a id="__codelineno-0-425" name="__codelineno-0-425"></a><span class="sd">        &quot;&quot;&quot;</span>
 <a id="__codelineno-0-426" name="__codelineno-0-426"></a>        <span class="k">for</span> <span class="n">material</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">materials</span><span class="p">:</span>
 <a id="__codelineno-0-427" name="__codelineno-0-427"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_update_albedo_value</span><span class="p">(</span><span class="n">object_state</span><span class="p">,</span> <span class="n">material</span><span class="p">)</span>
@@ -4898,7 +4898,7 @@
 <a id="__codelineno-0-433" name="__codelineno-0-433"></a><span class="sd">        albedo_value = diffuse_tint * (albedo_value + albedo_add)</span>
 <a id="__codelineno-0-434" name="__codelineno-0-434"></a>
 <a id="__codelineno-0-435" name="__codelineno-0-435"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-436" name="__codelineno-0-436"></a><span class="sd">            object_state (BooleanState or None): the object state that the diffuse color should match to</span>
+<a id="__codelineno-0-436" name="__codelineno-0-436"></a><span class="sd">            object_state (BooleanStateMixin or None): the object state that the diffuse color should match to</span>
 <a id="__codelineno-0-437" name="__codelineno-0-437"></a><span class="sd">            material (MaterialPrim): the material to use to update the albedo value</span>
 <a id="__codelineno-0-438" name="__codelineno-0-438"></a><span class="sd">        &quot;&quot;&quot;</span>
 <a id="__codelineno-0-439" name="__codelineno-0-439"></a>        <span class="k">if</span> <span class="n">object_state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

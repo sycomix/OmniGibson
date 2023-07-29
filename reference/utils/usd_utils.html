@@ -1645,8 +1645,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../object_states/cloth.html" class="md-nav__link">
-        cloth
+      <a href="../object_states/cloth_mixin.html" class="md-nav__link">
+        cloth_mixin
       </a>
     </li>
   
@@ -1869,8 +1869,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../object_states/kinematics.html" class="md-nav__link">
-        kinematics
+      <a href="../object_states/kinematics_mixin.html" class="md-nav__link">
+        kinematics_mixin
       </a>
     </li>
   
@@ -7080,7 +7080,7 @@ Valid options are keys of GF_TO_VT_MAPPING</p>
         <tr>
           <td><code>joint_type</code></td>
           <td>
-                <code>str</code>
+                <code>str or JointType</code>
           </td>
           <td>
             <div class="doc-md-description">
@@ -7332,7 +7332,7 @@ Valid options are keys of GF_TO_VT_MAPPING</p>
 <a id="__codelineno-0-157" name="__codelineno-0-157"></a>
 <a id="__codelineno-0-158" name="__codelineno-0-158"></a><span class="sd">    Args:</span>
 <a id="__codelineno-0-159" name="__codelineno-0-159"></a><span class="sd">        prim_path (str): absolute path to where the joint will be created</span>
-<a id="__codelineno-0-160" name="__codelineno-0-160"></a><span class="sd">        joint_type (str): type of joint to create. Valid options are:</span>
+<a id="__codelineno-0-160" name="__codelineno-0-160"></a><span class="sd">        joint_type (str or JointType): type of joint to create. Valid options are:</span>
 <a id="__codelineno-0-161" name="__codelineno-0-161"></a><span class="sd">            &quot;FixedJoint&quot;, &quot;Joint&quot;, &quot;PrismaticJoint&quot;, &quot;RevoluteJoint&quot;, &quot;SphericalJoint&quot;</span>
 <a id="__codelineno-0-162" name="__codelineno-0-162"></a><span class="sd">                        (equivalently, one of JointType)</span>
 <a id="__codelineno-0-163" name="__codelineno-0-163"></a><span class="sd">        body0 (str or None): absolute path to the first body&#39;s prim. At least @body0 or @body1 must be specified.</span>

@@ -9,7 +9,7 @@ from omnigibson.object_states.contact_bodies import ContactBodies
 from omnigibson.object_states.contact_particles import ContactParticles
 from omnigibson.object_states.covered import Covered
 from omnigibson.object_states.link_based_state_mixin import LinkBasedStateMixin
-from omnigibson.object_states.object_state_base import RelativeObjectState
+from omnigibson.object_states.object_state_base import IntrinsicObjectState
 from omnigibson.object_states.saturated import ModifiedParticles, Saturated
 from omnigibson.object_states.toggle import ToggledOn
 from omnigibson.object_states.update_state_mixin import UpdateStateMixin
@@ -18,13 +18,13 @@ from omnigibson.systems.system_base import VisualParticleSystem, PhysicalParticl
 from omnigibson.utils.constants import ParticleModifyMethod, ParticleModifyCondition, PrimType
 from omnigibson.utils.geometry_utils import generate_points_in_volume_checker_function, \
     get_particle_positions_in_frame, get_particle_positions_from_frame
-from omnigibson.utils.python_utils import assert_valid_key, classproperty
+from omnigibson.utils.python_utils import classproperty
 from omnigibson.utils.deprecated_utils import Core
 from omnigibson.utils.ui_utils import suppress_omni_log
 from omnigibson.utils.usd_utils import create_primitive_mesh, FlatcacheAPI
 import omnigibson.utils.transform_utils as T
 from omnigibson.utils.sampling_utils import sample_cuboid_on_object
-from omni.isaac.core.utils.prims import get_prim_at_path, delete_prim, move_prim, is_prim_path_valid
+from omni.isaac.core.utils.prims import get_prim_at_path, delete_prim, is_prim_path_valid
 from pxr import PhysicsSchemaTools, UsdGeom, Gf, Sdf
 
 
@@ -169,7 +169,7 @@ def create_projection_visualization(
     return get_prim_at_path(system_path), emitter_prim
 
 
-class ParticleModifier(RelativeObjectState, LinkBasedStateMixin, UpdateStateMixin):
+class ParticleModifier(IntrinsicObjectState, LinkBasedStateMixin, UpdateStateMixin):
     """
     Object state representing an object that has the ability to modify visual and / or physical particles within the
     active simulation.
@@ -531,16 +531,17 @@ class ParticleModifier(RelativeObjectState, LinkBasedStateMixin, UpdateStateMixi
         # Update the current step
         self._current_step = (self._current_step + 1) % self.n_steps_per_modification
 
-    def _get_value(self, system):
-        pass
+    @classmethod
+    def get_dependencies(cls):
+        deps = super().get_dependencies()
+        deps.update({AABB, Saturated, ModifiedParticles})
+        return deps
 
-    @staticmethod
-    def get_dependencies():
-        return RelativeObjectState.get_dependencies() + [AABB, Saturated, ModifiedParticles]
-
-    @staticmethod
-    def get_optional_dependencies():
-        return RelativeObjectState.get_optional_dependencies() + [Covered, ToggledOn, ContactBodies, ContactParticles]
+    @classmethod
+    def get_optional_dependencies(cls):
+        deps = super().get_optional_dependencies()
+        deps.update({Covered, ToggledOn, ContactBodies, ContactParticles})
+        return deps
 
     @classproperty
     def supported_active_systems(cls):
@@ -670,11 +671,13 @@ class ParticleRemover(ParticleModifier):
         # Create set of default system to condition mappings based on settings
         all_conditions = dict()
         for system_name in REGISTERED_SYSTEMS.keys():
-            # Ignore cloth
-            if system_name == "cloth":
+            if is_physical_particle_system(system_name):
+                default_system_conditions = self._default_physical_conditions
+            elif is_visual_particle_system(system_name):
+                default_system_conditions = self._default_visual_conditions
+            else:
+                # Don't process any other systems, continue
                 continue
-            default_system_conditions = self._default_physical_conditions if is_physical_particle_system(system_name) \
-                else self._default_visual_conditions
             if default_system_conditions is not None:
                 all_conditions[system_name] = default_system_conditions + [self._generate_limit_condition(system_name)]
 
@@ -1027,6 +1030,10 @@ class ParticleApplier(ParticleModifier):
                     # Add to info
                     particles_info[group]["positions"].append(hit[0])
                     particles_info[group]["orientations"].append(hit[2])
+                    # Since particles' scales are sampled with respect to the modifier object, but are being placed
+                    # (in the USD hierarchy) underneath the in_contact object, we need to compensate for the relative
+                    # scale differences between the two objects, so that "moving" the particle to the new object won't
+                    # cause it to unexpectedly shrink / grow based on that parent's (potentially) different scale
                     particles_info[group]["scales"].append(scale * modifier_avg_scale / np.cbrt(np.product(hit_obj.scale)))
                     particles_info[group]["link_prim_paths"].append(hit[3])
             # Generate all the particles for each group

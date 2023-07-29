@@ -1647,8 +1647,8 @@
   
   
     <li class="md-nav__item">
-      <a href="cloth.html" class="md-nav__link">
-        cloth
+      <a href="cloth_mixin.html" class="md-nav__link">
+        cloth_mixin
       </a>
     </li>
   
@@ -1871,8 +1871,8 @@
   
   
     <li class="md-nav__item">
-      <a href="kinematics.html" class="md-nav__link">
-        kinematics
+      <a href="kinematics_mixin.html" class="md-nav__link">
+        kinematics_mixin
       </a>
     </li>
   
@@ -3979,7 +3979,9 @@ under that meta link. Otherwise (e.g. charcoal), the fire visualization will be 
 <span class="normal"><a href="#__codelineno-0-84">84</a></span>
 <span class="normal"><a href="#__codelineno-0-85">85</a></span>
 <span class="normal"><a href="#__codelineno-0-86">86</a></span>
-<span class="normal"><a href="#__codelineno-0-87">87</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">class</span> <span class="nc">OnFire</span><span class="p">(</span><span class="n">HeatSourceOrSink</span><span class="p">,</span> <span class="n">UpdateStateMixin</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-87">87</a></span>
+<span class="normal"><a href="#__codelineno-0-88">88</a></span>
+<span class="normal"><a href="#__codelineno-0-89">89</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">class</span> <span class="nc">OnFire</span><span class="p">(</span><span class="n">HeatSourceOrSink</span><span class="p">,</span> <span class="n">UpdateStateMixin</span><span class="p">):</span>
 <a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">    This state indicates the heat source is currently on fire.</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20"></a>
@@ -4030,26 +4032,28 @@ under that meta link. Otherwise (e.g. charcoal), the fire visualization will be 
 <a id="__codelineno-0-65" name="__codelineno-0-65"></a>        <span class="c1"># Fallback to root link</span>
 <a id="__codelineno-0-66" name="__codelineno-0-66"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">root_link</span>
 <a id="__codelineno-0-67" name="__codelineno-0-67"></a>
-<a id="__codelineno-0-68" name="__codelineno-0-68"></a>    <span class="nd">@staticmethod</span>
-<a id="__codelineno-0-69" name="__codelineno-0-69"></a>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">():</span>
-<a id="__codelineno-0-70" name="__codelineno-0-70"></a>        <span class="k">return</span> <span class="n">HeatSourceOrSink</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">Temperature</span><span class="p">]</span>
-<a id="__codelineno-0-71" name="__codelineno-0-71"></a>
-<a id="__codelineno-0-72" name="__codelineno-0-72"></a>    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-73" name="__codelineno-0-73"></a>        <span class="c1"># If it&#39;s on fire, maintain the fire temperature</span>
-<a id="__codelineno-0-74" name="__codelineno-0-74"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
-<a id="__codelineno-0-75" name="__codelineno-0-75"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Temperature</span><span class="p">]</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">)</span>
-<a id="__codelineno-0-76" name="__codelineno-0-76"></a>
-<a id="__codelineno-0-77" name="__codelineno-0-77"></a>    <span class="k">def</span> <span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-78" name="__codelineno-0-78"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Temperature</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignition_temperature</span>
-<a id="__codelineno-0-79" name="__codelineno-0-79"></a>
-<a id="__codelineno-0-80" name="__codelineno-0-80"></a>    <span class="k">def</span> <span class="nf">_set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
-<a id="__codelineno-0-81" name="__codelineno-0-81"></a>        <span class="k">if</span> <span class="n">new_value</span><span class="p">:</span>
-<a id="__codelineno-0-82" name="__codelineno-0-82"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Temperature</span><span class="p">]</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">)</span>
-<a id="__codelineno-0-83" name="__codelineno-0-83"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-84" name="__codelineno-0-84"></a>            <span class="c1"># We&#39;ll set the temperature just one degree below ignition.</span>
-<a id="__codelineno-0-85" name="__codelineno-0-85"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Temperature</span><span class="p">]</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ignition_temperature</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<a id="__codelineno-0-86" name="__codelineno-0-86"></a>
-<a id="__codelineno-0-87" name="__codelineno-0-87"></a>    <span class="c1"># Nothing needs to be done to save/load OnFire</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69"></a>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<a id="__codelineno-0-70" name="__codelineno-0-70"></a>        <span class="n">deps</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">()</span>
+<a id="__codelineno-0-71" name="__codelineno-0-71"></a>        <span class="n">deps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span>
+<a id="__codelineno-0-72" name="__codelineno-0-72"></a>        <span class="k">return</span> <span class="n">deps</span>
+<a id="__codelineno-0-73" name="__codelineno-0-73"></a>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a>    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="c1"># If it&#39;s on fire, maintain the fire temperature</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">():</span>
+<a id="__codelineno-0-77" name="__codelineno-0-77"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Temperature</span><span class="p">]</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">)</span>
+<a id="__codelineno-0-78" name="__codelineno-0-78"></a>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a>    <span class="k">def</span> <span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Temperature</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignition_temperature</span>
+<a id="__codelineno-0-81" name="__codelineno-0-81"></a>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a>    <span class="k">def</span> <span class="nf">_set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83"></a>        <span class="k">if</span> <span class="n">new_value</span><span class="p">:</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Temperature</span><span class="p">]</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">)</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a>            <span class="c1"># We&#39;ll set the temperature just one degree below ignition.</span>
+<a id="__codelineno-0-87" name="__codelineno-0-87"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Temperature</span><span class="p">]</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ignition_temperature</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-0-88" name="__codelineno-0-88"></a>
+<a id="__codelineno-0-89" name="__codelineno-0-89"></a>    <span class="c1"># Nothing needs to be done to save/load OnFire</span>
 </code></pre></div></td></tr></table></div>
         </details>
 

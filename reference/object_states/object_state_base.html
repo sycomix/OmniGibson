@@ -1647,8 +1647,8 @@
   
   
     <li class="md-nav__item">
-      <a href="cloth.html" class="md-nav__link">
-        cloth
+      <a href="cloth_mixin.html" class="md-nav__link">
+        cloth_mixin
       </a>
     </li>
   
@@ -1871,8 +1871,8 @@
   
   
     <li class="md-nav__item">
-      <a href="kinematics.html" class="md-nav__link">
-        kinematics
+      <a href="kinematics_mixin.html" class="md-nav__link">
+        kinematics_mixin
       </a>
     </li>
   
@@ -2093,8 +2093,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#object_states.object_state_base.BooleanState" class="md-nav__link">
-    BooleanState
+  <a href="#object_states.object_state_base.BooleanStateMixin" class="md-nav__link">
+    BooleanStateMixin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object_states.object_state_base.IntrinsicObjectState" class="md-nav__link">
+    IntrinsicObjectState
   </a>
   
 </li>
@@ -4071,8 +4078,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#object_states.object_state_base.BooleanState" class="md-nav__link">
-    BooleanState
+  <a href="#object_states.object_state_base.BooleanStateMixin" class="md-nav__link">
+    BooleanStateMixin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object_states.object_state_base.IntrinsicObjectState" class="md-nav__link">
+    IntrinsicObjectState
   </a>
   
 </li>
@@ -4567,8 +4581,8 @@ RelativeObjectState.</p>
 <a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="sd">    RelativeObjectState.</span>
 <a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="sd">    &quot;&quot;&quot;</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16"></a>
-<a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="nd">@staticmethod</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18"></a>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">():</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="sd">        Get the dependency states for this state, e.g. states that need to be explicitly enabled on the current object</span>
 <a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="sd">        before the current state is usable. States listed here will be enabled for all objects that have this current</span>
@@ -4576,12 +4590,12 @@ RelativeObjectState.</p>
 <a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="sd">        *any* object.</span>
 <a id="__codelineno-0-24" name="__codelineno-0-24"></a>
 <a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="sd">            list of str: List of strings corresponding to state keys.</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="sd">            set of str: Set of strings corresponding to state keys.</span>
 <a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="k">return</span> <span class="p">[]</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
 <a id="__codelineno-0-29" name="__codelineno-0-29"></a>
-<a id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="nd">@staticmethod</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31"></a>    <span class="k">def</span> <span class="nf">get_optional_dependencies</span><span class="p">():</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a>    <span class="k">def</span> <span class="nf">get_optional_dependencies</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
 <a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="sd">        Get states that should be processed prior to this state if they are already enabled. These states will not be</span>
 <a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="sd">        enabled because of this state&#39;s dependency on them, but if they are already enabled for another reason (e.g.</span>
@@ -4589,9 +4603,9 @@ RelativeObjectState.</p>
 <a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="sd">        state being processed on *any* object.</span>
 <a id="__codelineno-0-37" name="__codelineno-0-37"></a>
 <a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">            list of str: List of strings corresponding to state keys.</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">            set of str: Set of strings corresponding to state keys.</span>
 <a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41"></a>        <span class="k">return</span> <span class="p">[]</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a>        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
 <a id="__codelineno-0-42" name="__codelineno-0-42"></a>
 <a id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
 <a id="__codelineno-0-44" name="__codelineno-0-44"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -5246,7 +5260,7 @@ Default is False unless we're at the current timestep.</p>
 <code class="highlight language-python"><span class="n">get_dependencies</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
 </h3>
@@ -5273,7 +5287,7 @@ state, and all dependency states will be processed on <em>all</em> objects prior
           </td>
           <td>
             <div class="doc-md-description">
-              <p>list of str: List of strings corresponding to state keys.</p>
+              <p>set of str: Set of strings corresponding to state keys.</p>
             </div>
           </td>
         </tr>
@@ -5293,8 +5307,8 @@ state, and all dependency states will be processed on <em>all</em> objects prior
 <span class="normal"><a href="#__codelineno-0-25">25</a></span>
 <span class="normal"><a href="#__codelineno-0-26">26</a></span>
 <span class="normal"><a href="#__codelineno-0-27">27</a></span>
-<span class="normal"><a href="#__codelineno-0-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="nd">@staticmethod</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">():</span>
+<span class="normal"><a href="#__codelineno-0-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="sd">    Get the dependency states for this state, e.g. states that need to be explicitly enabled on the current object</span>
 <a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="sd">    before the current state is usable. States listed here will be enabled for all objects that have this current</span>
@@ -5302,9 +5316,9 @@ state, and all dependency states will be processed on <em>all</em> objects prior
 <a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="sd">    *any* object.</span>
 <a id="__codelineno-0-24" name="__codelineno-0-24"></a>
 <a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="sd">        list of str: List of strings corresponding to state keys.</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="sd">        set of str: Set of strings corresponding to state keys.</span>
 <a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28"></a>    <span class="k">return</span> <span class="p">[]</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a>    <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -5319,7 +5333,7 @@ state, and all dependency states will be processed on <em>all</em> objects prior
 <code class="highlight language-python"><span class="n">get_optional_dependencies</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
 </h3>
@@ -5346,7 +5360,7 @@ state being processed on <em>any</em> object.</p>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>list of str: List of strings corresponding to state keys.</p>
+              <p>set of str: Set of strings corresponding to state keys.</p>
             </div>
           </td>
         </tr>
@@ -5366,8 +5380,8 @@ state being processed on <em>any</em> object.</p>
 <span class="normal"><a href="#__codelineno-0-38">38</a></span>
 <span class="normal"><a href="#__codelineno-0-39">39</a></span>
 <span class="normal"><a href="#__codelineno-0-40">40</a></span>
-<span class="normal"><a href="#__codelineno-0-41">41</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="nd">@staticmethod</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="k">def</span> <span class="nf">get_optional_dependencies</span><span class="p">():</span>
+<span class="normal"><a href="#__codelineno-0-41">41</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="k">def</span> <span class="nf">get_optional_dependencies</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
 <a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="sd">    Get states that should be processed prior to this state if they are already enabled. These states will not be</span>
 <a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="sd">    enabled because of this state&#39;s dependency on them, but if they are already enabled for another reason (e.g.</span>
@@ -5375,9 +5389,9 @@ state being processed on <em>any</em> object.</p>
 <a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="sd">    state being processed on *any* object.</span>
 <a id="__codelineno-0-37" name="__codelineno-0-37"></a>
 <a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">        list of str: List of strings corresponding to state keys.</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">        set of str: Set of strings corresponding to state keys.</span>
 <a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41"></a>    <span class="k">return</span> <span class="p">[]</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a>    <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -6180,17 +6194,57 @@ into OmniGibson yet.</p>
 
 
 
-<h2 class="doc doc-heading" id="object_states.object_state_base.BooleanState">
-        <code>BooleanState</code>
+<h2 class="doc doc-heading" id="object_states.object_state_base.BooleanStateMixin">
+        <code>BooleanStateMixin</code>
 
 
 </h2>
 
 
   <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="object_states.object_state_base.BaseObjectState" href="#object_states.object_state_base.BaseObjectState">BaseObjectState</a></code></p>
 
   
       <p>This class is a mixin used to indicate that a state has a boolean value.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>omnigibson/object_states/object_state_base.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-411">411</a></span>
+<span class="normal"><a href="#__codelineno-0-412">412</a></span>
+<span class="normal"><a href="#__codelineno-0-413">413</a></span>
+<span class="normal"><a href="#__codelineno-0-414">414</a></span>
+<span class="normal"><a href="#__codelineno-0-415">415</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-411" name="__codelineno-0-411"></a><span class="k">class</span> <span class="nc">BooleanStateMixin</span><span class="p">(</span><span class="n">BaseObjectState</span><span class="p">):</span>
+<a id="__codelineno-0-412" name="__codelineno-0-412"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-413" name="__codelineno-0-413"></a><span class="sd">    This class is a mixin used to indicate that a state has a boolean value.</span>
+<a id="__codelineno-0-414" name="__codelineno-0-414"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-415" name="__codelineno-0-415"></a>    <span class="k">pass</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="object_states.object_state_base.IntrinsicObjectState">
+        <code>IntrinsicObjectState</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="object_states.object_state_base.BaseObjectState" href="#object_states.object_state_base.BaseObjectState">BaseObjectState</a></code></p>
+
+  
+      <p>This class is used to track object states that should NOT have getters / setters implemented, since the associated
+ability / state is intrinsic to the state</p>
 
 
         <details class="quote">
@@ -6200,14 +6254,54 @@ into OmniGibson yet.</p>
 <span class="normal"><a href="#__codelineno-0-393">393</a></span>
 <span class="normal"><a href="#__codelineno-0-394">394</a></span>
 <span class="normal"><a href="#__codelineno-0-395">395</a></span>
-<span class="normal"><a href="#__codelineno-0-396">396</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-391" name="__codelineno-0-391"></a><span class="k">class</span> <span class="nc">BooleanState</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-396">396</a></span>
+<span class="normal"><a href="#__codelineno-0-397">397</a></span>
+<span class="normal"><a href="#__codelineno-0-398">398</a></span>
+<span class="normal"><a href="#__codelineno-0-399">399</a></span>
+<span class="normal"><a href="#__codelineno-0-400">400</a></span>
+<span class="normal"><a href="#__codelineno-0-401">401</a></span>
+<span class="normal"><a href="#__codelineno-0-402">402</a></span>
+<span class="normal"><a href="#__codelineno-0-403">403</a></span>
+<span class="normal"><a href="#__codelineno-0-404">404</a></span>
+<span class="normal"><a href="#__codelineno-0-405">405</a></span>
+<span class="normal"><a href="#__codelineno-0-406">406</a></span>
+<span class="normal"><a href="#__codelineno-0-407">407</a></span>
+<span class="normal"><a href="#__codelineno-0-408">408</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-391" name="__codelineno-0-391"></a><span class="k">class</span> <span class="nc">IntrinsicObjectState</span><span class="p">(</span><span class="n">BaseObjectState</span><span class="p">):</span>
 <a id="__codelineno-0-392" name="__codelineno-0-392"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-393" name="__codelineno-0-393"></a><span class="sd">    This class is a mixin used to indicate that a state has a boolean value.</span>
-<a id="__codelineno-0-394" name="__codelineno-0-394"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-395" name="__codelineno-0-395"></a>
-<a id="__codelineno-0-396" name="__codelineno-0-396"></a>    <span class="k">pass</span>
+<a id="__codelineno-0-393" name="__codelineno-0-393"></a><span class="sd">    This class is used to track object states that should NOT have getters / setters implemented, since the associated</span>
+<a id="__codelineno-0-394" name="__codelineno-0-394"></a><span class="sd">    ability / state is intrinsic to the state</span>
+<a id="__codelineno-0-395" name="__codelineno-0-395"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-396" name="__codelineno-0-396"></a>
+<a id="__codelineno-0-397" name="__codelineno-0-397"></a>    <span class="k">def</span> <span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-398" name="__codelineno-0-398"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_get_value not implemented for IntrinsicObjectState </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> state.&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-399" name="__codelineno-0-399"></a>
+<a id="__codelineno-0-400" name="__codelineno-0-400"></a>    <span class="k">def</span> <span class="nf">_set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+<a id="__codelineno-0-401" name="__codelineno-0-401"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_set_value not implemented for IntrinsicObjectState </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> state.&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-402" name="__codelineno-0-402"></a>
+<a id="__codelineno-0-403" name="__codelineno-0-403"></a>    <span class="nd">@classproperty</span>
+<a id="__codelineno-0-404" name="__codelineno-0-404"></a>    <span class="k">def</span> <span class="nf">_do_not_register_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<a id="__codelineno-0-405" name="__codelineno-0-405"></a>        <span class="c1"># Don&#39;t register this class since it&#39;s an abstract template</span>
+<a id="__codelineno-0-406" name="__codelineno-0-406"></a>        <span class="n">classes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_do_not_register_classes</span>
+<a id="__codelineno-0-407" name="__codelineno-0-407"></a>        <span class="n">classes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;IntrinsicObjectState&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-408" name="__codelineno-0-408"></a>        <span class="k">return</span> <span class="n">classes</span>
 </code></pre></div></td></tr></table></div>
         </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
 
   </div>
 

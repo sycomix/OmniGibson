@@ -292,7 +292,7 @@ class DatasetObject(USDObject):
         it modifies the current albedo map by adding and scaling the values. See @self._update_albedo_value for details.
 
         Args:
-            object_state (BooleanState or None): the object state that the diffuse color should match to
+            object_state (BooleanStateMixin or None): the object state that the diffuse color should match to
         """
         # TODO: uncomment these once our dataset has the object state-conditioned texture maps
         # DEFAULT_ALBEDO_MAP_SUFFIX = frozenset({"DIFFUSE", "COMBINED", "albedo"})
@@ -518,26 +518,9 @@ class DatasetObject(USDObject):
 
             # If the link has a bounding box annotation.
             if self.native_link_bboxes is not None and link_name in self.native_link_bboxes:
-                # If a visual bounding box does not exist in the dictionary, try switching to collision.
-                # We expect that every link has its collision bb annotated (or set to None if none exists).
-                if bbox_type == "visual" and "visual" not in self.native_link_bboxes[link_name]:
-                    log.debug(
-                        "Falling back to collision bbox for object %s link %s since no visual bbox exists.",
-                        self.name,
-                        link_name,
-                    )
-                    bbox_type = "collision"
-
                 # Check if the annotation is still missing.
                 if bbox_type not in self.native_link_bboxes[link_name]:
-                    raise ValueError(
-                        "Could not find %s bounding box for object %s link %s" % (bbox_type, self.name, link_name)
-                    )
-
-                # Check if a mesh exists for this link. If None, the link is meshless, so we continue to the next link.
-                # TODO: Because of encoding, may need to be UsdTokens.none, not None
-                if self.native_link_bboxes[link_name][bbox_type] is None:
-                    continue
+                    raise ValueError(f"Could not find {bbox_type} bounding box for object {self.name} link {link_name}")
 
                 # Get the extent and transform.
                 bb_data = self.native_link_bboxes[link_name][bbox_type][link_bbox_type]
