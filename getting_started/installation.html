@@ -4073,6 +4073,10 @@
 <summary>OmniGibson is stuck at shader compilation upon startup</summary>
 <p>The process could take up to 5 minutes. This is expected behavior, and should only occur once when you import OmniGibson for the first time.</p>
 </details>
+<details class="question">
+<summary>OmniGibson is stuck at <code>HydraEngine rtx failed creating scene renderer.</code></summary>
+<p><code>OmniGibson</code> is likely using an unsupported GPU (default is id 0). Run <code>nvidia-smi</code> to see the active list of GPUs, and select an NVIDIA-supported GPU and set its corresponding ID when running <code>OmniGibson</code> with <code>export OMNIGIBSON_GPU_ID=&lt;ID NUMBER&gt;</code>.</p>
+</details>
 
 
   
