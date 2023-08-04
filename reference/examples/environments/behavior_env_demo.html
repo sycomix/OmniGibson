@@ -3930,7 +3930,7 @@ using the Gym interface, resetting it 10 times.</p>
 <a id="__codelineno-0-21" name="__codelineno-0-21"></a>
 <a id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="c1"># Ask the user whether they want online object sampling or not</span>
 <a id="__codelineno-0-23" name="__codelineno-0-23"></a>    <span class="n">sampling_options</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24"></a>        <span class="c1"># False: &quot;Use a pre-sampled cached BEHAVIOR activity scene&quot;, # TODO: Add the file needed in dataset</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a>        <span class="kc">False</span><span class="p">:</span> <span class="s2">&quot;Use a pre-sampled cached BEHAVIOR activity scene&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-25" name="__codelineno-0-25"></a>        <span class="kc">True</span><span class="p">:</span> <span class="s2">&quot;Sample the BEHAVIOR activity in an online fashion&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-26" name="__codelineno-0-26"></a>    <span class="p">}</span>
 <a id="__codelineno-0-27" name="__codelineno-0-27"></a>    <span class="n">should_sample</span> <span class="o">=</span> <span class="n">choose_from_options</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">sampling_options</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;online object sampling&quot;</span><span class="p">,</span> <span class="n">random_selection</span><span class="o">=</span><span class="n">random_selection</span><span class="p">)</span>
