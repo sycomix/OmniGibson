@@ -172,8 +172,7 @@ class LightObject(StatefulObject):
         Returns:
             float: intensity for this light
         """
-        intensity_key = "intensity" if "intensity" in self._light_link.property_names else "inputs:intensity"
-        return self._light_link.get_attribute(intensity_key)
+        return self._light_link.get_attribute("intensity")
 
     @intensity.setter
     def intensity(self, intensity):
@@ -183,8 +182,7 @@ class LightObject(StatefulObject):
         Args:
             intensity (float): intensity to set
         """
-        intensity_key = "intensity" if "intensity" in self._light_link.property_names else "inputs:intensity"
-        self._light_link.set_attribute(intensity_key, intensity)
+        self._light_link.set_attribute("intensity", intensity)
 
     def _create_prim_with_same_kwargs(self, prim_path, name, load_config):
         # Add additional kwargs (fit_avg_dim_volume and bounding_box are already captured in load_config)

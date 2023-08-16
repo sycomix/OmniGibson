@@ -202,13 +202,7 @@ class Simulator(SimulationContext, Serializable):
         # collide with each other, and modify settings for speed optimization
         self._physics_context.set_invert_collision_group_filter(True)
         self._physics_context.enable_ccd(gm.ENABLE_CCD)
-
-        if hasattr(self._physics_context, "enable_fabric"):
-            self._physics_context.enable_fabric(gm.ENABLE_FLATCACHE)
-        elif hasattr(self._physics_context, "enable_flatcache"):
-            self._physics_context.enable_flatcache(gm.ENABLE_FLATCACHE)
-        else:
-            raise NotImplementedError("Cannot find API for enabling/disabling flatcache in current Isaac Sim version.")
+        self._physics_context.enable_flatcache(gm.ENABLE_FLATCACHE)
 
         # Enable GPU dynamics based on whether we need omni particles feature
         if gm.USE_GPU_DYNAMICS:

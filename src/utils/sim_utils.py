@@ -1,6 +1,5 @@
 import numpy as np
-from collections import namedtuple
-from collections.abc import Iterable
+from collections import Iterable, namedtuple
 
 import omnigibson as og
 from omnigibson.macros import gm
