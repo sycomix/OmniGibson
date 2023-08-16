@@ -4128,7 +4128,9 @@
 <span class="normal"><a href="#__codelineno-0-192">192</a></span>
 <span class="normal"><a href="#__codelineno-0-193">193</a></span>
 <span class="normal"><a href="#__codelineno-0-194">194</a></span>
-<span class="normal"><a href="#__codelineno-0-195">195</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">class</span> <span class="nc">LightObject</span><span class="p">(</span><span class="n">StatefulObject</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-195">195</a></span>
+<span class="normal"><a href="#__codelineno-0-196">196</a></span>
+<span class="normal"><a href="#__codelineno-0-197">197</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">class</span> <span class="nc">LightObject</span><span class="p">(</span><span class="n">StatefulObject</span><span class="p">):</span>
 <a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="sd">    LightObjects are objects that generate light in the simulation</span>
 <a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="sd">    &quot;&quot;&quot;</span>
@@ -4289,27 +4291,29 @@
 <a id="__codelineno-0-172" name="__codelineno-0-172"></a><span class="sd">        Returns:</span>
 <a id="__codelineno-0-173" name="__codelineno-0-173"></a><span class="sd">            float: intensity for this light</span>
 <a id="__codelineno-0-174" name="__codelineno-0-174"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-175" name="__codelineno-0-175"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_light_link</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s2">&quot;intensity&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-176" name="__codelineno-0-176"></a>
-<a id="__codelineno-0-177" name="__codelineno-0-177"></a>    <span class="nd">@intensity</span><span class="o">.</span><span class="n">setter</span>
-<a id="__codelineno-0-178" name="__codelineno-0-178"></a>    <span class="k">def</span> <span class="nf">intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intensity</span><span class="p">):</span>
-<a id="__codelineno-0-179" name="__codelineno-0-179"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="sd">        Sets this joint&#39;s intensity</span>
-<a id="__codelineno-0-181" name="__codelineno-0-181"></a>
-<a id="__codelineno-0-182" name="__codelineno-0-182"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-183" name="__codelineno-0-183"></a><span class="sd">            intensity (float): intensity to set</span>
-<a id="__codelineno-0-184" name="__codelineno-0-184"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-185" name="__codelineno-0-185"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_light_link</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;intensity&quot;</span><span class="p">,</span> <span class="n">intensity</span><span class="p">)</span>
-<a id="__codelineno-0-186" name="__codelineno-0-186"></a>
-<a id="__codelineno-0-187" name="__codelineno-0-187"></a>    <span class="k">def</span> <span class="nf">_create_prim_with_same_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim_path</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">load_config</span><span class="p">):</span>
-<a id="__codelineno-0-188" name="__codelineno-0-188"></a>        <span class="c1"># Add additional kwargs (fit_avg_dim_volume and bounding_box are already captured in load_config)</span>
-<a id="__codelineno-0-189" name="__codelineno-0-189"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
-<a id="__codelineno-0-190" name="__codelineno-0-190"></a>            <span class="n">prim_path</span><span class="o">=</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-191" name="__codelineno-0-191"></a>            <span class="n">light_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">light_type</span><span class="p">,</span>
-<a id="__codelineno-0-192" name="__codelineno-0-192"></a>            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-<a id="__codelineno-0-193" name="__codelineno-0-193"></a>            <span class="n">intensity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">intensity</span><span class="p">,</span>
-<a id="__codelineno-0-194" name="__codelineno-0-194"></a>            <span class="n">load_config</span><span class="o">=</span><span class="n">load_config</span><span class="p">,</span>
-<a id="__codelineno-0-195" name="__codelineno-0-195"></a>        <span class="p">)</span>
+<a id="__codelineno-0-175" name="__codelineno-0-175"></a>        <span class="n">intensity_key</span> <span class="o">=</span> <span class="s2">&quot;intensity&quot;</span> <span class="k">if</span> <span class="s2">&quot;intensity&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_light_link</span><span class="o">.</span><span class="n">property_names</span> <span class="k">else</span> <span class="s2">&quot;inputs:intensity&quot;</span>
+<a id="__codelineno-0-176" name="__codelineno-0-176"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_light_link</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">intensity_key</span><span class="p">)</span>
+<a id="__codelineno-0-177" name="__codelineno-0-177"></a>
+<a id="__codelineno-0-178" name="__codelineno-0-178"></a>    <span class="nd">@intensity</span><span class="o">.</span><span class="n">setter</span>
+<a id="__codelineno-0-179" name="__codelineno-0-179"></a>    <span class="k">def</span> <span class="nf">intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intensity</span><span class="p">):</span>
+<a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-181" name="__codelineno-0-181"></a><span class="sd">        Sets this joint&#39;s intensity</span>
+<a id="__codelineno-0-182" name="__codelineno-0-182"></a>
+<a id="__codelineno-0-183" name="__codelineno-0-183"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-184" name="__codelineno-0-184"></a><span class="sd">            intensity (float): intensity to set</span>
+<a id="__codelineno-0-185" name="__codelineno-0-185"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-186" name="__codelineno-0-186"></a>        <span class="n">intensity_key</span> <span class="o">=</span> <span class="s2">&quot;intensity&quot;</span> <span class="k">if</span> <span class="s2">&quot;intensity&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_light_link</span><span class="o">.</span><span class="n">property_names</span> <span class="k">else</span> <span class="s2">&quot;inputs:intensity&quot;</span>
+<a id="__codelineno-0-187" name="__codelineno-0-187"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_light_link</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="n">intensity_key</span><span class="p">,</span> <span class="n">intensity</span><span class="p">)</span>
+<a id="__codelineno-0-188" name="__codelineno-0-188"></a>
+<a id="__codelineno-0-189" name="__codelineno-0-189"></a>    <span class="k">def</span> <span class="nf">_create_prim_with_same_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim_path</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">load_config</span><span class="p">):</span>
+<a id="__codelineno-0-190" name="__codelineno-0-190"></a>        <span class="c1"># Add additional kwargs (fit_avg_dim_volume and bounding_box are already captured in load_config)</span>
+<a id="__codelineno-0-191" name="__codelineno-0-191"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+<a id="__codelineno-0-192" name="__codelineno-0-192"></a>            <span class="n">prim_path</span><span class="o">=</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-193" name="__codelineno-0-193"></a>            <span class="n">light_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">light_type</span><span class="p">,</span>
+<a id="__codelineno-0-194" name="__codelineno-0-194"></a>            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a>            <span class="n">intensity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">intensity</span><span class="p">,</span>
+<a id="__codelineno-0-196" name="__codelineno-0-196"></a>            <span class="n">load_config</span><span class="o">=</span><span class="n">load_config</span><span class="p">,</span>
+<a id="__codelineno-0-197" name="__codelineno-0-197"></a>        <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -4331,8 +4335,8 @@
 <code class="highlight language-python"><span class="n">intensity</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
       <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
   </span>
 
 </h3>
@@ -4415,8 +4419,8 @@
 <code class="highlight language-python"><span class="n">radius</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
       <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
   </span>
 
 </h3>
