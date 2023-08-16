@@ -1,6 +1,6 @@
 from abc import ABCMeta
 import numpy as np
-from collections.abc import Iterable
+from collections import Iterable
 
 import omnigibson as og
 from omnigibson.macros import create_module_macros, gm
@@ -116,6 +116,7 @@ class BaseObject(EntityPrim, Registerable, metaclass=ABCMeta):
 
         # TODO: Super hacky, think of a better way to preserve this info
         # Update init info for this
+        self._init_info["args"]["category"] = self.category
         self._init_info["args"]["name"] = self.name
         self._init_info["args"]["uuid"] = self.uuid
 

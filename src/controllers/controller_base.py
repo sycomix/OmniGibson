@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections import Iterable
 from enum import IntEnum
 
 import numpy as np
