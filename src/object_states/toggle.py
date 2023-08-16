@@ -8,9 +8,8 @@ from omnigibson.object_states.object_state_base import AbsoluteObjectState, Bool
 from omnigibson.object_states.update_state_mixin import UpdateStateMixin
 from omni.isaac.core.utils.bounds import recompute_extents
 from omnigibson.utils.python_utils import classproperty
-from omnigibson.utils.usd_utils import create_primitive_mesh
 from omni.isaac.core.utils.prims import get_prim_at_path
-from pxr import PhysicsSchemaTools, UsdGeom, Sdf, Gf, Vt
+from pxr import PhysicsSchemaTools, UsdGeom, Sdf
 
 
 # Create settings for this module
@@ -52,23 +51,16 @@ class ToggledOn(AbsoluteObjectState, BooleanStateMixin, LinkBasedStateMixin, Upd
         pre_existing_mesh = get_prim_at_path(mesh_prim_path)
         # Create a primitive mesh if it doesn't already exist
         if not pre_existing_mesh:
+            button = UsdGeom.Sphere.Define(og.sim.stage, Sdf.Path(mesh_prim_path))
             self.radius = m.DEFAULT_RADIUS if self.radius is None else self.radius
-            # Note: We have to create a mesh (instead of a sphere shape) because physx complains about non-uniform
-            # scaling for non-meshes
-            mesh = create_primitive_mesh(
-                prim_path=mesh_prim_path,
-                primitive_type="Sphere",
-                extents=1.0,
-            )
         else:
             # Infer radius from mesh if not specified as an input
-            recompute_extents(prim=pre_existing_mesh)
-            scale = np.array(pre_existing_mesh.GetAttribute("xformOp:scale").Get())
-            self.radius = np.cbrt(np.product(scale)) / 2.0 if self.radius is None else self.radius
+            self.radius = pre_existing_mesh.GetAttribute("radius").Get() if self.radius is None else self.radius
 
         # Create the visual geom instance referencing the generated mesh prim
         self.visual_marker = VisualGeomPrim(prim_path=mesh_prim_path, name=f"{self.obj.name}_visual_marker")
-        self.visual_marker.scale = self.radius * 2.0
+        self.visual_marker.set_attribute("radius", self.radius)
+        recompute_extents(prim=self.visual_marker.prim)
         self.visual_marker.initialize()
 
         # Make sure the marker isn't translated at all
@@ -89,7 +81,7 @@ class ToggledOn(AbsoluteObjectState, BooleanStateMixin, LinkBasedStateMixin, Upd
         def check_overlap():
             nonlocal valid_hit
             valid_hit = False
-            og.sim.psqi.overlap_mesh(*projection_mesh_ids, reportFn=overlap_callback)
+            og.sim.psqi.overlap_shape(*projection_mesh_ids, reportFn=overlap_callback)
             return valid_hit
 
         self._check_overlap = check_overlap
