@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/OmniGibson_logo.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.5">
     
     
       
@@ -2591,11 +2591,11 @@
   
   
     <li class="md-nav__item">
-      <a href="open.html" class="md-nav__link">
+      <a href="open_state.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    open
+    open_state
   </span>
   
 
@@ -7422,11 +7422,11 @@ NOTE: x-direction should align with the projection mesh's height (i.e.: z) param
 <a id="__codelineno-0-524" name="__codelineno-0-524"></a>                    <span class="c1"># Check if all conditions are met</span>
 <a id="__codelineno-0-525" name="__codelineno-0-525"></a>                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="n">condition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span> <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="n">conditions</span><span class="p">]):</span>
 <a id="__codelineno-0-526" name="__codelineno-0-526"></a>                        <span class="n">system</span> <span class="o">=</span> <span class="n">get_system</span><span class="p">(</span><span class="n">system_name</span><span class="p">)</span>
-<a id="__codelineno-0-527" name="__codelineno-0-527"></a>                        <span class="c1"># Update saturation limit if it&#39;s not the desired one</span>
+<a id="__codelineno-0-527" name="__codelineno-0-527"></a>                        <span class="c1"># Update saturation limit if it&#39;s not specified yet</span>
 <a id="__codelineno-0-528" name="__codelineno-0-528"></a>                        <span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visual_particle_modification_limit</span> \
 <a id="__codelineno-0-529" name="__codelineno-0-529"></a>                            <span class="k">if</span> <span class="n">is_visual_particle_system</span><span class="p">(</span><span class="n">system_name</span><span class="o">=</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> \
 <a id="__codelineno-0-530" name="__codelineno-0-530"></a>                            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">physical_particle_modification_limit</span>
-<a id="__codelineno-0-531" name="__codelineno-0-531"></a>                        <span class="k">if</span> <span class="n">limit</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Saturated</span><span class="p">]</span><span class="o">.</span><span class="n">get_limit</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">):</span>
+<a id="__codelineno-0-531" name="__codelineno-0-531"></a>                        <span class="k">if</span> <span class="n">system</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Saturated</span><span class="p">]</span><span class="o">.</span><span class="n">limits</span><span class="p">:</span>
 <a id="__codelineno-0-532" name="__codelineno-0-532"></a>                            <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Saturated</span><span class="p">]</span><span class="o">.</span><span class="n">set_limit</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
 <a id="__codelineno-0-533" name="__codelineno-0-533"></a>                        <span class="c1"># Sanity check for oversaturation</span>
 <a id="__codelineno-0-534" name="__codelineno-0-534"></a>                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">Saturated</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">):</span>

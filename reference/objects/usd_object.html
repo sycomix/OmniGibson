@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/OmniGibson_logo.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.5">
     
     
       
@@ -2589,11 +2589,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../object_states/open.html" class="md-nav__link">
+      <a href="../object_states/open_state.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    open
+    open_state
   </span>
   
 
@@ -5224,12 +5224,7 @@ or more links and joints. They may or may not be passive.</p>
 
         <details class="quote">
           <summary>Source code in <code>omnigibson/objects/usd_object.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-6">  6</a></span>
-<span class="normal"><a href="#__codelineno-0-7">  7</a></span>
-<span class="normal"><a href="#__codelineno-0-8">  8</a></span>
-<span class="normal"><a href="#__codelineno-0-9">  9</a></span>
-<span class="normal"><a href="#__codelineno-0-10"> 10</a></span>
-<span class="normal"><a href="#__codelineno-0-11"> 11</a></span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-11"> 11</a></span>
 <span class="normal"><a href="#__codelineno-0-12"> 12</a></span>
 <span class="normal"><a href="#__codelineno-0-13"> 13</a></span>
 <span class="normal"><a href="#__codelineno-0-14"> 14</a></span>
@@ -5328,111 +5323,152 @@ or more links and joints. They may or may not be passive.</p>
 <span class="normal"><a href="#__codelineno-0-107">107</a></span>
 <span class="normal"><a href="#__codelineno-0-108">108</a></span>
 <span class="normal"><a href="#__codelineno-0-109">109</a></span>
-<span class="normal"><a href="#__codelineno-0-110">110</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="k">class</span> <span class="nc">USDObject</span><span class="p">(</span><span class="n">StatefulObject</span><span class="p">):</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="sd">    USDObjects are instantiated from a USD file. They can be composed of one</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="sd">    or more links and joints. They may or may not be passive.</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13"></a>        <span class="bp">self</span><span class="p">,</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14"></a>        <span class="n">name</span><span class="p">,</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15"></a>        <span class="n">usd_path</span><span class="p">,</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16"></a>        <span class="n">prim_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17"></a>        <span class="n">category</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18"></a>        <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19"></a>        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20"></a>        <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21"></a>        <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22"></a>        <span class="n">fixed_base</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-23" name="__codelineno-0-23"></a>        <span class="n">visual_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24"></a>        <span class="n">self_collisions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25"></a>        <span class="n">prim_type</span><span class="o">=</span><span class="n">PrimType</span><span class="o">.</span><span class="n">RIGID</span><span class="p">,</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26"></a>        <span class="n">load_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-27" name="__codelineno-0-27"></a>        <span class="n">abilities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="n">include_default_states</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29"></a>        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="p">):</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="sd">            name (str): Name for the object. Names need to be unique per scene</span>
-<a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="sd">            usd_path (str): global path to the USD file to load</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="sd">            prim_path (None or str): global path in the stage to this object. If not specified, will automatically be</span>
-<a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="sd">                created at /World/&lt;name&gt;</span>
-<a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="sd">            category (str): Category for the object. Defaults to &quot;object&quot;.</span>
-<a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">            class_id (None or int): What class ID the object should be assigned in semantic segmentation rendering mode.</span>
-<a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">                If None, the ID will be inferred from this object&#39;s category.</span>
-<a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">            uuid (None or int): Unique unsigned-integer identifier to assign to this object (max 8-numbers).</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="sd">                If None is specified, then it will be auto-generated</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="sd">            scale (None or float or 3-array): if specified, sets either the uniform (float) or x,y,z (3-array) scale</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="sd">                for this object. A single number corresponds to uniform scaling along the x,y,z axes, whereas a</span>
-<a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="sd">                3-array specifies per-axis scaling.</span>
-<a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="sd">            visible (bool): whether to render this object or not in the stage</span>
-<a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="sd">            fixed_base (bool): whether to fix the base of this object or not</span>
-<a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">            visual_only (bool): Whether this object should be visual only (and not collide with any other objects)</span>
-<a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="sd">            self_collisions (bool): Whether to enable self collisions for this object</span>
-<a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="sd">            prim_type (PrimType): Which type of prim the object is, Valid options are: {PrimType.RIGID, PrimType.CLOTH}</span>
-<a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="sd">            load_config (None or dict): If specified, should contain keyword-mapped values that are relevant for</span>
-<a id="__codelineno-0-51" name="__codelineno-0-51"></a><span class="sd">                loading this prim at runtime.</span>
-<a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="sd">            abilities (None or dict): If specified, manually adds specific object states to this object. It should be</span>
-<a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="sd">                a dict in the form of {ability: {param: value}} containing object abilities and parameters to pass to</span>
-<a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="sd">                the object state instance constructor.</span>
-<a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="sd">            include_default_states (bool): whether to include the default object states from @get_default_states</span>
-<a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="sd">            kwargs (dict): Additional keyword arguments that are used for other super() calls from subclasses, allowing</span>
-<a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="sd">                for flexible compositions of various object subclasses (e.g.: Robot is USDObject + ControllableObject).</span>
-<a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="sd">                Note that this base object does NOT pass kwargs down into the Prim-type super() classes, and we assume</span>
-<a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="sd">                that kwargs are only shared between all SUBclasses (children), not SUPERclasses (parents).</span>
-<a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-61" name="__codelineno-0-61"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span> <span class="o">=</span> <span class="n">usd_path</span>
-<a id="__codelineno-0-62" name="__codelineno-0-62"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-<a id="__codelineno-0-63" name="__codelineno-0-63"></a>            <span class="n">prim_path</span><span class="o">=</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-64" name="__codelineno-0-64"></a>            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-<a id="__codelineno-0-65" name="__codelineno-0-65"></a>            <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
-<a id="__codelineno-0-66" name="__codelineno-0-66"></a>            <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">,</span>
-<a id="__codelineno-0-67" name="__codelineno-0-67"></a>            <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
-<a id="__codelineno-0-68" name="__codelineno-0-68"></a>            <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
-<a id="__codelineno-0-69" name="__codelineno-0-69"></a>            <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
-<a id="__codelineno-0-70" name="__codelineno-0-70"></a>            <span class="n">fixed_base</span><span class="o">=</span><span class="n">fixed_base</span><span class="p">,</span>
-<a id="__codelineno-0-71" name="__codelineno-0-71"></a>            <span class="n">visual_only</span><span class="o">=</span><span class="n">visual_only</span><span class="p">,</span>
-<a id="__codelineno-0-72" name="__codelineno-0-72"></a>            <span class="n">self_collisions</span><span class="o">=</span><span class="n">self_collisions</span><span class="p">,</span>
-<a id="__codelineno-0-73" name="__codelineno-0-73"></a>            <span class="n">prim_type</span><span class="o">=</span><span class="n">prim_type</span><span class="p">,</span>
-<a id="__codelineno-0-74" name="__codelineno-0-74"></a>            <span class="n">include_default_states</span><span class="o">=</span><span class="n">include_default_states</span><span class="p">,</span>
-<a id="__codelineno-0-75" name="__codelineno-0-75"></a>            <span class="n">load_config</span><span class="o">=</span><span class="n">load_config</span><span class="p">,</span>
-<a id="__codelineno-0-76" name="__codelineno-0-76"></a>            <span class="n">abilities</span><span class="o">=</span><span class="n">abilities</span><span class="p">,</span>
-<a id="__codelineno-0-77" name="__codelineno-0-77"></a>            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<a id="__codelineno-0-78" name="__codelineno-0-78"></a>        <span class="p">)</span>
-<a id="__codelineno-0-79" name="__codelineno-0-79"></a>
-<a id="__codelineno-0-80" name="__codelineno-0-80"></a>    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="sd">        Load the object into pybullet and set it to the correct pose</span>
-<a id="__codelineno-0-83" name="__codelineno-0-83"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-84" name="__codelineno-0-84"></a>        <span class="k">return</span> <span class="n">add_asset_to_stage</span><span class="p">(</span><span class="n">asset_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span><span class="p">,</span> <span class="n">prim_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prim_path</span><span class="p">)</span>
-<a id="__codelineno-0-85" name="__codelineno-0-85"></a>
-<a id="__codelineno-0-86" name="__codelineno-0-86"></a>    <span class="k">def</span> <span class="nf">_create_prim_with_same_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim_path</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">load_config</span><span class="p">):</span>
-<a id="__codelineno-0-87" name="__codelineno-0-87"></a>        <span class="c1"># Add additional kwargs</span>
-<a id="__codelineno-0-88" name="__codelineno-0-88"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
-<a id="__codelineno-0-89" name="__codelineno-0-89"></a>            <span class="n">prim_path</span><span class="o">=</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-90" name="__codelineno-0-90"></a>            <span class="n">usd_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span><span class="p">,</span>
-<a id="__codelineno-0-91" name="__codelineno-0-91"></a>            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-<a id="__codelineno-0-92" name="__codelineno-0-92"></a>            <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
-<a id="__codelineno-0-93" name="__codelineno-0-93"></a>            <span class="n">class_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_id</span><span class="p">,</span>
-<a id="__codelineno-0-94" name="__codelineno-0-94"></a>            <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span>
-<a id="__codelineno-0-95" name="__codelineno-0-95"></a>            <span class="n">visible</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">visible</span><span class="p">,</span>
-<a id="__codelineno-0-96" name="__codelineno-0-96"></a>            <span class="n">fixed_base</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_base</span><span class="p">,</span>
-<a id="__codelineno-0-97" name="__codelineno-0-97"></a>            <span class="n">visual_only</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_visual_only</span><span class="p">,</span>
-<a id="__codelineno-0-98" name="__codelineno-0-98"></a>            <span class="n">prim_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prim_type</span><span class="p">,</span>
-<a id="__codelineno-0-99" name="__codelineno-0-99"></a>            <span class="n">load_config</span><span class="o">=</span><span class="n">load_config</span><span class="p">,</span>
-<a id="__codelineno-0-100" name="__codelineno-0-100"></a>            <span class="n">abilities</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_abilities</span><span class="p">,</span>
-<a id="__codelineno-0-101" name="__codelineno-0-101"></a>        <span class="p">)</span>
-<a id="__codelineno-0-102" name="__codelineno-0-102"></a>
-<a id="__codelineno-0-103" name="__codelineno-0-103"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-104" name="__codelineno-0-104"></a>    <span class="k">def</span> <span class="nf">usd_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-105" name="__codelineno-0-105"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-106" name="__codelineno-0-106"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-107" name="__codelineno-0-107"></a><span class="sd">            str: absolute path to this model&#39;s USD file. By default, this is the loaded usd path</span>
-<a id="__codelineno-0-108" name="__codelineno-0-108"></a><span class="sd">                passed in as an argument</span>
-<a id="__codelineno-0-109" name="__codelineno-0-109"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-110" name="__codelineno-0-110"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span>
+<span class="normal"><a href="#__codelineno-0-110">110</a></span>
+<span class="normal"><a href="#__codelineno-0-111">111</a></span>
+<span class="normal"><a href="#__codelineno-0-112">112</a></span>
+<span class="normal"><a href="#__codelineno-0-113">113</a></span>
+<span class="normal"><a href="#__codelineno-0-114">114</a></span>
+<span class="normal"><a href="#__codelineno-0-115">115</a></span>
+<span class="normal"><a href="#__codelineno-0-116">116</a></span>
+<span class="normal"><a href="#__codelineno-0-117">117</a></span>
+<span class="normal"><a href="#__codelineno-0-118">118</a></span>
+<span class="normal"><a href="#__codelineno-0-119">119</a></span>
+<span class="normal"><a href="#__codelineno-0-120">120</a></span>
+<span class="normal"><a href="#__codelineno-0-121">121</a></span>
+<span class="normal"><a href="#__codelineno-0-122">122</a></span>
+<span class="normal"><a href="#__codelineno-0-123">123</a></span>
+<span class="normal"><a href="#__codelineno-0-124">124</a></span>
+<span class="normal"><a href="#__codelineno-0-125">125</a></span>
+<span class="normal"><a href="#__codelineno-0-126">126</a></span>
+<span class="normal"><a href="#__codelineno-0-127">127</a></span>
+<span class="normal"><a href="#__codelineno-0-128">128</a></span>
+<span class="normal"><a href="#__codelineno-0-129">129</a></span>
+<span class="normal"><a href="#__codelineno-0-130">130</a></span>
+<span class="normal"><a href="#__codelineno-0-131">131</a></span>
+<span class="normal"><a href="#__codelineno-0-132">132</a></span>
+<span class="normal"><a href="#__codelineno-0-133">133</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">class</span> <span class="nc">USDObject</span><span class="p">(</span><span class="n">StatefulObject</span><span class="p">):</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="sd">    USDObjects are instantiated from a USD file. They can be composed of one</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="sd">    or more links and joints. They may or may not be passive.</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a>        <span class="bp">self</span><span class="p">,</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a>        <span class="n">name</span><span class="p">,</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a>        <span class="n">usd_path</span><span class="p">,</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a>        <span class="n">encrypted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a>        <span class="n">prim_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a>        <span class="n">category</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a>        <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a>        <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a>        <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a>        <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="n">fixed_base</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29"></a>        <span class="n">visual_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a>        <span class="n">self_collisions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a>        <span class="n">prim_type</span><span class="o">=</span><span class="n">PrimType</span><span class="o">.</span><span class="n">RIGID</span><span class="p">,</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a>        <span class="n">load_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a>        <span class="n">abilities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a>        <span class="n">include_default_states</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a>        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a>    <span class="p">):</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">            name (str): Name for the object. Names need to be unique per scene</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">            usd_path (str): global path to the USD file to load</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="sd">            encrypted (bool): whether this file is encrypted (and should therefore be decrypted) or not</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="sd">            prim_path (None or str): global path in the stage to this object. If not specified, will automatically be</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="sd">                created at /World/&lt;name&gt;</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="sd">            category (str): Category for the object. Defaults to &quot;object&quot;.</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="sd">            class_id (None or int): What class ID the object should be assigned in semantic segmentation rendering mode.</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="sd">                If None, the ID will be inferred from this object&#39;s category.</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">            uuid (None or int): Unique unsigned-integer identifier to assign to this object (max 8-numbers).</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="sd">                If None is specified, then it will be auto-generated</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="sd">            scale (None or float or 3-array): if specified, sets either the uniform (float) or x,y,z (3-array) scale</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="sd">                for this object. A single number corresponds to uniform scaling along the x,y,z axes, whereas a</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51"></a><span class="sd">                3-array specifies per-axis scaling.</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="sd">            visible (bool): whether to render this object or not in the stage</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="sd">            fixed_base (bool): whether to fix the base of this object or not</span>
+<a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="sd">            visual_only (bool): Whether this object should be visual only (and not collide with any other objects)</span>
+<a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="sd">            self_collisions (bool): Whether to enable self collisions for this object</span>
+<a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="sd">            prim_type (PrimType): Which type of prim the object is, Valid options are: {PrimType.RIGID, PrimType.CLOTH}</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="sd">            load_config (None or dict): If specified, should contain keyword-mapped values that are relevant for</span>
+<a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="sd">                loading this prim at runtime.</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="sd">            abilities (None or dict): If specified, manually adds specific object states to this object. It should be</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="sd">                a dict in the form of {ability: {param: value}} containing object abilities and parameters to pass to</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="sd">                the object state instance constructor.</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="sd">            include_default_states (bool): whether to include the default object states from @get_default_states</span>
+<a id="__codelineno-0-63" name="__codelineno-0-63"></a><span class="sd">            kwargs (dict): Additional keyword arguments that are used for other super() calls from subclasses, allowing</span>
+<a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="sd">                for flexible compositions of various object subclasses (e.g.: Robot is USDObject + ControllableObject).</span>
+<a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="sd">                Note that this base object does NOT pass kwargs down into the Prim-type super() classes, and we assume</span>
+<a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="sd">                that kwargs are only shared between all SUBclasses (children), not SUPERclasses (parents).</span>
+<a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span> <span class="o">=</span> <span class="n">usd_path</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_encrypted</span> <span class="o">=</span> <span class="n">encrypted</span>
+<a id="__codelineno-0-70" name="__codelineno-0-70"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+<a id="__codelineno-0-71" name="__codelineno-0-71"></a>            <span class="n">prim_path</span><span class="o">=</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-72" name="__codelineno-0-72"></a>            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+<a id="__codelineno-0-73" name="__codelineno-0-73"></a>            <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a>            <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">,</span>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a>            <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a>            <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+<a id="__codelineno-0-77" name="__codelineno-0-77"></a>            <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+<a id="__codelineno-0-78" name="__codelineno-0-78"></a>            <span class="n">fixed_base</span><span class="o">=</span><span class="n">fixed_base</span><span class="p">,</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a>            <span class="n">visual_only</span><span class="o">=</span><span class="n">visual_only</span><span class="p">,</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80"></a>            <span class="n">self_collisions</span><span class="o">=</span><span class="n">self_collisions</span><span class="p">,</span>
+<a id="__codelineno-0-81" name="__codelineno-0-81"></a>            <span class="n">prim_type</span><span class="o">=</span><span class="n">prim_type</span><span class="p">,</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a>            <span class="n">include_default_states</span><span class="o">=</span><span class="n">include_default_states</span><span class="p">,</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83"></a>            <span class="n">load_config</span><span class="o">=</span><span class="n">load_config</span><span class="p">,</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84"></a>            <span class="n">abilities</span><span class="o">=</span><span class="n">abilities</span><span class="p">,</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85"></a>            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a>        <span class="p">)</span>
+<a id="__codelineno-0-87" name="__codelineno-0-87"></a>
+<a id="__codelineno-0-88" name="__codelineno-0-88"></a>    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-89" name="__codelineno-0-89"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-90" name="__codelineno-0-90"></a><span class="sd">        Load the object into pybullet and set it to the correct pose</span>
+<a id="__codelineno-0-91" name="__codelineno-0-91"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92"></a>        <span class="n">usd_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span>
+<a id="__codelineno-0-93" name="__codelineno-0-93"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encrypted</span><span class="p">:</span>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a>            <span class="c1"># Create a temporary file to store the decrytped asset, load it, and then delete it</span>
+<a id="__codelineno-0-95" name="__codelineno-0-95"></a>            <span class="n">encrypted_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.usd&quot;</span><span class="p">,</span> <span class="s2">&quot;.encrypted.usd&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-96" name="__codelineno-0-96"></a>            <span class="n">decrypted_fd</span><span class="p">,</span> <span class="n">usd_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span><span class="p">),</span> <span class="nb">dir</span><span class="o">=</span><span class="n">og</span><span class="o">.</span><span class="n">tempdir</span><span class="p">)</span>
+<a id="__codelineno-0-97" name="__codelineno-0-97"></a>            <span class="n">decrypt_file</span><span class="p">(</span><span class="n">encrypted_filename</span><span class="p">,</span> <span class="n">usd_path</span><span class="p">)</span>
+<a id="__codelineno-0-98" name="__codelineno-0-98"></a>
+<a id="__codelineno-0-99" name="__codelineno-0-99"></a>        <span class="n">prim</span> <span class="o">=</span> <span class="n">add_asset_to_stage</span><span class="p">(</span><span class="n">asset_path</span><span class="o">=</span><span class="n">usd_path</span><span class="p">,</span> <span class="n">prim_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prim_path</span><span class="p">)</span>
+<a id="__codelineno-0-100" name="__codelineno-0-100"></a>
+<a id="__codelineno-0-101" name="__codelineno-0-101"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encrypted</span><span class="p">:</span>
+<a id="__codelineno-0-102" name="__codelineno-0-102"></a>            <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">decrypted_fd</span><span class="p">)</span>
+<a id="__codelineno-0-103" name="__codelineno-0-103"></a>            <span class="c1"># On Windows, Isaac Sim won&#39;t let go of the file until the prim is removed, so we can&#39;t delete it.</span>
+<a id="__codelineno-0-104" name="__codelineno-0-104"></a>            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;posix&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-105" name="__codelineno-0-105"></a>                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">usd_path</span><span class="p">)</span>
+<a id="__codelineno-0-106" name="__codelineno-0-106"></a>
+<a id="__codelineno-0-107" name="__codelineno-0-107"></a>        <span class="k">return</span> <span class="n">prim</span>
+<a id="__codelineno-0-108" name="__codelineno-0-108"></a>
+<a id="__codelineno-0-109" name="__codelineno-0-109"></a>    <span class="k">def</span> <span class="nf">_create_prim_with_same_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim_path</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">load_config</span><span class="p">):</span>
+<a id="__codelineno-0-110" name="__codelineno-0-110"></a>        <span class="c1"># Add additional kwargs</span>
+<a id="__codelineno-0-111" name="__codelineno-0-111"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+<a id="__codelineno-0-112" name="__codelineno-0-112"></a>            <span class="n">prim_path</span><span class="o">=</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-113" name="__codelineno-0-113"></a>            <span class="n">usd_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span><span class="p">,</span>
+<a id="__codelineno-0-114" name="__codelineno-0-114"></a>            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+<a id="__codelineno-0-115" name="__codelineno-0-115"></a>            <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+<a id="__codelineno-0-116" name="__codelineno-0-116"></a>            <span class="n">class_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_id</span><span class="p">,</span>
+<a id="__codelineno-0-117" name="__codelineno-0-117"></a>            <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span>
+<a id="__codelineno-0-118" name="__codelineno-0-118"></a>            <span class="n">visible</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">visible</span><span class="p">,</span>
+<a id="__codelineno-0-119" name="__codelineno-0-119"></a>            <span class="n">fixed_base</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_base</span><span class="p">,</span>
+<a id="__codelineno-0-120" name="__codelineno-0-120"></a>            <span class="n">visual_only</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_visual_only</span><span class="p">,</span>
+<a id="__codelineno-0-121" name="__codelineno-0-121"></a>            <span class="n">prim_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prim_type</span><span class="p">,</span>
+<a id="__codelineno-0-122" name="__codelineno-0-122"></a>            <span class="n">load_config</span><span class="o">=</span><span class="n">load_config</span><span class="p">,</span>
+<a id="__codelineno-0-123" name="__codelineno-0-123"></a>            <span class="n">abilities</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_abilities</span><span class="p">,</span>
+<a id="__codelineno-0-124" name="__codelineno-0-124"></a>        <span class="p">)</span>
+<a id="__codelineno-0-125" name="__codelineno-0-125"></a>
+<a id="__codelineno-0-126" name="__codelineno-0-126"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-127" name="__codelineno-0-127"></a>    <span class="k">def</span> <span class="nf">usd_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-128" name="__codelineno-0-128"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-129" name="__codelineno-0-129"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-130" name="__codelineno-0-130"></a><span class="sd">            str: absolute path to this model&#39;s USD file. By default, this is the loaded usd path</span>
+<a id="__codelineno-0-131" name="__codelineno-0-131"></a><span class="sd">                passed in as an argument</span>
+<a id="__codelineno-0-132" name="__codelineno-0-132"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-133" name="__codelineno-0-133"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -5495,7 +5531,7 @@ passed in as an argument</p>
 
 
 <h3 class="doc doc-heading" id="objects.usd_object.USDObject.__init__">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">usd_path</span><span class="p">,</span> <span class="n">prim_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fixed_base</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">visual_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">self_collisions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prim_type</span><span class="o">=</span><span class="n">PrimType</span><span class="o">.</span><span class="n">RIGID</span><span class="p">,</span> <span class="n">load_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">abilities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_default_states</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">usd_path</span><span class="p">,</span> <span class="n">encrypted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prim_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">,</span> <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fixed_base</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">visual_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">self_collisions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prim_type</span><span class="o">=</span><span class="n">PrimType</span><span class="o">.</span><span class="n">RIGID</span><span class="p">,</span> <span class="n">load_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">abilities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_default_states</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 </h3>
 
@@ -5540,6 +5576,20 @@ passed in as an argument</p>
           </td>
           <td>
               <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>encrypted</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>whether this file is encrypted (and should therefore be decrypted) or not</p>
+            </div>
+          </td>
+          <td>
+                <code>False</code>
           </td>
         </tr>
         <tr>
@@ -5754,12 +5804,7 @@ that kwargs are only shared between all SUBclasses (children), not SUPERclasses 
 
       <details class="quote">
         <summary>Source code in <code>omnigibson/objects/usd_object.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-12">12</a></span>
-<span class="normal"><a href="#__codelineno-0-13">13</a></span>
-<span class="normal"><a href="#__codelineno-0-14">14</a></span>
-<span class="normal"><a href="#__codelineno-0-15">15</a></span>
-<span class="normal"><a href="#__codelineno-0-16">16</a></span>
-<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-17">17</a></span>
 <span class="normal"><a href="#__codelineno-0-18">18</a></span>
 <span class="normal"><a href="#__codelineno-0-19">19</a></span>
 <span class="normal"><a href="#__codelineno-0-20">20</a></span>
@@ -5820,73 +5865,84 @@ that kwargs are only shared between all SUBclasses (children), not SUPERclasses 
 <span class="normal"><a href="#__codelineno-0-75">75</a></span>
 <span class="normal"><a href="#__codelineno-0-76">76</a></span>
 <span class="normal"><a href="#__codelineno-0-77">77</a></span>
-<span class="normal"><a href="#__codelineno-0-78">78</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="bp">self</span><span class="p">,</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14"></a>    <span class="n">name</span><span class="p">,</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15"></a>    <span class="n">usd_path</span><span class="p">,</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="n">prim_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="n">category</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18"></a>    <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19"></a>    <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20"></a>    <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21"></a>    <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="n">fixed_base</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-23" name="__codelineno-0-23"></a>    <span class="n">visual_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24"></a>    <span class="n">self_collisions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="n">prim_type</span><span class="o">=</span><span class="n">PrimType</span><span class="o">.</span><span class="n">RIGID</span><span class="p">,</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26"></a>    <span class="n">load_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-27" name="__codelineno-0-27"></a>    <span class="n">abilities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28"></a>    <span class="n">include_default_states</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29"></a>    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="p">):</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="sd">        name (str): Name for the object. Names need to be unique per scene</span>
-<a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="sd">        usd_path (str): global path to the USD file to load</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="sd">        prim_path (None or str): global path in the stage to this object. If not specified, will automatically be</span>
-<a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="sd">            created at /World/&lt;name&gt;</span>
-<a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="sd">        category (str): Category for the object. Defaults to &quot;object&quot;.</span>
-<a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">        class_id (None or int): What class ID the object should be assigned in semantic segmentation rendering mode.</span>
-<a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">            If None, the ID will be inferred from this object&#39;s category.</span>
-<a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">        uuid (None or int): Unique unsigned-integer identifier to assign to this object (max 8-numbers).</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="sd">            If None is specified, then it will be auto-generated</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="sd">        scale (None or float or 3-array): if specified, sets either the uniform (float) or x,y,z (3-array) scale</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="sd">            for this object. A single number corresponds to uniform scaling along the x,y,z axes, whereas a</span>
-<a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="sd">            3-array specifies per-axis scaling.</span>
-<a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="sd">        visible (bool): whether to render this object or not in the stage</span>
-<a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="sd">        fixed_base (bool): whether to fix the base of this object or not</span>
-<a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">        visual_only (bool): Whether this object should be visual only (and not collide with any other objects)</span>
-<a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="sd">        self_collisions (bool): Whether to enable self collisions for this object</span>
-<a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="sd">        prim_type (PrimType): Which type of prim the object is, Valid options are: {PrimType.RIGID, PrimType.CLOTH}</span>
-<a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="sd">        load_config (None or dict): If specified, should contain keyword-mapped values that are relevant for</span>
-<a id="__codelineno-0-51" name="__codelineno-0-51"></a><span class="sd">            loading this prim at runtime.</span>
-<a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="sd">        abilities (None or dict): If specified, manually adds specific object states to this object. It should be</span>
-<a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="sd">            a dict in the form of {ability: {param: value}} containing object abilities and parameters to pass to</span>
-<a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="sd">            the object state instance constructor.</span>
-<a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="sd">        include_default_states (bool): whether to include the default object states from @get_default_states</span>
-<a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="sd">        kwargs (dict): Additional keyword arguments that are used for other super() calls from subclasses, allowing</span>
-<a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="sd">            for flexible compositions of various object subclasses (e.g.: Robot is USDObject + ControllableObject).</span>
-<a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="sd">            Note that this base object does NOT pass kwargs down into the Prim-type super() classes, and we assume</span>
-<a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="sd">            that kwargs are only shared between all SUBclasses (children), not SUPERclasses (parents).</span>
-<a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-61" name="__codelineno-0-61"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span> <span class="o">=</span> <span class="n">usd_path</span>
-<a id="__codelineno-0-62" name="__codelineno-0-62"></a>    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-<a id="__codelineno-0-63" name="__codelineno-0-63"></a>        <span class="n">prim_path</span><span class="o">=</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-64" name="__codelineno-0-64"></a>        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-<a id="__codelineno-0-65" name="__codelineno-0-65"></a>        <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
-<a id="__codelineno-0-66" name="__codelineno-0-66"></a>        <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">,</span>
-<a id="__codelineno-0-67" name="__codelineno-0-67"></a>        <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
-<a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
-<a id="__codelineno-0-69" name="__codelineno-0-69"></a>        <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
-<a id="__codelineno-0-70" name="__codelineno-0-70"></a>        <span class="n">fixed_base</span><span class="o">=</span><span class="n">fixed_base</span><span class="p">,</span>
-<a id="__codelineno-0-71" name="__codelineno-0-71"></a>        <span class="n">visual_only</span><span class="o">=</span><span class="n">visual_only</span><span class="p">,</span>
-<a id="__codelineno-0-72" name="__codelineno-0-72"></a>        <span class="n">self_collisions</span><span class="o">=</span><span class="n">self_collisions</span><span class="p">,</span>
-<a id="__codelineno-0-73" name="__codelineno-0-73"></a>        <span class="n">prim_type</span><span class="o">=</span><span class="n">prim_type</span><span class="p">,</span>
-<a id="__codelineno-0-74" name="__codelineno-0-74"></a>        <span class="n">include_default_states</span><span class="o">=</span><span class="n">include_default_states</span><span class="p">,</span>
-<a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="n">load_config</span><span class="o">=</span><span class="n">load_config</span><span class="p">,</span>
-<a id="__codelineno-0-76" name="__codelineno-0-76"></a>        <span class="n">abilities</span><span class="o">=</span><span class="n">abilities</span><span class="p">,</span>
-<a id="__codelineno-0-77" name="__codelineno-0-77"></a>        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<a id="__codelineno-0-78" name="__codelineno-0-78"></a>    <span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-78">78</a></span>
+<span class="normal"><a href="#__codelineno-0-79">79</a></span>
+<span class="normal"><a href="#__codelineno-0-80">80</a></span>
+<span class="normal"><a href="#__codelineno-0-81">81</a></span>
+<span class="normal"><a href="#__codelineno-0-82">82</a></span>
+<span class="normal"><a href="#__codelineno-0-83">83</a></span>
+<span class="normal"><a href="#__codelineno-0-84">84</a></span>
+<span class="normal"><a href="#__codelineno-0-85">85</a></span>
+<span class="normal"><a href="#__codelineno-0-86">86</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a>    <span class="bp">self</span><span class="p">,</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a>    <span class="n">name</span><span class="p">,</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a>    <span class="n">usd_path</span><span class="p">,</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a>    <span class="n">encrypted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="n">prim_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a>    <span class="n">category</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a>    <span class="n">class_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="n">uuid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a>    <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a>    <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a>    <span class="n">fixed_base</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29"></a>    <span class="n">visual_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="n">self_collisions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a>    <span class="n">prim_type</span><span class="o">=</span><span class="n">PrimType</span><span class="o">.</span><span class="n">RIGID</span><span class="p">,</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a>    <span class="n">load_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="n">abilities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a>    <span class="n">include_default_states</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="p">):</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">        name (str): Name for the object. Names need to be unique per scene</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">        usd_path (str): global path to the USD file to load</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="sd">        encrypted (bool): whether this file is encrypted (and should therefore be decrypted) or not</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="sd">        prim_path (None or str): global path in the stage to this object. If not specified, will automatically be</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="sd">            created at /World/&lt;name&gt;</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="sd">        category (str): Category for the object. Defaults to &quot;object&quot;.</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="sd">        class_id (None or int): What class ID the object should be assigned in semantic segmentation rendering mode.</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="sd">            If None, the ID will be inferred from this object&#39;s category.</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">        uuid (None or int): Unique unsigned-integer identifier to assign to this object (max 8-numbers).</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="sd">            If None is specified, then it will be auto-generated</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="sd">        scale (None or float or 3-array): if specified, sets either the uniform (float) or x,y,z (3-array) scale</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="sd">            for this object. A single number corresponds to uniform scaling along the x,y,z axes, whereas a</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51"></a><span class="sd">            3-array specifies per-axis scaling.</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="sd">        visible (bool): whether to render this object or not in the stage</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="sd">        fixed_base (bool): whether to fix the base of this object or not</span>
+<a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="sd">        visual_only (bool): Whether this object should be visual only (and not collide with any other objects)</span>
+<a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="sd">        self_collisions (bool): Whether to enable self collisions for this object</span>
+<a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="sd">        prim_type (PrimType): Which type of prim the object is, Valid options are: {PrimType.RIGID, PrimType.CLOTH}</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="sd">        load_config (None or dict): If specified, should contain keyword-mapped values that are relevant for</span>
+<a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="sd">            loading this prim at runtime.</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="sd">        abilities (None or dict): If specified, manually adds specific object states to this object. It should be</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="sd">            a dict in the form of {ability: {param: value}} containing object abilities and parameters to pass to</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="sd">            the object state instance constructor.</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="sd">        include_default_states (bool): whether to include the default object states from @get_default_states</span>
+<a id="__codelineno-0-63" name="__codelineno-0-63"></a><span class="sd">        kwargs (dict): Additional keyword arguments that are used for other super() calls from subclasses, allowing</span>
+<a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="sd">            for flexible compositions of various object subclasses (e.g.: Robot is USDObject + ControllableObject).</span>
+<a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="sd">            Note that this base object does NOT pass kwargs down into the Prim-type super() classes, and we assume</span>
+<a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="sd">            that kwargs are only shared between all SUBclasses (children), not SUPERclasses (parents).</span>
+<a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_usd_path</span> <span class="o">=</span> <span class="n">usd_path</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_encrypted</span> <span class="o">=</span> <span class="n">encrypted</span>
+<a id="__codelineno-0-70" name="__codelineno-0-70"></a>    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+<a id="__codelineno-0-71" name="__codelineno-0-71"></a>        <span class="n">prim_path</span><span class="o">=</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-72" name="__codelineno-0-72"></a>        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+<a id="__codelineno-0-73" name="__codelineno-0-73"></a>        <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a>        <span class="n">class_id</span><span class="o">=</span><span class="n">class_id</span><span class="p">,</span>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a>        <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+<a id="__codelineno-0-77" name="__codelineno-0-77"></a>        <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+<a id="__codelineno-0-78" name="__codelineno-0-78"></a>        <span class="n">fixed_base</span><span class="o">=</span><span class="n">fixed_base</span><span class="p">,</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a>        <span class="n">visual_only</span><span class="o">=</span><span class="n">visual_only</span><span class="p">,</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80"></a>        <span class="n">self_collisions</span><span class="o">=</span><span class="n">self_collisions</span><span class="p">,</span>
+<a id="__codelineno-0-81" name="__codelineno-0-81"></a>        <span class="n">prim_type</span><span class="o">=</span><span class="n">prim_type</span><span class="p">,</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a>        <span class="n">include_default_states</span><span class="o">=</span><span class="n">include_default_states</span><span class="p">,</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83"></a>        <span class="n">load_config</span><span class="o">=</span><span class="n">load_config</span><span class="p">,</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84"></a>        <span class="n">abilities</span><span class="o">=</span><span class="n">abilities</span><span class="p">,</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85"></a>        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a>    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>

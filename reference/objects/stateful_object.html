@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/OmniGibson_logo.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.5">
     
     
       
@@ -2589,11 +2589,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../object_states/open.html" class="md-nav__link">
+      <a href="../object_states/open_state.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    open
+    open_state
   </span>
   
 
@@ -5821,7 +5821,12 @@
 <span class="normal"><a href="#__codelineno-0-538">538</a></span>
 <span class="normal"><a href="#__codelineno-0-539">539</a></span>
 <span class="normal"><a href="#__codelineno-0-540">540</a></span>
-<span class="normal"><a href="#__codelineno-0-541">541</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="k">class</span> <span class="nc">StatefulObject</span><span class="p">(</span><span class="n">BaseObject</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-541">541</a></span>
+<span class="normal"><a href="#__codelineno-0-542">542</a></span>
+<span class="normal"><a href="#__codelineno-0-543">543</a></span>
+<span class="normal"><a href="#__codelineno-0-544">544</a></span>
+<span class="normal"><a href="#__codelineno-0-545">545</a></span>
+<span class="normal"><a href="#__codelineno-0-546">546</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="k">class</span> <span class="nc">StatefulObject</span><span class="p">(</span><span class="n">BaseObject</span><span class="p">):</span>
 <a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Objects that support object states.&quot;&quot;&quot;</span>
 <a id="__codelineno-0-57" name="__codelineno-0-57"></a>
 <a id="__codelineno-0-58" name="__codelineno-0-58"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -6213,101 +6218,106 @@
 <a id="__codelineno-0-444" name="__codelineno-0-444"></a>            <span class="c1"># Query the object state for the parameters</span>
 <a id="__codelineno-0-445" name="__codelineno-0-445"></a>            <span class="n">albedo_add</span><span class="p">,</span> <span class="n">diffuse_tint</span> <span class="o">=</span> <span class="n">object_state</span><span class="o">.</span><span class="n">get_texture_change_params</span><span class="p">()</span>
 <a id="__codelineno-0-446" name="__codelineno-0-446"></a>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a>        <span class="k">if</span> <span class="n">material</span><span class="o">.</span><span class="n">albedo_add</span> <span class="o">!=</span> <span class="n">albedo_add</span><span class="p">:</span>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a>            <span class="n">material</span><span class="o">.</span><span class="n">albedo_add</span> <span class="o">=</span> <span class="n">albedo_add</span>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">material</span><span class="o">.</span><span class="n">diffuse_tint</span><span class="p">,</span> <span class="n">diffuse_tint</span><span class="p">):</span>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a>            <span class="n">material</span><span class="o">.</span><span class="n">diffuse_tint</span> <span class="o">=</span> <span class="n">diffuse_tint</span>
-<a id="__codelineno-0-452" name="__codelineno-0-452"></a>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-455" name="__codelineno-0-455"></a><span class="sd">        Removes this prim from omniverse stage</span>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-457" name="__codelineno-0-457"></a>        <span class="c1"># Iterate over all states and run their remove call</span>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a>        <span class="k">for</span> <span class="n">state_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-<a id="__codelineno-0-459" name="__codelineno-0-459"></a>            <span class="n">state_instance</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
-<a id="__codelineno-0-460" name="__codelineno-0-460"></a>
-<a id="__codelineno-0-461" name="__codelineno-0-461"></a>        <span class="c1"># Run super</span>
-<a id="__codelineno-0-462" name="__codelineno-0-462"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
-<a id="__codelineno-0-463" name="__codelineno-0-463"></a>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a>    <span class="k">def</span> <span class="nf">_dump_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a>        <span class="c1"># Grab state from super class</span>
-<a id="__codelineno-0-466" name="__codelineno-0-466"></a>        <span class="n">state</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_dump_state</span><span class="p">()</span>
-<a id="__codelineno-0-467" name="__codelineno-0-467"></a>
-<a id="__codelineno-0-468" name="__codelineno-0-468"></a>        <span class="c1"># Also add non-kinematic states</span>
-<a id="__codelineno-0-469" name="__codelineno-0-469"></a>        <span class="n">non_kin_states</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-<a id="__codelineno-0-470" name="__codelineno-0-470"></a>        <span class="k">for</span> <span class="n">state_type</span><span class="p">,</span> <span class="n">state_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-471" name="__codelineno-0-471"></a>            <span class="k">if</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">stateful</span><span class="p">:</span>
-<a id="__codelineno-0-472" name="__codelineno-0-472"></a>                <span class="n">non_kin_states</span><span class="p">[</span><span class="n">get_state_name</span><span class="p">(</span><span class="n">state_type</span><span class="p">)]</span> <span class="o">=</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">dump_state</span><span class="p">(</span><span class="n">serialized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<a id="__codelineno-0-473" name="__codelineno-0-473"></a>
-<a id="__codelineno-0-474" name="__codelineno-0-474"></a>        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">non_kin_states</span>
-<a id="__codelineno-0-475" name="__codelineno-0-475"></a>
-<a id="__codelineno-0-476" name="__codelineno-0-476"></a>        <span class="k">return</span> <span class="n">state</span>
-<a id="__codelineno-0-477" name="__codelineno-0-477"></a>
-<a id="__codelineno-0-478" name="__codelineno-0-478"></a>    <span class="k">def</span> <span class="nf">_load_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-479" name="__codelineno-0-479"></a>        <span class="c1"># Call super method first</span>
-<a id="__codelineno-0-480" name="__codelineno-0-480"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_load_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
-<a id="__codelineno-0-481" name="__codelineno-0-481"></a>
-<a id="__codelineno-0-482" name="__codelineno-0-482"></a>        <span class="c1"># Load all states that are stateful</span>
-<a id="__codelineno-0-483" name="__codelineno-0-483"></a>        <span class="k">for</span> <span class="n">state_type</span><span class="p">,</span> <span class="n">state_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-484" name="__codelineno-0-484"></a>            <span class="n">state_name</span> <span class="o">=</span> <span class="n">get_state_name</span><span class="p">(</span><span class="n">state_type</span><span class="p">)</span>
-<a id="__codelineno-0-485" name="__codelineno-0-485"></a>            <span class="k">if</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">stateful</span><span class="p">:</span>
-<a id="__codelineno-0-486" name="__codelineno-0-486"></a>                <span class="k">if</span> <span class="n">state_name</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">]:</span>
-<a id="__codelineno-0-487" name="__codelineno-0-487"></a>                    <span class="n">state_instance</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">][</span><span class="n">state_name</span><span class="p">],</span> <span class="n">serialized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<a id="__codelineno-0-488" name="__codelineno-0-488"></a>                <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-489" name="__codelineno-0-489"></a>                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing object state [</span><span class="si">{</span><span class="n">state_name</span><span class="si">}</span><span class="s2">] in the state dump for obj </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-490" name="__codelineno-0-490"></a>
-<a id="__codelineno-0-491" name="__codelineno-0-491"></a>        <span class="c1"># Clear cache after loading state</span>
-<a id="__codelineno-0-492" name="__codelineno-0-492"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clear_states_cache</span><span class="p">()</span>
-<a id="__codelineno-0-493" name="__codelineno-0-493"></a>
-<a id="__codelineno-0-494" name="__codelineno-0-494"></a>    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-495" name="__codelineno-0-495"></a>        <span class="c1"># Call super method first</span>
-<a id="__codelineno-0-496" name="__codelineno-0-496"></a>        <span class="n">state_flat</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
-<a id="__codelineno-0-497" name="__codelineno-0-497"></a>
-<a id="__codelineno-0-498" name="__codelineno-0-498"></a>        <span class="c1"># Iterate over all states and serialize them individually</span>
-<a id="__codelineno-0-499" name="__codelineno-0-499"></a>        <span class="n">non_kin_state_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
-<a id="__codelineno-0-500" name="__codelineno-0-500"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="p">[</span><span class="n">REGISTERED_OBJECT_STATES</span><span class="p">[</span><span class="n">state_name</span><span class="p">]]</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
-<a id="__codelineno-0-501" name="__codelineno-0-501"></a>            <span class="k">for</span> <span class="n">state_name</span><span class="p">,</span> <span class="n">state_dict</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-<a id="__codelineno-0-502" name="__codelineno-0-502"></a>        <span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
-<a id="__codelineno-0-503" name="__codelineno-0-503"></a>
-<a id="__codelineno-0-504" name="__codelineno-0-504"></a>        <span class="c1"># Combine these two arrays</span>
-<a id="__codelineno-0-505" name="__codelineno-0-505"></a>        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">state_flat</span><span class="p">,</span> <span class="n">non_kin_state_flat</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-<a id="__codelineno-0-506" name="__codelineno-0-506"></a>
-<a id="__codelineno-0-507" name="__codelineno-0-507"></a>    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-508" name="__codelineno-0-508"></a>        <span class="c1"># Call super method first</span>
-<a id="__codelineno-0-509" name="__codelineno-0-509"></a>        <span class="n">state_dic</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_deserialize</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
-<a id="__codelineno-0-510" name="__codelineno-0-510"></a>
-<a id="__codelineno-0-511" name="__codelineno-0-511"></a>        <span class="c1"># Iterate over all states and deserialize their states if they&#39;re stateful</span>
-<a id="__codelineno-0-512" name="__codelineno-0-512"></a>        <span class="n">non_kin_state_dic</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-<a id="__codelineno-0-513" name="__codelineno-0-513"></a>        <span class="k">for</span> <span class="n">state_type</span><span class="p">,</span> <span class="n">state_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-514" name="__codelineno-0-514"></a>            <span class="n">state_name</span> <span class="o">=</span> <span class="n">get_state_name</span><span class="p">(</span><span class="n">state_type</span><span class="p">)</span>
-<a id="__codelineno-0-515" name="__codelineno-0-515"></a>            <span class="k">if</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">stateful</span><span class="p">:</span>
-<a id="__codelineno-0-516" name="__codelineno-0-516"></a>                <span class="n">non_kin_state_dic</span><span class="p">[</span><span class="n">state_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="n">state_instance</span><span class="o">.</span><span class="n">state_size</span><span class="p">])</span>
-<a id="__codelineno-0-517" name="__codelineno-0-517"></a>                <span class="n">idx</span> <span class="o">+=</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">state_size</span>
-<a id="__codelineno-0-518" name="__codelineno-0-518"></a>        <span class="n">state_dic</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">non_kin_state_dic</span>
-<a id="__codelineno-0-519" name="__codelineno-0-519"></a>
-<a id="__codelineno-0-520" name="__codelineno-0-520"></a>        <span class="k">return</span> <span class="n">state_dic</span><span class="p">,</span> <span class="n">idx</span>
-<a id="__codelineno-0-521" name="__codelineno-0-521"></a>
-<a id="__codelineno-0-522" name="__codelineno-0-522"></a>    <span class="k">def</span> <span class="nf">clear_states_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-523" name="__codelineno-0-523"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-524" name="__codelineno-0-524"></a><span class="sd">        Clears the internal cache from all owned states</span>
-<a id="__codelineno-0-525" name="__codelineno-0-525"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-526" name="__codelineno-0-526"></a>        <span class="c1"># Check self._states just in case states have not been initialized yet.</span>
-<a id="__codelineno-0-527" name="__codelineno-0-527"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="p">:</span>
-<a id="__codelineno-0-528" name="__codelineno-0-528"></a>            <span class="k">return</span>
-<a id="__codelineno-0-529" name="__codelineno-0-529"></a>        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj_state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-530" name="__codelineno-0-530"></a>            <span class="n">obj_state</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
-<a id="__codelineno-0-531" name="__codelineno-0-531"></a>
-<a id="__codelineno-0-532" name="__codelineno-0-532"></a>    <span class="k">def</span> <span class="nf">set_position_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<a id="__codelineno-0-533" name="__codelineno-0-533"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_position_orientation</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">)</span>
-<a id="__codelineno-0-534" name="__codelineno-0-534"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clear_states_cache</span><span class="p">()</span>
-<a id="__codelineno-0-535" name="__codelineno-0-535"></a>
-<a id="__codelineno-0-536" name="__codelineno-0-536"></a>    <span class="nd">@classproperty</span>
-<a id="__codelineno-0-537" name="__codelineno-0-537"></a>    <span class="k">def</span> <span class="nf">_do_not_register_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-<a id="__codelineno-0-538" name="__codelineno-0-538"></a>        <span class="c1"># Don&#39;t register this class since it&#39;s an abstract template</span>
-<a id="__codelineno-0-539" name="__codelineno-0-539"></a>        <span class="n">classes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_do_not_register_classes</span>
-<a id="__codelineno-0-540" name="__codelineno-0-540"></a>        <span class="n">classes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;StatefulObject&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-541" name="__codelineno-0-541"></a>        <span class="k">return</span> <span class="n">classes</span>
+<a id="__codelineno-0-447" name="__codelineno-0-447"></a>        <span class="k">if</span> <span class="n">material</span><span class="o">.</span><span class="n">is_glass</span><span class="p">:</span>
+<a id="__codelineno-0-448" name="__codelineno-0-448"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">material</span><span class="o">.</span><span class="n">glass_color</span><span class="p">,</span> <span class="n">diffuse_tint</span><span class="p">):</span>
+<a id="__codelineno-0-449" name="__codelineno-0-449"></a>                <span class="n">material</span><span class="o">.</span><span class="n">glass_color</span> <span class="o">=</span> <span class="n">diffuse_tint</span>
+<a id="__codelineno-0-450" name="__codelineno-0-450"></a>
+<a id="__codelineno-0-451" name="__codelineno-0-451"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-452" name="__codelineno-0-452"></a>            <span class="k">if</span> <span class="n">material</span><span class="o">.</span><span class="n">albedo_add</span> <span class="o">!=</span> <span class="n">albedo_add</span><span class="p">:</span>
+<a id="__codelineno-0-453" name="__codelineno-0-453"></a>                <span class="n">material</span><span class="o">.</span><span class="n">albedo_add</span> <span class="o">=</span> <span class="n">albedo_add</span>
+<a id="__codelineno-0-454" name="__codelineno-0-454"></a>
+<a id="__codelineno-0-455" name="__codelineno-0-455"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">material</span><span class="o">.</span><span class="n">diffuse_tint</span><span class="p">,</span> <span class="n">diffuse_tint</span><span class="p">):</span>
+<a id="__codelineno-0-456" name="__codelineno-0-456"></a>                <span class="n">material</span><span class="o">.</span><span class="n">diffuse_tint</span> <span class="o">=</span> <span class="n">diffuse_tint</span>
+<a id="__codelineno-0-457" name="__codelineno-0-457"></a>
+<a id="__codelineno-0-458" name="__codelineno-0-458"></a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-459" name="__codelineno-0-459"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-460" name="__codelineno-0-460"></a><span class="sd">        Removes this prim from omniverse stage</span>
+<a id="__codelineno-0-461" name="__codelineno-0-461"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-462" name="__codelineno-0-462"></a>        <span class="c1"># Iterate over all states and run their remove call</span>
+<a id="__codelineno-0-463" name="__codelineno-0-463"></a>        <span class="k">for</span> <span class="n">state_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a>            <span class="n">state_instance</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>
+<a id="__codelineno-0-466" name="__codelineno-0-466"></a>        <span class="c1"># Run super</span>
+<a id="__codelineno-0-467" name="__codelineno-0-467"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<a id="__codelineno-0-468" name="__codelineno-0-468"></a>
+<a id="__codelineno-0-469" name="__codelineno-0-469"></a>    <span class="k">def</span> <span class="nf">_dump_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-470" name="__codelineno-0-470"></a>        <span class="c1"># Grab state from super class</span>
+<a id="__codelineno-0-471" name="__codelineno-0-471"></a>        <span class="n">state</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_dump_state</span><span class="p">()</span>
+<a id="__codelineno-0-472" name="__codelineno-0-472"></a>
+<a id="__codelineno-0-473" name="__codelineno-0-473"></a>        <span class="c1"># Also add non-kinematic states</span>
+<a id="__codelineno-0-474" name="__codelineno-0-474"></a>        <span class="n">non_kin_states</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<a id="__codelineno-0-475" name="__codelineno-0-475"></a>        <span class="k">for</span> <span class="n">state_type</span><span class="p">,</span> <span class="n">state_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-476" name="__codelineno-0-476"></a>            <span class="k">if</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">stateful</span><span class="p">:</span>
+<a id="__codelineno-0-477" name="__codelineno-0-477"></a>                <span class="n">non_kin_states</span><span class="p">[</span><span class="n">get_state_name</span><span class="p">(</span><span class="n">state_type</span><span class="p">)]</span> <span class="o">=</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">dump_state</span><span class="p">(</span><span class="n">serialized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-0-478" name="__codelineno-0-478"></a>
+<a id="__codelineno-0-479" name="__codelineno-0-479"></a>        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">non_kin_states</span>
+<a id="__codelineno-0-480" name="__codelineno-0-480"></a>
+<a id="__codelineno-0-481" name="__codelineno-0-481"></a>        <span class="k">return</span> <span class="n">state</span>
+<a id="__codelineno-0-482" name="__codelineno-0-482"></a>
+<a id="__codelineno-0-483" name="__codelineno-0-483"></a>    <span class="k">def</span> <span class="nf">_load_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-484" name="__codelineno-0-484"></a>        <span class="c1"># Call super method first</span>
+<a id="__codelineno-0-485" name="__codelineno-0-485"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_load_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
+<a id="__codelineno-0-486" name="__codelineno-0-486"></a>
+<a id="__codelineno-0-487" name="__codelineno-0-487"></a>        <span class="c1"># Load all states that are stateful</span>
+<a id="__codelineno-0-488" name="__codelineno-0-488"></a>        <span class="k">for</span> <span class="n">state_type</span><span class="p">,</span> <span class="n">state_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-489" name="__codelineno-0-489"></a>            <span class="n">state_name</span> <span class="o">=</span> <span class="n">get_state_name</span><span class="p">(</span><span class="n">state_type</span><span class="p">)</span>
+<a id="__codelineno-0-490" name="__codelineno-0-490"></a>            <span class="k">if</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">stateful</span><span class="p">:</span>
+<a id="__codelineno-0-491" name="__codelineno-0-491"></a>                <span class="k">if</span> <span class="n">state_name</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">]:</span>
+<a id="__codelineno-0-492" name="__codelineno-0-492"></a>                    <span class="n">state_instance</span><span class="o">.</span><span class="n">load_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">][</span><span class="n">state_name</span><span class="p">],</span> <span class="n">serialized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-0-493" name="__codelineno-0-493"></a>                <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-494" name="__codelineno-0-494"></a>                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing object state [</span><span class="si">{</span><span class="n">state_name</span><span class="si">}</span><span class="s2">] in the state dump for obj </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-495" name="__codelineno-0-495"></a>
+<a id="__codelineno-0-496" name="__codelineno-0-496"></a>        <span class="c1"># Clear cache after loading state</span>
+<a id="__codelineno-0-497" name="__codelineno-0-497"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clear_states_cache</span><span class="p">()</span>
+<a id="__codelineno-0-498" name="__codelineno-0-498"></a>
+<a id="__codelineno-0-499" name="__codelineno-0-499"></a>    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-500" name="__codelineno-0-500"></a>        <span class="c1"># Call super method first</span>
+<a id="__codelineno-0-501" name="__codelineno-0-501"></a>        <span class="n">state_flat</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
+<a id="__codelineno-0-502" name="__codelineno-0-502"></a>
+<a id="__codelineno-0-503" name="__codelineno-0-503"></a>        <span class="c1"># Iterate over all states and serialize them individually</span>
+<a id="__codelineno-0-504" name="__codelineno-0-504"></a>        <span class="n">non_kin_state_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
+<a id="__codelineno-0-505" name="__codelineno-0-505"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="p">[</span><span class="n">REGISTERED_OBJECT_STATES</span><span class="p">[</span><span class="n">state_name</span><span class="p">]]</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+<a id="__codelineno-0-506" name="__codelineno-0-506"></a>            <span class="k">for</span> <span class="n">state_name</span><span class="p">,</span> <span class="n">state_dict</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<a id="__codelineno-0-507" name="__codelineno-0-507"></a>        <span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<a id="__codelineno-0-508" name="__codelineno-0-508"></a>
+<a id="__codelineno-0-509" name="__codelineno-0-509"></a>        <span class="c1"># Combine these two arrays</span>
+<a id="__codelineno-0-510" name="__codelineno-0-510"></a>        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">state_flat</span><span class="p">,</span> <span class="n">non_kin_state_flat</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<a id="__codelineno-0-511" name="__codelineno-0-511"></a>
+<a id="__codelineno-0-512" name="__codelineno-0-512"></a>    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-513" name="__codelineno-0-513"></a>        <span class="c1"># Call super method first</span>
+<a id="__codelineno-0-514" name="__codelineno-0-514"></a>        <span class="n">state_dic</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_deserialize</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
+<a id="__codelineno-0-515" name="__codelineno-0-515"></a>
+<a id="__codelineno-0-516" name="__codelineno-0-516"></a>        <span class="c1"># Iterate over all states and deserialize their states if they&#39;re stateful</span>
+<a id="__codelineno-0-517" name="__codelineno-0-517"></a>        <span class="n">non_kin_state_dic</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<a id="__codelineno-0-518" name="__codelineno-0-518"></a>        <span class="k">for</span> <span class="n">state_type</span><span class="p">,</span> <span class="n">state_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-519" name="__codelineno-0-519"></a>            <span class="n">state_name</span> <span class="o">=</span> <span class="n">get_state_name</span><span class="p">(</span><span class="n">state_type</span><span class="p">)</span>
+<a id="__codelineno-0-520" name="__codelineno-0-520"></a>            <span class="k">if</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">stateful</span><span class="p">:</span>
+<a id="__codelineno-0-521" name="__codelineno-0-521"></a>                <span class="n">non_kin_state_dic</span><span class="p">[</span><span class="n">state_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="n">state_instance</span><span class="o">.</span><span class="n">state_size</span><span class="p">])</span>
+<a id="__codelineno-0-522" name="__codelineno-0-522"></a>                <span class="n">idx</span> <span class="o">+=</span> <span class="n">state_instance</span><span class="o">.</span><span class="n">state_size</span>
+<a id="__codelineno-0-523" name="__codelineno-0-523"></a>        <span class="n">state_dic</span><span class="p">[</span><span class="s2">&quot;non_kin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">non_kin_state_dic</span>
+<a id="__codelineno-0-524" name="__codelineno-0-524"></a>
+<a id="__codelineno-0-525" name="__codelineno-0-525"></a>        <span class="k">return</span> <span class="n">state_dic</span><span class="p">,</span> <span class="n">idx</span>
+<a id="__codelineno-0-526" name="__codelineno-0-526"></a>
+<a id="__codelineno-0-527" name="__codelineno-0-527"></a>    <span class="k">def</span> <span class="nf">clear_states_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-528" name="__codelineno-0-528"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-529" name="__codelineno-0-529"></a><span class="sd">        Clears the internal cache from all owned states</span>
+<a id="__codelineno-0-530" name="__codelineno-0-530"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-531" name="__codelineno-0-531"></a>        <span class="c1"># Check self._states just in case states have not been initialized yet.</span>
+<a id="__codelineno-0-532" name="__codelineno-0-532"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="p">:</span>
+<a id="__codelineno-0-533" name="__codelineno-0-533"></a>            <span class="k">return</span>
+<a id="__codelineno-0-534" name="__codelineno-0-534"></a>        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj_state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-535" name="__codelineno-0-535"></a>            <span class="n">obj_state</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
+<a id="__codelineno-0-536" name="__codelineno-0-536"></a>
+<a id="__codelineno-0-537" name="__codelineno-0-537"></a>    <span class="k">def</span> <span class="nf">set_position_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a id="__codelineno-0-538" name="__codelineno-0-538"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">set_position_orientation</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">)</span>
+<a id="__codelineno-0-539" name="__codelineno-0-539"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clear_states_cache</span><span class="p">()</span>
+<a id="__codelineno-0-540" name="__codelineno-0-540"></a>
+<a id="__codelineno-0-541" name="__codelineno-0-541"></a>    <span class="nd">@classproperty</span>
+<a id="__codelineno-0-542" name="__codelineno-0-542"></a>    <span class="k">def</span> <span class="nf">_do_not_register_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<a id="__codelineno-0-543" name="__codelineno-0-543"></a>        <span class="c1"># Don&#39;t register this class since it&#39;s an abstract template</span>
+<a id="__codelineno-0-544" name="__codelineno-0-544"></a>        <span class="n">classes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_do_not_register_classes</span>
+<a id="__codelineno-0-545" name="__codelineno-0-545"></a>        <span class="n">classes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;StatefulObject&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-546" name="__codelineno-0-546"></a>        <span class="k">return</span> <span class="n">classes</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -6904,23 +6914,23 @@ for flexible compositions of various object subclasses (e.g.: Robot is USDObject
 
       <details class="quote">
         <summary>Source code in <code>omnigibson/objects/stateful_object.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-522">522</a></span>
-<span class="normal"><a href="#__codelineno-0-523">523</a></span>
-<span class="normal"><a href="#__codelineno-0-524">524</a></span>
-<span class="normal"><a href="#__codelineno-0-525">525</a></span>
-<span class="normal"><a href="#__codelineno-0-526">526</a></span>
-<span class="normal"><a href="#__codelineno-0-527">527</a></span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-527">527</a></span>
 <span class="normal"><a href="#__codelineno-0-528">528</a></span>
 <span class="normal"><a href="#__codelineno-0-529">529</a></span>
-<span class="normal"><a href="#__codelineno-0-530">530</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-522" name="__codelineno-0-522"></a><span class="k">def</span> <span class="nf">clear_states_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-523" name="__codelineno-0-523"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-524" name="__codelineno-0-524"></a><span class="sd">    Clears the internal cache from all owned states</span>
-<a id="__codelineno-0-525" name="__codelineno-0-525"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-526" name="__codelineno-0-526"></a>    <span class="c1"># Check self._states just in case states have not been initialized yet.</span>
-<a id="__codelineno-0-527" name="__codelineno-0-527"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="p">:</span>
-<a id="__codelineno-0-528" name="__codelineno-0-528"></a>        <span class="k">return</span>
-<a id="__codelineno-0-529" name="__codelineno-0-529"></a>    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj_state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-530" name="__codelineno-0-530"></a>        <span class="n">obj_state</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
+<span class="normal"><a href="#__codelineno-0-530">530</a></span>
+<span class="normal"><a href="#__codelineno-0-531">531</a></span>
+<span class="normal"><a href="#__codelineno-0-532">532</a></span>
+<span class="normal"><a href="#__codelineno-0-533">533</a></span>
+<span class="normal"><a href="#__codelineno-0-534">534</a></span>
+<span class="normal"><a href="#__codelineno-0-535">535</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-527" name="__codelineno-0-527"></a><span class="k">def</span> <span class="nf">clear_states_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-528" name="__codelineno-0-528"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-529" name="__codelineno-0-529"></a><span class="sd">    Clears the internal cache from all owned states</span>
+<a id="__codelineno-0-530" name="__codelineno-0-530"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-531" name="__codelineno-0-531"></a>    <span class="c1"># Check self._states just in case states have not been initialized yet.</span>
+<a id="__codelineno-0-532" name="__codelineno-0-532"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="p">:</span>
+<a id="__codelineno-0-533" name="__codelineno-0-533"></a>        <span class="k">return</span>
+<a id="__codelineno-0-534" name="__codelineno-0-534"></a>    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj_state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-535" name="__codelineno-0-535"></a>        <span class="n">obj_state</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -7117,25 +7127,25 @@ find &amp; instantiate all relevant states.</p>
 
       <details class="quote">
         <summary>Source code in <code>omnigibson/objects/stateful_object.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-453">453</a></span>
-<span class="normal"><a href="#__codelineno-0-454">454</a></span>
-<span class="normal"><a href="#__codelineno-0-455">455</a></span>
-<span class="normal"><a href="#__codelineno-0-456">456</a></span>
-<span class="normal"><a href="#__codelineno-0-457">457</a></span>
-<span class="normal"><a href="#__codelineno-0-458">458</a></span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-458">458</a></span>
 <span class="normal"><a href="#__codelineno-0-459">459</a></span>
 <span class="normal"><a href="#__codelineno-0-460">460</a></span>
 <span class="normal"><a href="#__codelineno-0-461">461</a></span>
-<span class="normal"><a href="#__codelineno-0-462">462</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-453" name="__codelineno-0-453"></a><span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-455" name="__codelineno-0-455"></a><span class="sd">    Removes this prim from omniverse stage</span>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-457" name="__codelineno-0-457"></a>    <span class="c1"># Iterate over all states and run their remove call</span>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a>    <span class="k">for</span> <span class="n">state_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-<a id="__codelineno-0-459" name="__codelineno-0-459"></a>        <span class="n">state_instance</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
-<a id="__codelineno-0-460" name="__codelineno-0-460"></a>
-<a id="__codelineno-0-461" name="__codelineno-0-461"></a>    <span class="c1"># Run super</span>
-<a id="__codelineno-0-462" name="__codelineno-0-462"></a>    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<span class="normal"><a href="#__codelineno-0-462">462</a></span>
+<span class="normal"><a href="#__codelineno-0-463">463</a></span>
+<span class="normal"><a href="#__codelineno-0-464">464</a></span>
+<span class="normal"><a href="#__codelineno-0-465">465</a></span>
+<span class="normal"><a href="#__codelineno-0-466">466</a></span>
+<span class="normal"><a href="#__codelineno-0-467">467</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-458" name="__codelineno-0-458"></a><span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-459" name="__codelineno-0-459"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-460" name="__codelineno-0-460"></a><span class="sd">    Removes this prim from omniverse stage</span>
+<a id="__codelineno-0-461" name="__codelineno-0-461"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-462" name="__codelineno-0-462"></a>    <span class="c1"># Iterate over all states and run their remove call</span>
+<a id="__codelineno-0-463" name="__codelineno-0-463"></a>    <span class="k">for</span> <span class="n">state_instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a>        <span class="n">state_instance</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>
+<a id="__codelineno-0-466" name="__codelineno-0-466"></a>    <span class="c1"># Run super</span>
+<a id="__codelineno-0-467" name="__codelineno-0-467"></a>    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>

@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/OmniGibson_logo.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.5">
     
     
       
@@ -2589,11 +2589,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../object_states/open.html" class="md-nav__link">
+      <a href="../object_states/open_state.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    open
+    open_state
   </span>
   
 
@@ -5512,9 +5512,9 @@ dynamically reference an object / system as they become real in the sim</p>
 <a id="__codelineno-0-244" name="__codelineno-0-244"></a><span class="sd">            **kwargs (dict): Any keyword arguments to pass to getter, in order</span>
 <a id="__codelineno-0-245" name="__codelineno-0-245"></a>
 <a id="__codelineno-0-246" name="__codelineno-0-246"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-247" name="__codelineno-0-247"></a><span class="sd">            None or any: Returned value(s) from @state if self.wrapped_obj exists (i.e.: not None), else None</span>
+<a id="__codelineno-0-247" name="__codelineno-0-247"></a><span class="sd">            any: Returned value(s) from @state if self.wrapped_obj exists (i.e.: not None), else False</span>
 <a id="__codelineno-0-248" name="__codelineno-0-248"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-249" name="__codelineno-0-249"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">state</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span> <span class="k">else</span> <span class="kc">None</span>
+<a id="__codelineno-0-249" name="__codelineno-0-249"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">state</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span> <span class="k">else</span> <span class="kc">False</span>
 <a id="__codelineno-0-250" name="__codelineno-0-250"></a>
 <a id="__codelineno-0-251" name="__codelineno-0-251"></a>    <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -5840,17 +5840,17 @@ if it exists in the future</p>
   <table>
     <thead>
       <tr>
-        <th>Type</th>
+<th>Name</th>        <th>Type</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
         <tr>
-          <td>
+<td><code>any</code></td>          <td>
           </td>
           <td>
             <div class="doc-md-description">
-              <p>None or any: Returned value(s) from @state if self.wrapped_obj exists (i.e.: not None), else None</p>
+              <p>Returned value(s) from @state if self.wrapped_obj exists (i.e.: not None), else False</p>
             </div>
           </td>
         </tr>
@@ -5881,9 +5881,9 @@ if it exists in the future</p>
 <a id="__codelineno-0-244" name="__codelineno-0-244"></a><span class="sd">        **kwargs (dict): Any keyword arguments to pass to getter, in order</span>
 <a id="__codelineno-0-245" name="__codelineno-0-245"></a>
 <a id="__codelineno-0-246" name="__codelineno-0-246"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-247" name="__codelineno-0-247"></a><span class="sd">        None or any: Returned value(s) from @state if self.wrapped_obj exists (i.e.: not None), else None</span>
+<a id="__codelineno-0-247" name="__codelineno-0-247"></a><span class="sd">        any: Returned value(s) from @state if self.wrapped_obj exists (i.e.: not None), else False</span>
 <a id="__codelineno-0-248" name="__codelineno-0-248"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-249" name="__codelineno-0-249"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">state</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span> <span class="k">else</span> <span class="kc">None</span>
+<a id="__codelineno-0-249" name="__codelineno-0-249"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_obj</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="n">state</span><span class="p">]</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span> <span class="k">else</span> <span class="kc">False</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>

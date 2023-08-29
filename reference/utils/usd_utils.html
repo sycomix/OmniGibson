@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/OmniGibson_logo.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.5">
     
     
       
@@ -2589,11 +2589,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../object_states/open.html" class="md-nav__link">
+      <a href="../object_states/open_state.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    open
+    open_state
   </span>
   
 
@@ -5909,7 +5909,7 @@
 <a id="__codelineno-0-505" name="__codelineno-0-505"></a>
 <a id="__codelineno-0-506" name="__codelineno-0-506"></a>        <span class="c1"># Sanity check values</span>
 <a id="__codelineno-0-507" name="__codelineno-0-507"></a>        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">aabb</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span> <span class="o">&lt;</span> <span class="n">aabb</span><span class="p">[:</span><span class="mi">3</span><span class="p">]):</span>
-<a id="__codelineno-0-508" name="__codelineno-0-508"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got invalid aabb values: low=</span><span class="si">{</span><span class="n">aabb</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">, high=</span><span class="si">{</span><span class="n">aabb</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-508" name="__codelineno-0-508"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got invalid aabb values for prim: </span><span class="si">{</span><span class="n">prim_path</span><span class="si">}</span><span class="s2">: low=</span><span class="si">{</span><span class="n">aabb</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">, high=</span><span class="si">{</span><span class="n">aabb</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-509" name="__codelineno-0-509"></a>
 <a id="__codelineno-0-510" name="__codelineno-0-510"></a>        <span class="k">return</span> <span class="n">aabb</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">aabb</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
 <a id="__codelineno-0-511" name="__codelineno-0-511"></a>
