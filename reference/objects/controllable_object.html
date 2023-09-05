@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/OmniGibson_logo.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.5">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.7">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.0e669242.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.046329b4.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.85d0ee34.min.css">
@@ -6541,8 +6541,8 @@ e.g.: a conveyor belt or a robot agent</p>
 <a id="__codelineno-0-436" name="__codelineno-0-436"></a>            <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">POSITION</span><span class="p">:</span>
 <a id="__codelineno-0-437" name="__codelineno-0-437"></a>                <span class="n">joint</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">ctrl</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">drive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a id="__codelineno-0-438" name="__codelineno-0-438"></a>            <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a>                <span class="c1"># Do nothing</span>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a>                <span class="k">pass</span>
+<a id="__codelineno-0-439" name="__codelineno-0-439"></a>                <span class="c1"># Set zero efforts</span>
+<a id="__codelineno-0-440" name="__codelineno-0-440"></a>                <span class="n">joint</span><span class="o">.</span><span class="n">set_effort</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a id="__codelineno-0-441" name="__codelineno-0-441"></a>            <span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-0-442" name="__codelineno-0-442"></a>                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid control type specified: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ctrl_type</span><span class="p">))</span>
 <a id="__codelineno-0-443" name="__codelineno-0-443"></a>
@@ -8115,8 +8115,8 @@ individual values. Default is False, corresponding to all @control assumed to be
 <a id="__codelineno-0-436" name="__codelineno-0-436"></a>        <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">POSITION</span><span class="p">:</span>
 <a id="__codelineno-0-437" name="__codelineno-0-437"></a>            <span class="n">joint</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">ctrl</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">drive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a id="__codelineno-0-438" name="__codelineno-0-438"></a>        <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a>            <span class="c1"># Do nothing</span>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a>            <span class="k">pass</span>
+<a id="__codelineno-0-439" name="__codelineno-0-439"></a>            <span class="c1"># Set zero efforts</span>
+<a id="__codelineno-0-440" name="__codelineno-0-440"></a>            <span class="n">joint</span><span class="o">.</span><span class="n">set_effort</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a id="__codelineno-0-441" name="__codelineno-0-441"></a>        <span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-0-442" name="__codelineno-0-442"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid control type specified: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ctrl_type</span><span class="p">))</span>
 <a id="__codelineno-0-443" name="__codelineno-0-443"></a>
@@ -8440,7 +8440,7 @@ controller configurations for this object. This will override any default values
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "navigation.tabs", "content.code.copy"], "search": "../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.78eede0e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.dff1b7c8.min.js"></script>
       
     
   </body>

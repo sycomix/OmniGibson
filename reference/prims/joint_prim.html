@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/OmniGibson_logo.png">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.5">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.7">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.0e669242.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.046329b4.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.85d0ee34.min.css">
@@ -6599,7 +6599,9 @@ which corresponds to a non-articulated joint.</p>
 <span class="normal"><a href="#__codelineno-0-910">910</a></span>
 <span class="normal"><a href="#__codelineno-0-911">911</a></span>
 <span class="normal"><a href="#__codelineno-0-912">912</a></span>
-<span class="normal"><a href="#__codelineno-0-913">913</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="k">class</span> <span class="nc">JointPrim</span><span class="p">(</span><span class="n">BasePrim</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-913">913</a></span>
+<span class="normal"><a href="#__codelineno-0-914">914</a></span>
+<span class="normal"><a href="#__codelineno-0-915">915</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="k">class</span> <span class="nc">JointPrim</span><span class="p">(</span><span class="n">BasePrim</span><span class="p">):</span>
 <a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="sd">    Provides high level functions to deal with a joint prim and its attributes/ properties.</span>
 <a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="sd">    If there is an joint prim present at the path, it will use it. Otherwise, a new joint prim at</span>
@@ -7404,69 +7406,71 @@ which corresponds to a non-articulated joint.</p>
 <a id="__codelineno-0-848" name="__codelineno-0-848"></a>        <span class="c1"># Sanity checks -- make sure that we&#39;re articulated (no control type check like position and velocity</span>
 <a id="__codelineno-0-849" name="__codelineno-0-849"></a>        <span class="c1"># because we can&#39;t set effort targets) and that we&#39;re driven</span>
 <a id="__codelineno-0-850" name="__codelineno-0-850"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assert_articulated</span><span class="p">()</span>
-<a id="__codelineno-0-851" name="__codelineno-0-851"></a>        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driven</span><span class="p">,</span> <span class="s2">&quot;Cannot set efforts for joint that is not driven!&quot;</span>
-<a id="__codelineno-0-852" name="__codelineno-0-852"></a>
-<a id="__codelineno-0-853" name="__codelineno-0-853"></a>        <span class="c1"># Standardize input</span>
-<a id="__codelineno-0-854" name="__codelineno-0-854"></a>        <span class="n">effort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">effort</span><span class="p">])</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_dof</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">effort</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">effort</span><span class="p">)</span>
-<a id="__codelineno-0-855" name="__codelineno-0-855"></a>
-<a id="__codelineno-0-856" name="__codelineno-0-856"></a>        <span class="c1"># Potentially de-normalize if the input is normalized</span>
-<a id="__codelineno-0-857" name="__codelineno-0-857"></a>        <span class="k">if</span> <span class="n">normalized</span><span class="p">:</span>
-<a id="__codelineno-0-858" name="__codelineno-0-858"></a>            <span class="n">effort</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denormalize_effort</span><span class="p">(</span><span class="n">effort</span><span class="p">)</span>
-<a id="__codelineno-0-859" name="__codelineno-0-859"></a>
-<a id="__codelineno-0-860" name="__codelineno-0-860"></a>        <span class="c1"># Set the DOF(s) in this joint</span>
-<a id="__codelineno-0-861" name="__codelineno-0-861"></a>        <span class="k">for</span> <span class="n">dof_handle</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dof_handles</span><span class="p">,</span> <span class="n">effort</span><span class="p">):</span>
-<a id="__codelineno-0-862" name="__codelineno-0-862"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">set_dof_effort</span><span class="p">(</span><span class="n">dof_handle</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-<a id="__codelineno-0-863" name="__codelineno-0-863"></a>
-<a id="__codelineno-0-864" name="__codelineno-0-864"></a>    <span class="k">def</span> <span class="nf">keep_still</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-865" name="__codelineno-0-865"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-866" name="__codelineno-0-866"></a><span class="sd">        Zero out all velocities for this prim</span>
-<a id="__codelineno-0-867" name="__codelineno-0-867"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-868" name="__codelineno-0-868"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">))</span>
-<a id="__codelineno-0-869" name="__codelineno-0-869"></a>
-<a id="__codelineno-0-870" name="__codelineno-0-870"></a>    <span class="k">def</span> <span class="nf">_dump_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-871" name="__codelineno-0-871"></a>        <span class="n">pos</span><span class="p">,</span> <span class="n">vel</span><span class="p">,</span> <span class="n">effort</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">articulated</span> <span class="k">else</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span>
-<a id="__codelineno-0-872" name="__codelineno-0-872"></a>        <span class="n">target_pos</span><span class="p">,</span> <span class="n">target_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_target</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">articulated</span> <span class="k">else</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span>
-<a id="__codelineno-0-873" name="__codelineno-0-873"></a>        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
-<a id="__codelineno-0-874" name="__codelineno-0-874"></a>            <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
-<a id="__codelineno-0-875" name="__codelineno-0-875"></a>            <span class="n">vel</span><span class="o">=</span><span class="n">vel</span><span class="p">,</span>
-<a id="__codelineno-0-876" name="__codelineno-0-876"></a>            <span class="n">effort</span><span class="o">=</span><span class="n">effort</span><span class="p">,</span>
-<a id="__codelineno-0-877" name="__codelineno-0-877"></a>            <span class="n">target_pos</span><span class="o">=</span><span class="n">target_pos</span><span class="p">,</span>
-<a id="__codelineno-0-878" name="__codelineno-0-878"></a>            <span class="n">target_vel</span><span class="o">=</span><span class="n">target_vel</span><span class="p">,</span>
-<a id="__codelineno-0-879" name="__codelineno-0-879"></a>        <span class="p">)</span>
-<a id="__codelineno-0-880" name="__codelineno-0-880"></a>
-<a id="__codelineno-0-881" name="__codelineno-0-881"></a>    <span class="k">def</span> <span class="nf">_load_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-882" name="__codelineno-0-882"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">articulated</span><span class="p">:</span>
-<a id="__codelineno-0-883" name="__codelineno-0-883"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<a id="__codelineno-0-884" name="__codelineno-0-884"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;vel&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<a id="__codelineno-0-885" name="__codelineno-0-885"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driven</span><span class="p">:</span>
-<a id="__codelineno-0-886" name="__codelineno-0-886"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">set_effort</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;effort&quot;</span><span class="p">])</span>
-<a id="__codelineno-0-887" name="__codelineno-0-887"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">POSITION</span><span class="p">:</span>
-<a id="__codelineno-0-888" name="__codelineno-0-888"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;target_pos&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-0-889" name="__codelineno-0-889"></a>            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">VELOCITY</span><span class="p">:</span>
-<a id="__codelineno-0-890" name="__codelineno-0-890"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;target_vel&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-0-891" name="__codelineno-0-891"></a>
-<a id="__codelineno-0-892" name="__codelineno-0-892"></a>    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-893" name="__codelineno-0-893"></a>        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
-<a id="__codelineno-0-894" name="__codelineno-0-894"></a>            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-895" name="__codelineno-0-895"></a>            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;vel&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-896" name="__codelineno-0-896"></a>            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;effort&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-897" name="__codelineno-0-897"></a>            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;target_pos&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-898" name="__codelineno-0-898"></a>            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;target_vel&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-899" name="__codelineno-0-899"></a>        <span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-<a id="__codelineno-0-900" name="__codelineno-0-900"></a>
-<a id="__codelineno-0-901" name="__codelineno-0-901"></a>    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-902" name="__codelineno-0-902"></a>        <span class="c1"># We deserialize deterministically by knowing the order of values -- pos, vel, effort</span>
-<a id="__codelineno-0-903" name="__codelineno-0-903"></a>        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
-<a id="__codelineno-0-904" name="__codelineno-0-904"></a>            <span class="n">pos</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">],</span>
-<a id="__codelineno-0-905" name="__codelineno-0-905"></a>            <span class="n">vel</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">],</span>
-<a id="__codelineno-0-906" name="__codelineno-0-906"></a>            <span class="n">effort</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">],</span>
-<a id="__codelineno-0-907" name="__codelineno-0-907"></a>            <span class="n">target_pos</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">:</span><span class="mi">4</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">],</span>
-<a id="__codelineno-0-908" name="__codelineno-0-908"></a>            <span class="n">target_vel</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">:</span><span class="mi">5</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">],</span>
-<a id="__codelineno-0-909" name="__codelineno-0-909"></a>        <span class="p">),</span> <span class="mi">5</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span>
-<a id="__codelineno-0-910" name="__codelineno-0-910"></a>
-<a id="__codelineno-0-911" name="__codelineno-0-911"></a>    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim_path</span><span class="p">):</span>
-<a id="__codelineno-0-912" name="__codelineno-0-912"></a>        <span class="c1"># Cannot directly duplicate a joint prim</span>
-<a id="__codelineno-0-913" name="__codelineno-0-913"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Cannot directly duplicate a joint prim!&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-851" name="__codelineno-0-851"></a>
+<a id="__codelineno-0-852" name="__codelineno-0-852"></a>        <span class="c1"># Standardize input</span>
+<a id="__codelineno-0-853" name="__codelineno-0-853"></a>        <span class="n">effort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">effort</span><span class="p">])</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_dof</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">effort</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">effort</span><span class="p">)</span>
+<a id="__codelineno-0-854" name="__codelineno-0-854"></a>
+<a id="__codelineno-0-855" name="__codelineno-0-855"></a>        <span class="c1"># Potentially de-normalize if the input is normalized</span>
+<a id="__codelineno-0-856" name="__codelineno-0-856"></a>        <span class="k">if</span> <span class="n">normalized</span><span class="p">:</span>
+<a id="__codelineno-0-857" name="__codelineno-0-857"></a>            <span class="n">effort</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denormalize_effort</span><span class="p">(</span><span class="n">effort</span><span class="p">)</span>
+<a id="__codelineno-0-858" name="__codelineno-0-858"></a>
+<a id="__codelineno-0-859" name="__codelineno-0-859"></a>        <span class="c1"># Set the DOF(s) in this joint</span>
+<a id="__codelineno-0-860" name="__codelineno-0-860"></a>        <span class="k">for</span> <span class="n">dof_handle</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dof_handles</span><span class="p">,</span> <span class="n">effort</span><span class="p">):</span>
+<a id="__codelineno-0-861" name="__codelineno-0-861"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">set_dof_effort</span><span class="p">(</span><span class="n">dof_handle</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<a id="__codelineno-0-862" name="__codelineno-0-862"></a>
+<a id="__codelineno-0-863" name="__codelineno-0-863"></a>    <span class="k">def</span> <span class="nf">keep_still</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-864" name="__codelineno-0-864"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-865" name="__codelineno-0-865"></a><span class="sd">        Zero out all velocities for this prim</span>
+<a id="__codelineno-0-866" name="__codelineno-0-866"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-867" name="__codelineno-0-867"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">))</span>
+<a id="__codelineno-0-868" name="__codelineno-0-868"></a>        <span class="c1"># If not driven, set torque equal to zero as well</span>
+<a id="__codelineno-0-869" name="__codelineno-0-869"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">driven</span><span class="p">:</span>
+<a id="__codelineno-0-870" name="__codelineno-0-870"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">set_effort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">))</span>
+<a id="__codelineno-0-871" name="__codelineno-0-871"></a>
+<a id="__codelineno-0-872" name="__codelineno-0-872"></a>    <span class="k">def</span> <span class="nf">_dump_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-873" name="__codelineno-0-873"></a>        <span class="n">pos</span><span class="p">,</span> <span class="n">vel</span><span class="p">,</span> <span class="n">effort</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">articulated</span> <span class="k">else</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span>
+<a id="__codelineno-0-874" name="__codelineno-0-874"></a>        <span class="n">target_pos</span><span class="p">,</span> <span class="n">target_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_target</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">articulated</span> <span class="k">else</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span>
+<a id="__codelineno-0-875" name="__codelineno-0-875"></a>        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+<a id="__codelineno-0-876" name="__codelineno-0-876"></a>            <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
+<a id="__codelineno-0-877" name="__codelineno-0-877"></a>            <span class="n">vel</span><span class="o">=</span><span class="n">vel</span><span class="p">,</span>
+<a id="__codelineno-0-878" name="__codelineno-0-878"></a>            <span class="n">effort</span><span class="o">=</span><span class="n">effort</span><span class="p">,</span>
+<a id="__codelineno-0-879" name="__codelineno-0-879"></a>            <span class="n">target_pos</span><span class="o">=</span><span class="n">target_pos</span><span class="p">,</span>
+<a id="__codelineno-0-880" name="__codelineno-0-880"></a>            <span class="n">target_vel</span><span class="o">=</span><span class="n">target_vel</span><span class="p">,</span>
+<a id="__codelineno-0-881" name="__codelineno-0-881"></a>        <span class="p">)</span>
+<a id="__codelineno-0-882" name="__codelineno-0-882"></a>
+<a id="__codelineno-0-883" name="__codelineno-0-883"></a>    <span class="k">def</span> <span class="nf">_load_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-884" name="__codelineno-0-884"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">articulated</span><span class="p">:</span>
+<a id="__codelineno-0-885" name="__codelineno-0-885"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-0-886" name="__codelineno-0-886"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;vel&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-0-887" name="__codelineno-0-887"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">driven</span><span class="p">:</span>
+<a id="__codelineno-0-888" name="__codelineno-0-888"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">set_effort</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;effort&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-889" name="__codelineno-0-889"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">POSITION</span><span class="p">:</span>
+<a id="__codelineno-0-890" name="__codelineno-0-890"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;target_pos&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-0-891" name="__codelineno-0-891"></a>            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">VELOCITY</span><span class="p">:</span>
+<a id="__codelineno-0-892" name="__codelineno-0-892"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;target_vel&quot;</span><span class="p">],</span> <span class="n">drive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-0-893" name="__codelineno-0-893"></a>
+<a id="__codelineno-0-894" name="__codelineno-0-894"></a>    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-895" name="__codelineno-0-895"></a>        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
+<a id="__codelineno-0-896" name="__codelineno-0-896"></a>            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-897" name="__codelineno-0-897"></a>            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;vel&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-898" name="__codelineno-0-898"></a>            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;effort&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-899" name="__codelineno-0-899"></a>            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;target_pos&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-900" name="__codelineno-0-900"></a>            <span class="n">state</span><span class="p">[</span><span class="s2">&quot;target_vel&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-901" name="__codelineno-0-901"></a>        <span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<a id="__codelineno-0-902" name="__codelineno-0-902"></a>
+<a id="__codelineno-0-903" name="__codelineno-0-903"></a>    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-904" name="__codelineno-0-904"></a>        <span class="c1"># We deserialize deterministically by knowing the order of values -- pos, vel, effort</span>
+<a id="__codelineno-0-905" name="__codelineno-0-905"></a>        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+<a id="__codelineno-0-906" name="__codelineno-0-906"></a>            <span class="n">pos</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">],</span>
+<a id="__codelineno-0-907" name="__codelineno-0-907"></a>            <span class="n">vel</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">],</span>
+<a id="__codelineno-0-908" name="__codelineno-0-908"></a>            <span class="n">effort</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">],</span>
+<a id="__codelineno-0-909" name="__codelineno-0-909"></a>            <span class="n">target_pos</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">:</span><span class="mi">4</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">],</span>
+<a id="__codelineno-0-910" name="__codelineno-0-910"></a>            <span class="n">target_vel</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="mi">4</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">:</span><span class="mi">5</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">],</span>
+<a id="__codelineno-0-911" name="__codelineno-0-911"></a>        <span class="p">),</span> <span class="mi">5</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span>
+<a id="__codelineno-0-912" name="__codelineno-0-912"></a>
+<a id="__codelineno-0-913" name="__codelineno-0-913"></a>    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim_path</span><span class="p">):</span>
+<a id="__codelineno-0-914" name="__codelineno-0-914"></a>        <span class="c1"># Cannot directly duplicate a joint prim</span>
+<a id="__codelineno-0-915" name="__codelineno-0-915"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Cannot directly duplicate a joint prim!&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -8761,15 +8765,21 @@ are in range [-1, 1].</p>
 
       <details class="quote">
         <summary>Source code in <code>omnigibson/prims/joint_prim.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-864">864</a></span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-863">863</a></span>
+<span class="normal"><a href="#__codelineno-0-864">864</a></span>
 <span class="normal"><a href="#__codelineno-0-865">865</a></span>
 <span class="normal"><a href="#__codelineno-0-866">866</a></span>
 <span class="normal"><a href="#__codelineno-0-867">867</a></span>
-<span class="normal"><a href="#__codelineno-0-868">868</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-864" name="__codelineno-0-864"></a><span class="k">def</span> <span class="nf">keep_still</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-865" name="__codelineno-0-865"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-866" name="__codelineno-0-866"></a><span class="sd">    Zero out all velocities for this prim</span>
-<a id="__codelineno-0-867" name="__codelineno-0-867"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-868" name="__codelineno-0-868"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">))</span>
+<span class="normal"><a href="#__codelineno-0-868">868</a></span>
+<span class="normal"><a href="#__codelineno-0-869">869</a></span>
+<span class="normal"><a href="#__codelineno-0-870">870</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-863" name="__codelineno-0-863"></a><span class="k">def</span> <span class="nf">keep_still</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-864" name="__codelineno-0-864"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-865" name="__codelineno-0-865"></a><span class="sd">    Zero out all velocities for this prim</span>
+<a id="__codelineno-0-866" name="__codelineno-0-866"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-867" name="__codelineno-0-867"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">))</span>
+<a id="__codelineno-0-868" name="__codelineno-0-868"></a>    <span class="c1"># If not driven, set torque equal to zero as well</span>
+<a id="__codelineno-0-869" name="__codelineno-0-869"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">driven</span><span class="p">:</span>
+<a id="__codelineno-0-870" name="__codelineno-0-870"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_effort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dof</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -9011,8 +9021,7 @@ de-normalized first before being executed). Default is False</p>
 <span class="normal"><a href="#__codelineno-0-858">858</a></span>
 <span class="normal"><a href="#__codelineno-0-859">859</a></span>
 <span class="normal"><a href="#__codelineno-0-860">860</a></span>
-<span class="normal"><a href="#__codelineno-0-861">861</a></span>
-<span class="normal"><a href="#__codelineno-0-862">862</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-838" name="__codelineno-0-838"></a><span class="k">def</span> <span class="nf">set_effort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">effort</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-861">861</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-838" name="__codelineno-0-838"></a><span class="k">def</span> <span class="nf">set_effort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">effort</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <a id="__codelineno-0-839" name="__codelineno-0-839"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-840" name="__codelineno-0-840"></a><span class="sd">    Set the effort of this joint in metric space</span>
 <a id="__codelineno-0-841" name="__codelineno-0-841"></a>
@@ -9025,18 +9034,17 @@ de-normalized first before being executed). Default is False</p>
 <a id="__codelineno-0-848" name="__codelineno-0-848"></a>    <span class="c1"># Sanity checks -- make sure that we&#39;re articulated (no control type check like position and velocity</span>
 <a id="__codelineno-0-849" name="__codelineno-0-849"></a>    <span class="c1"># because we can&#39;t set effort targets) and that we&#39;re driven</span>
 <a id="__codelineno-0-850" name="__codelineno-0-850"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">assert_articulated</span><span class="p">()</span>
-<a id="__codelineno-0-851" name="__codelineno-0-851"></a>    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driven</span><span class="p">,</span> <span class="s2">&quot;Cannot set efforts for joint that is not driven!&quot;</span>
-<a id="__codelineno-0-852" name="__codelineno-0-852"></a>
-<a id="__codelineno-0-853" name="__codelineno-0-853"></a>    <span class="c1"># Standardize input</span>
-<a id="__codelineno-0-854" name="__codelineno-0-854"></a>    <span class="n">effort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">effort</span><span class="p">])</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_dof</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">effort</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">effort</span><span class="p">)</span>
-<a id="__codelineno-0-855" name="__codelineno-0-855"></a>
-<a id="__codelineno-0-856" name="__codelineno-0-856"></a>    <span class="c1"># Potentially de-normalize if the input is normalized</span>
-<a id="__codelineno-0-857" name="__codelineno-0-857"></a>    <span class="k">if</span> <span class="n">normalized</span><span class="p">:</span>
-<a id="__codelineno-0-858" name="__codelineno-0-858"></a>        <span class="n">effort</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denormalize_effort</span><span class="p">(</span><span class="n">effort</span><span class="p">)</span>
-<a id="__codelineno-0-859" name="__codelineno-0-859"></a>
-<a id="__codelineno-0-860" name="__codelineno-0-860"></a>    <span class="c1"># Set the DOF(s) in this joint</span>
-<a id="__codelineno-0-861" name="__codelineno-0-861"></a>    <span class="k">for</span> <span class="n">dof_handle</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dof_handles</span><span class="p">,</span> <span class="n">effort</span><span class="p">):</span>
-<a id="__codelineno-0-862" name="__codelineno-0-862"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">set_dof_effort</span><span class="p">(</span><span class="n">dof_handle</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<a id="__codelineno-0-851" name="__codelineno-0-851"></a>
+<a id="__codelineno-0-852" name="__codelineno-0-852"></a>    <span class="c1"># Standardize input</span>
+<a id="__codelineno-0-853" name="__codelineno-0-853"></a>    <span class="n">effort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">effort</span><span class="p">])</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_dof</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">effort</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">effort</span><span class="p">)</span>
+<a id="__codelineno-0-854" name="__codelineno-0-854"></a>
+<a id="__codelineno-0-855" name="__codelineno-0-855"></a>    <span class="c1"># Potentially de-normalize if the input is normalized</span>
+<a id="__codelineno-0-856" name="__codelineno-0-856"></a>    <span class="k">if</span> <span class="n">normalized</span><span class="p">:</span>
+<a id="__codelineno-0-857" name="__codelineno-0-857"></a>        <span class="n">effort</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denormalize_effort</span><span class="p">(</span><span class="n">effort</span><span class="p">)</span>
+<a id="__codelineno-0-858" name="__codelineno-0-858"></a>
+<a id="__codelineno-0-859" name="__codelineno-0-859"></a>    <span class="c1"># Set the DOF(s) in this joint</span>
+<a id="__codelineno-0-860" name="__codelineno-0-860"></a>    <span class="k">for</span> <span class="n">dof_handle</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dof_handles</span><span class="p">,</span> <span class="n">effort</span><span class="p">):</span>
+<a id="__codelineno-0-861" name="__codelineno-0-861"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">set_dof_effort</span><span class="p">(</span><span class="n">dof_handle</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -9444,7 +9452,7 @@ instantaneous setting of the velocity</p>
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "navigation.tabs", "content.code.copy"], "search": "../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.78eede0e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.dff1b7c8.min.js"></script>
       
     
   </body>
