@@ -6541,8 +6541,8 @@ e.g.: a conveyor belt or a robot agent</p>
 <a id="__codelineno-0-436" name="__codelineno-0-436"></a>            <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">POSITION</span><span class="p">:</span>
 <a id="__codelineno-0-437" name="__codelineno-0-437"></a>                <span class="n">joint</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">ctrl</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">drive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a id="__codelineno-0-438" name="__codelineno-0-438"></a>            <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a>                <span class="c1"># Do nothing</span>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a>                <span class="k">pass</span>
+<a id="__codelineno-0-439" name="__codelineno-0-439"></a>                <span class="c1"># Set zero efforts</span>
+<a id="__codelineno-0-440" name="__codelineno-0-440"></a>                <span class="n">joint</span><span class="o">.</span><span class="n">set_effort</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a id="__codelineno-0-441" name="__codelineno-0-441"></a>            <span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-0-442" name="__codelineno-0-442"></a>                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid control type specified: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ctrl_type</span><span class="p">))</span>
 <a id="__codelineno-0-443" name="__codelineno-0-443"></a>
@@ -7027,8 +7027,8 @@ indices (list) of the joint state vector controlled by each controller</p>
 <code class="highlight language-python"><span class="n">controller_order</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
       <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
   </span>
 
 </h3>
@@ -7112,8 +7112,8 @@ gripper command</p>
 <code class="highlight language-python"><span class="n">default_joint_pos</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
       <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
   </span>
 
 </h3>
@@ -8115,8 +8115,8 @@ individual values. Default is False, corresponding to all @control assumed to be
 <a id="__codelineno-0-436" name="__codelineno-0-436"></a>        <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">POSITION</span><span class="p">:</span>
 <a id="__codelineno-0-437" name="__codelineno-0-437"></a>            <span class="n">joint</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">ctrl</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">drive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a id="__codelineno-0-438" name="__codelineno-0-438"></a>        <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="n">ControlType</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a>            <span class="c1"># Do nothing</span>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a>            <span class="k">pass</span>
+<a id="__codelineno-0-439" name="__codelineno-0-439"></a>            <span class="c1"># Set zero efforts</span>
+<a id="__codelineno-0-440" name="__codelineno-0-440"></a>            <span class="n">joint</span><span class="o">.</span><span class="n">set_effort</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a id="__codelineno-0-441" name="__codelineno-0-441"></a>        <span class="k">else</span><span class="p">:</span>
 <a id="__codelineno-0-442" name="__codelineno-0-442"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid control type specified: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ctrl_type</span><span class="p">))</span>
 <a id="__codelineno-0-443" name="__codelineno-0-443"></a>
