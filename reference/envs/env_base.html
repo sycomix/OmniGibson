@@ -6041,7 +6041,9 @@
 <span class="normal"><a href="#__codelineno-0-583">583</a></span>
 <span class="normal"><a href="#__codelineno-0-584">584</a></span>
 <span class="normal"><a href="#__codelineno-0-585">585</a></span>
-<span class="normal"><a href="#__codelineno-0-586">586</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="k">class</span> <span class="nc">Environment</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">,</span> <span class="n">GymObservable</span><span class="p">,</span> <span class="n">Recreatable</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-586">586</a></span>
+<span class="normal"><a href="#__codelineno-0-587">587</a></span>
+<span class="normal"><a href="#__codelineno-0-588">588</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="k">class</span> <span class="nc">Environment</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">,</span> <span class="n">GymObservable</span><span class="p">,</span> <span class="n">Recreatable</span><span class="p">):</span>
 <a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="sd">    Core environment class that handles loading scene, robot(s), and task, following OpenAI Gym interface.</span>
 <a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="sd">    &quot;&quot;&quot;</span>
@@ -6413,201 +6415,203 @@
 <a id="__codelineno-0-389" name="__codelineno-0-389"></a>                <span class="n">action_dim</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">action_dim</span>
 <a id="__codelineno-0-390" name="__codelineno-0-390"></a>                <span class="n">action_dict</span><span class="p">[</span><span class="n">robot</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">action_dim</span><span class="p">]</span>
 <a id="__codelineno-0-391" name="__codelineno-0-391"></a>                <span class="n">idx</span> <span class="o">+=</span> <span class="n">action_dim</span>
-<a id="__codelineno-0-392" name="__codelineno-0-392"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-393" name="__codelineno-0-393"></a>            <span class="c1"># Our inputted action is the action dictionary</span>
-<a id="__codelineno-0-394" name="__codelineno-0-394"></a>            <span class="n">action_dict</span> <span class="o">=</span> <span class="n">action</span>
-<a id="__codelineno-0-395" name="__codelineno-0-395"></a>
-<a id="__codelineno-0-396" name="__codelineno-0-396"></a>        <span class="c1"># Iterate over all robots and apply actions</span>
-<a id="__codelineno-0-397" name="__codelineno-0-397"></a>        <span class="k">for</span> <span class="n">robot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots</span><span class="p">:</span>
-<a id="__codelineno-0-398" name="__codelineno-0-398"></a>            <span class="n">robot</span><span class="o">.</span><span class="n">apply_action</span><span class="p">(</span><span class="n">action_dict</span><span class="p">[</span><span class="n">robot</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
-<a id="__codelineno-0-399" name="__codelineno-0-399"></a>
-<a id="__codelineno-0-400" name="__codelineno-0-400"></a>        <span class="c1"># Run simulation step</span>
-<a id="__codelineno-0-401" name="__codelineno-0-401"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-<a id="__codelineno-0-402" name="__codelineno-0-402"></a>
-<a id="__codelineno-0-403" name="__codelineno-0-403"></a>        <span class="c1"># Grab observations</span>
-<a id="__codelineno-0-404" name="__codelineno-0-404"></a>        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_obs</span><span class="p">()</span>
-<a id="__codelineno-0-405" name="__codelineno-0-405"></a>
-<a id="__codelineno-0-406" name="__codelineno-0-406"></a>        <span class="c1"># Grab reward, done, and info, and populate with internal info</span>
-<a id="__codelineno-0-407" name="__codelineno-0-407"></a>        <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
-<a id="__codelineno-0-408" name="__codelineno-0-408"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_populate_info</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<a id="__codelineno-0-409" name="__codelineno-0-409"></a>
-<a id="__codelineno-0-410" name="__codelineno-0-410"></a>        <span class="k">if</span> <span class="n">done</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_automatic_reset</span><span class="p">:</span>
-<a id="__codelineno-0-411" name="__codelineno-0-411"></a>            <span class="c1"># Add lost observation to our information dict, and reset</span>
-<a id="__codelineno-0-412" name="__codelineno-0-412"></a>            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;last_observation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs</span>
-<a id="__codelineno-0-413" name="__codelineno-0-413"></a>            <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<a id="__codelineno-0-414" name="__codelineno-0-414"></a>
-<a id="__codelineno-0-415" name="__codelineno-0-415"></a>        <span class="c1"># Increment step</span>
-<a id="__codelineno-0-416" name="__codelineno-0-416"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_current_step</span> <span class="o">+=</span> <span class="mi">1</span>
-<a id="__codelineno-0-417" name="__codelineno-0-417"></a>
-<a id="__codelineno-0-418" name="__codelineno-0-418"></a>        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
+<a id="__codelineno-0-392" name="__codelineno-0-392"></a>            <span class="c1"># Make sure idx matches the length of the action</span>
+<a id="__codelineno-0-393" name="__codelineno-0-393"></a>            <span class="k">assert</span> <span class="n">idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">action</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Got mismatch in inputted action. Expected length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">action</span><span class="p">)</span><span class="si">}</span><span class="s2">, got: </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-394" name="__codelineno-0-394"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-395" name="__codelineno-0-395"></a>            <span class="c1"># Our inputted action is the action dictionary</span>
+<a id="__codelineno-0-396" name="__codelineno-0-396"></a>            <span class="n">action_dict</span> <span class="o">=</span> <span class="n">action</span>
+<a id="__codelineno-0-397" name="__codelineno-0-397"></a>
+<a id="__codelineno-0-398" name="__codelineno-0-398"></a>        <span class="c1"># Iterate over all robots and apply actions</span>
+<a id="__codelineno-0-399" name="__codelineno-0-399"></a>        <span class="k">for</span> <span class="n">robot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots</span><span class="p">:</span>
+<a id="__codelineno-0-400" name="__codelineno-0-400"></a>            <span class="n">robot</span><span class="o">.</span><span class="n">apply_action</span><span class="p">(</span><span class="n">action_dict</span><span class="p">[</span><span class="n">robot</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+<a id="__codelineno-0-401" name="__codelineno-0-401"></a>
+<a id="__codelineno-0-402" name="__codelineno-0-402"></a>        <span class="c1"># Run simulation step</span>
+<a id="__codelineno-0-403" name="__codelineno-0-403"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<a id="__codelineno-0-404" name="__codelineno-0-404"></a>
+<a id="__codelineno-0-405" name="__codelineno-0-405"></a>        <span class="c1"># Grab observations</span>
+<a id="__codelineno-0-406" name="__codelineno-0-406"></a>        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_obs</span><span class="p">()</span>
+<a id="__codelineno-0-407" name="__codelineno-0-407"></a>
+<a id="__codelineno-0-408" name="__codelineno-0-408"></a>        <span class="c1"># Grab reward, done, and info, and populate with internal info</span>
+<a id="__codelineno-0-409" name="__codelineno-0-409"></a>        <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+<a id="__codelineno-0-410" name="__codelineno-0-410"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_populate_info</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<a id="__codelineno-0-411" name="__codelineno-0-411"></a>
+<a id="__codelineno-0-412" name="__codelineno-0-412"></a>        <span class="k">if</span> <span class="n">done</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_automatic_reset</span><span class="p">:</span>
+<a id="__codelineno-0-413" name="__codelineno-0-413"></a>            <span class="c1"># Add lost observation to our information dict, and reset</span>
+<a id="__codelineno-0-414" name="__codelineno-0-414"></a>            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;last_observation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs</span>
+<a id="__codelineno-0-415" name="__codelineno-0-415"></a>            <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<a id="__codelineno-0-416" name="__codelineno-0-416"></a>
+<a id="__codelineno-0-417" name="__codelineno-0-417"></a>        <span class="c1"># Increment step</span>
+<a id="__codelineno-0-418" name="__codelineno-0-418"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_current_step</span> <span class="o">+=</span> <span class="mi">1</span>
 <a id="__codelineno-0-419" name="__codelineno-0-419"></a>
-<a id="__codelineno-0-420" name="__codelineno-0-420"></a>    <span class="k">def</span> <span class="nf">_reset_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-421" name="__codelineno-0-421"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-422" name="__codelineno-0-422"></a><span class="sd">        Reset bookkeeping variables for the next new episode.</span>
-<a id="__codelineno-0-423" name="__codelineno-0-423"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-424" name="__codelineno-0-424"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_current_episode</span> <span class="o">+=</span> <span class="mi">1</span>
-<a id="__codelineno-0-425" name="__codelineno-0-425"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_current_step</span> <span class="o">=</span> <span class="mi">0</span>
-<a id="__codelineno-0-426" name="__codelineno-0-426"></a>
-<a id="__codelineno-0-427" name="__codelineno-0-427"></a>    <span class="c1"># TODO: Match super class signature?</span>
-<a id="__codelineno-0-428" name="__codelineno-0-428"></a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-429" name="__codelineno-0-429"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-430" name="__codelineno-0-430"></a><span class="sd">        Reset episode.</span>
-<a id="__codelineno-0-431" name="__codelineno-0-431"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-432" name="__codelineno-0-432"></a>        <span class="c1"># Reset the task</span>
-<a id="__codelineno-0-433" name="__codelineno-0-433"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-<a id="__codelineno-0-434" name="__codelineno-0-434"></a>
-<a id="__codelineno-0-435" name="__codelineno-0-435"></a>        <span class="c1"># Reset internal variables</span>
-<a id="__codelineno-0-436" name="__codelineno-0-436"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_variables</span><span class="p">()</span>
-<a id="__codelineno-0-437" name="__codelineno-0-437"></a>
-<a id="__codelineno-0-438" name="__codelineno-0-438"></a>        <span class="c1"># Run a single simulator step to make sure we can grab updated observations</span>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a>
-<a id="__codelineno-0-441" name="__codelineno-0-441"></a>        <span class="c1"># Grab and return observations</span>
-<a id="__codelineno-0-442" name="__codelineno-0-442"></a>        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_obs</span><span class="p">()</span>
-<a id="__codelineno-0-443" name="__codelineno-0-443"></a>
-<a id="__codelineno-0-444" name="__codelineno-0-444"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">obs</span><span class="p">):</span>
-<a id="__codelineno-0-445" name="__codelineno-0-445"></a>            <span class="c1"># Flatten obs, and print out all keys and values</span>
-<a id="__codelineno-0-446" name="__codelineno-0-446"></a>            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;OBSERVATION SPACE:&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a>            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">recursively_generate_flat_dict</span><span class="p">(</span><span class="n">dic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a>                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">((</span><span class="s2">&quot;obs_space&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a>            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ACTUAL OBSERVATIONS:&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a>            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">recursively_generate_flat_dict</span><span class="p">(</span><span class="n">dic</span><span class="o">=</span><span class="n">obs</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a>                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">((</span><span class="s2">&quot;obs&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-<a id="__codelineno-0-452" name="__codelineno-0-452"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Observation space does not match returned observations!&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a>        <span class="k">return</span> <span class="n">obs</span>
+<a id="__codelineno-0-420" name="__codelineno-0-420"></a>        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
+<a id="__codelineno-0-421" name="__codelineno-0-421"></a>
+<a id="__codelineno-0-422" name="__codelineno-0-422"></a>    <span class="k">def</span> <span class="nf">_reset_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-423" name="__codelineno-0-423"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-424" name="__codelineno-0-424"></a><span class="sd">        Reset bookkeeping variables for the next new episode.</span>
+<a id="__codelineno-0-425" name="__codelineno-0-425"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-426" name="__codelineno-0-426"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_current_episode</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="__codelineno-0-427" name="__codelineno-0-427"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_current_step</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-0-428" name="__codelineno-0-428"></a>
+<a id="__codelineno-0-429" name="__codelineno-0-429"></a>    <span class="c1"># TODO: Match super class signature?</span>
+<a id="__codelineno-0-430" name="__codelineno-0-430"></a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-431" name="__codelineno-0-431"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-432" name="__codelineno-0-432"></a><span class="sd">        Reset episode.</span>
+<a id="__codelineno-0-433" name="__codelineno-0-433"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-434" name="__codelineno-0-434"></a>        <span class="c1"># Reset the task</span>
+<a id="__codelineno-0-435" name="__codelineno-0-435"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a id="__codelineno-0-436" name="__codelineno-0-436"></a>
+<a id="__codelineno-0-437" name="__codelineno-0-437"></a>        <span class="c1"># Reset internal variables</span>
+<a id="__codelineno-0-438" name="__codelineno-0-438"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_variables</span><span class="p">()</span>
+<a id="__codelineno-0-439" name="__codelineno-0-439"></a>
+<a id="__codelineno-0-440" name="__codelineno-0-440"></a>        <span class="c1"># Run a single simulator step to make sure we can grab updated observations</span>
+<a id="__codelineno-0-441" name="__codelineno-0-441"></a>        <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<a id="__codelineno-0-442" name="__codelineno-0-442"></a>
+<a id="__codelineno-0-443" name="__codelineno-0-443"></a>        <span class="c1"># Grab and return observations</span>
+<a id="__codelineno-0-444" name="__codelineno-0-444"></a>        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_obs</span><span class="p">()</span>
+<a id="__codelineno-0-445" name="__codelineno-0-445"></a>
+<a id="__codelineno-0-446" name="__codelineno-0-446"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">obs</span><span class="p">):</span>
+<a id="__codelineno-0-447" name="__codelineno-0-447"></a>            <span class="c1"># Flatten obs, and print out all keys and values</span>
+<a id="__codelineno-0-448" name="__codelineno-0-448"></a>            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;OBSERVATION SPACE:&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-449" name="__codelineno-0-449"></a>            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">recursively_generate_flat_dict</span><span class="p">(</span><span class="n">dic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-450" name="__codelineno-0-450"></a>                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">((</span><span class="s2">&quot;obs_space&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<a id="__codelineno-0-451" name="__codelineno-0-451"></a>            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ACTUAL OBSERVATIONS:&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-452" name="__codelineno-0-452"></a>            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">recursively_generate_flat_dict</span><span class="p">(</span><span class="n">dic</span><span class="o">=</span><span class="n">obs</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-453" name="__codelineno-0-453"></a>                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">((</span><span class="s2">&quot;obs&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<a id="__codelineno-0-454" name="__codelineno-0-454"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Observation space does not match returned observations!&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-455" name="__codelineno-0-455"></a>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-457" name="__codelineno-0-457"></a>    <span class="k">def</span> <span class="nf">episode_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-459" name="__codelineno-0-459"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-460" name="__codelineno-0-460"></a><span class="sd">            int: Current number of steps in episode</span>
-<a id="__codelineno-0-461" name="__codelineno-0-461"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-462" name="__codelineno-0-462"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_step</span>
-<a id="__codelineno-0-463" name="__codelineno-0-463"></a>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a>    <span class="k">def</span> <span class="nf">initial_pos_z_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-466" name="__codelineno-0-466"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-467" name="__codelineno-0-467"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-468" name="__codelineno-0-468"></a><span class="sd">            float: how high to offset object placement to test valid pose &amp; account for one action step of dropping</span>
-<a id="__codelineno-0-469" name="__codelineno-0-469"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-470" name="__codelineno-0-470"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_pos_z_offset</span>
-<a id="__codelineno-0-471" name="__codelineno-0-471"></a>
-<a id="__codelineno-0-472" name="__codelineno-0-472"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-473" name="__codelineno-0-473"></a>    <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-474" name="__codelineno-0-474"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-475" name="__codelineno-0-475"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-476" name="__codelineno-0-476"></a><span class="sd">            BaseTask: Active task instance</span>
-<a id="__codelineno-0-477" name="__codelineno-0-477"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-478" name="__codelineno-0-478"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task</span>
-<a id="__codelineno-0-479" name="__codelineno-0-479"></a>
-<a id="__codelineno-0-480" name="__codelineno-0-480"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-481" name="__codelineno-0-481"></a>    <span class="k">def</span> <span class="nf">scene</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-482" name="__codelineno-0-482"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-483" name="__codelineno-0-483"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-484" name="__codelineno-0-484"></a><span class="sd">            Scene: Active scene in this environment</span>
-<a id="__codelineno-0-485" name="__codelineno-0-485"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-486" name="__codelineno-0-486"></a>        <span class="k">return</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">scene</span>
-<a id="__codelineno-0-487" name="__codelineno-0-487"></a>
-<a id="__codelineno-0-488" name="__codelineno-0-488"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-489" name="__codelineno-0-489"></a>    <span class="k">def</span> <span class="nf">robots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-490" name="__codelineno-0-490"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-491" name="__codelineno-0-491"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-492" name="__codelineno-0-492"></a><span class="sd">            list of BaseRobot: Robots in the current scene</span>
-<a id="__codelineno-0-493" name="__codelineno-0-493"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-494" name="__codelineno-0-494"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">robots</span>
-<a id="__codelineno-0-495" name="__codelineno-0-495"></a>
-<a id="__codelineno-0-496" name="__codelineno-0-496"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-497" name="__codelineno-0-497"></a>    <span class="k">def</span> <span class="nf">env_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-498" name="__codelineno-0-498"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-499" name="__codelineno-0-499"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-500" name="__codelineno-0-500"></a><span class="sd">            dict: Environment-specific configuration kwargs</span>
-<a id="__codelineno-0-501" name="__codelineno-0-501"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-502" name="__codelineno-0-502"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;env&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-503" name="__codelineno-0-503"></a>
-<a id="__codelineno-0-504" name="__codelineno-0-504"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-505" name="__codelineno-0-505"></a>    <span class="k">def</span> <span class="nf">render_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-506" name="__codelineno-0-506"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-507" name="__codelineno-0-507"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-508" name="__codelineno-0-508"></a><span class="sd">            dict: Render-specific configuration kwargs</span>
-<a id="__codelineno-0-509" name="__codelineno-0-509"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-510" name="__codelineno-0-510"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;render&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-511" name="__codelineno-0-511"></a>
-<a id="__codelineno-0-512" name="__codelineno-0-512"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-513" name="__codelineno-0-513"></a>    <span class="k">def</span> <span class="nf">scene_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-514" name="__codelineno-0-514"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-515" name="__codelineno-0-515"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-516" name="__codelineno-0-516"></a><span class="sd">            dict: Scene-specific configuration kwargs</span>
-<a id="__codelineno-0-517" name="__codelineno-0-517"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-518" name="__codelineno-0-518"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;scene&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-519" name="__codelineno-0-519"></a>
-<a id="__codelineno-0-520" name="__codelineno-0-520"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-521" name="__codelineno-0-521"></a>    <span class="k">def</span> <span class="nf">robots_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-522" name="__codelineno-0-522"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-523" name="__codelineno-0-523"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-524" name="__codelineno-0-524"></a><span class="sd">            dict: Robot-specific configuration kwargs</span>
-<a id="__codelineno-0-525" name="__codelineno-0-525"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-526" name="__codelineno-0-526"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;robots&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-527" name="__codelineno-0-527"></a>
-<a id="__codelineno-0-528" name="__codelineno-0-528"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-529" name="__codelineno-0-529"></a>    <span class="k">def</span> <span class="nf">objects_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-530" name="__codelineno-0-530"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-531" name="__codelineno-0-531"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-532" name="__codelineno-0-532"></a><span class="sd">            dict: Object-specific configuration kwargs</span>
-<a id="__codelineno-0-533" name="__codelineno-0-533"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-534" name="__codelineno-0-534"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;objects&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-535" name="__codelineno-0-535"></a>
-<a id="__codelineno-0-536" name="__codelineno-0-536"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-537" name="__codelineno-0-537"></a>    <span class="k">def</span> <span class="nf">task_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-538" name="__codelineno-0-538"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-539" name="__codelineno-0-539"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-540" name="__codelineno-0-540"></a><span class="sd">            dict: Task-specific configuration kwargs</span>
-<a id="__codelineno-0-541" name="__codelineno-0-541"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-542" name="__codelineno-0-542"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-543" name="__codelineno-0-543"></a>
-<a id="__codelineno-0-544" name="__codelineno-0-544"></a>    <span class="nd">@property</span>
-<a id="__codelineno-0-545" name="__codelineno-0-545"></a>    <span class="k">def</span> <span class="nf">default_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-546" name="__codelineno-0-546"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-547" name="__codelineno-0-547"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-548" name="__codelineno-0-548"></a><span class="sd">            dict: Default configuration for this environment. May not be fully specified (i.e.: still requires @config</span>
-<a id="__codelineno-0-549" name="__codelineno-0-549"></a><span class="sd">                to be specified during environment creation)</span>
-<a id="__codelineno-0-550" name="__codelineno-0-550"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-551" name="__codelineno-0-551"></a>        <span class="k">return</span> <span class="p">{</span>
-<a id="__codelineno-0-552" name="__codelineno-0-552"></a>            <span class="c1"># Environment kwargs</span>
-<a id="__codelineno-0-553" name="__codelineno-0-553"></a>            <span class="s2">&quot;env&quot;</span><span class="p">:</span> <span class="p">{</span>
-<a id="__codelineno-0-554" name="__codelineno-0-554"></a>                <span class="s2">&quot;initial_pos_z_offset&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-<a id="__codelineno-0-555" name="__codelineno-0-555"></a>            <span class="p">},</span>
-<a id="__codelineno-0-556" name="__codelineno-0-556"></a>
-<a id="__codelineno-0-557" name="__codelineno-0-557"></a>            <span class="c1"># Rendering kwargs</span>
-<a id="__codelineno-0-558" name="__codelineno-0-558"></a>            <span class="s2">&quot;render&quot;</span><span class="p">:</span> <span class="p">{</span>
-<a id="__codelineno-0-559" name="__codelineno-0-559"></a>                <span class="s2">&quot;viewer_width&quot;</span><span class="p">:</span> <span class="mi">1280</span><span class="p">,</span>
-<a id="__codelineno-0-560" name="__codelineno-0-560"></a>                <span class="s2">&quot;viewer_height&quot;</span><span class="p">:</span> <span class="mi">720</span><span class="p">,</span>
-<a id="__codelineno-0-561" name="__codelineno-0-561"></a>            <span class="p">},</span>
-<a id="__codelineno-0-562" name="__codelineno-0-562"></a>
-<a id="__codelineno-0-563" name="__codelineno-0-563"></a>            <span class="c1"># Scene kwargs</span>
-<a id="__codelineno-0-564" name="__codelineno-0-564"></a>            <span class="s2">&quot;scene&quot;</span><span class="p">:</span> <span class="p">{</span>
-<a id="__codelineno-0-565" name="__codelineno-0-565"></a>                <span class="c1"># Traversibility map kwargs</span>
-<a id="__codelineno-0-566" name="__codelineno-0-566"></a>                <span class="s2">&quot;waypoint_resolution&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-<a id="__codelineno-0-567" name="__codelineno-0-567"></a>                <span class="s2">&quot;num_waypoints&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-<a id="__codelineno-0-568" name="__codelineno-0-568"></a>                <span class="s2">&quot;build_graph&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-569" name="__codelineno-0-569"></a>                <span class="s2">&quot;trav_map_resolution&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-<a id="__codelineno-0-570" name="__codelineno-0-570"></a>                <span class="s2">&quot;trav_map_erosion&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-0-571" name="__codelineno-0-571"></a>                <span class="s2">&quot;trav_map_with_objects&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-572" name="__codelineno-0-572"></a>                <span class="s2">&quot;scene_instance&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-573" name="__codelineno-0-573"></a>                <span class="s2">&quot;scene_file&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-574" name="__codelineno-0-574"></a>            <span class="p">},</span>
-<a id="__codelineno-0-575" name="__codelineno-0-575"></a>
-<a id="__codelineno-0-576" name="__codelineno-0-576"></a>            <span class="c1"># Robot kwargs</span>
-<a id="__codelineno-0-577" name="__codelineno-0-577"></a>            <span class="s2">&quot;robots&quot;</span><span class="p">:</span> <span class="p">[],</span>   <span class="c1"># no robots by default</span>
-<a id="__codelineno-0-578" name="__codelineno-0-578"></a>
-<a id="__codelineno-0-579" name="__codelineno-0-579"></a>            <span class="c1"># Object kwargs</span>
-<a id="__codelineno-0-580" name="__codelineno-0-580"></a>            <span class="s2">&quot;objects&quot;</span><span class="p">:</span> <span class="p">[],</span>  <span class="c1"># no objects by default</span>
-<a id="__codelineno-0-581" name="__codelineno-0-581"></a>
-<a id="__codelineno-0-582" name="__codelineno-0-582"></a>            <span class="c1"># Task kwargs</span>
-<a id="__codelineno-0-583" name="__codelineno-0-583"></a>            <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="p">{</span>
-<a id="__codelineno-0-584" name="__codelineno-0-584"></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;DummyTask&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-585" name="__codelineno-0-585"></a>            <span class="p">}</span>
-<a id="__codelineno-0-586" name="__codelineno-0-586"></a>        <span class="p">}</span>
+<a id="__codelineno-0-456" name="__codelineno-0-456"></a>        <span class="k">return</span> <span class="n">obs</span>
+<a id="__codelineno-0-457" name="__codelineno-0-457"></a>
+<a id="__codelineno-0-458" name="__codelineno-0-458"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-459" name="__codelineno-0-459"></a>    <span class="k">def</span> <span class="nf">episode_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-460" name="__codelineno-0-460"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-461" name="__codelineno-0-461"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-462" name="__codelineno-0-462"></a><span class="sd">            int: Current number of steps in episode</span>
+<a id="__codelineno-0-463" name="__codelineno-0-463"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_step</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>
+<a id="__codelineno-0-466" name="__codelineno-0-466"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-467" name="__codelineno-0-467"></a>    <span class="k">def</span> <span class="nf">initial_pos_z_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-468" name="__codelineno-0-468"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-469" name="__codelineno-0-469"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-470" name="__codelineno-0-470"></a><span class="sd">            float: how high to offset object placement to test valid pose &amp; account for one action step of dropping</span>
+<a id="__codelineno-0-471" name="__codelineno-0-471"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-472" name="__codelineno-0-472"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_pos_z_offset</span>
+<a id="__codelineno-0-473" name="__codelineno-0-473"></a>
+<a id="__codelineno-0-474" name="__codelineno-0-474"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-475" name="__codelineno-0-475"></a>    <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-476" name="__codelineno-0-476"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-477" name="__codelineno-0-477"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-478" name="__codelineno-0-478"></a><span class="sd">            BaseTask: Active task instance</span>
+<a id="__codelineno-0-479" name="__codelineno-0-479"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-480" name="__codelineno-0-480"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_task</span>
+<a id="__codelineno-0-481" name="__codelineno-0-481"></a>
+<a id="__codelineno-0-482" name="__codelineno-0-482"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-483" name="__codelineno-0-483"></a>    <span class="k">def</span> <span class="nf">scene</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-484" name="__codelineno-0-484"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-485" name="__codelineno-0-485"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-486" name="__codelineno-0-486"></a><span class="sd">            Scene: Active scene in this environment</span>
+<a id="__codelineno-0-487" name="__codelineno-0-487"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-488" name="__codelineno-0-488"></a>        <span class="k">return</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">scene</span>
+<a id="__codelineno-0-489" name="__codelineno-0-489"></a>
+<a id="__codelineno-0-490" name="__codelineno-0-490"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-491" name="__codelineno-0-491"></a>    <span class="k">def</span> <span class="nf">robots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-492" name="__codelineno-0-492"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-493" name="__codelineno-0-493"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-494" name="__codelineno-0-494"></a><span class="sd">            list of BaseRobot: Robots in the current scene</span>
+<a id="__codelineno-0-495" name="__codelineno-0-495"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-496" name="__codelineno-0-496"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">robots</span>
+<a id="__codelineno-0-497" name="__codelineno-0-497"></a>
+<a id="__codelineno-0-498" name="__codelineno-0-498"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-499" name="__codelineno-0-499"></a>    <span class="k">def</span> <span class="nf">env_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-500" name="__codelineno-0-500"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-501" name="__codelineno-0-501"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-502" name="__codelineno-0-502"></a><span class="sd">            dict: Environment-specific configuration kwargs</span>
+<a id="__codelineno-0-503" name="__codelineno-0-503"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-504" name="__codelineno-0-504"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;env&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-505" name="__codelineno-0-505"></a>
+<a id="__codelineno-0-506" name="__codelineno-0-506"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-507" name="__codelineno-0-507"></a>    <span class="k">def</span> <span class="nf">render_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-508" name="__codelineno-0-508"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-509" name="__codelineno-0-509"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-510" name="__codelineno-0-510"></a><span class="sd">            dict: Render-specific configuration kwargs</span>
+<a id="__codelineno-0-511" name="__codelineno-0-511"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-512" name="__codelineno-0-512"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;render&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-513" name="__codelineno-0-513"></a>
+<a id="__codelineno-0-514" name="__codelineno-0-514"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-515" name="__codelineno-0-515"></a>    <span class="k">def</span> <span class="nf">scene_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-516" name="__codelineno-0-516"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-517" name="__codelineno-0-517"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-518" name="__codelineno-0-518"></a><span class="sd">            dict: Scene-specific configuration kwargs</span>
+<a id="__codelineno-0-519" name="__codelineno-0-519"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-520" name="__codelineno-0-520"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;scene&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-521" name="__codelineno-0-521"></a>
+<a id="__codelineno-0-522" name="__codelineno-0-522"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-523" name="__codelineno-0-523"></a>    <span class="k">def</span> <span class="nf">robots_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-524" name="__codelineno-0-524"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-525" name="__codelineno-0-525"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-526" name="__codelineno-0-526"></a><span class="sd">            dict: Robot-specific configuration kwargs</span>
+<a id="__codelineno-0-527" name="__codelineno-0-527"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-528" name="__codelineno-0-528"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;robots&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-529" name="__codelineno-0-529"></a>
+<a id="__codelineno-0-530" name="__codelineno-0-530"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-531" name="__codelineno-0-531"></a>    <span class="k">def</span> <span class="nf">objects_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-532" name="__codelineno-0-532"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-533" name="__codelineno-0-533"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-534" name="__codelineno-0-534"></a><span class="sd">            dict: Object-specific configuration kwargs</span>
+<a id="__codelineno-0-535" name="__codelineno-0-535"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-536" name="__codelineno-0-536"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;objects&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-537" name="__codelineno-0-537"></a>
+<a id="__codelineno-0-538" name="__codelineno-0-538"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-539" name="__codelineno-0-539"></a>    <span class="k">def</span> <span class="nf">task_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-540" name="__codelineno-0-540"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-541" name="__codelineno-0-541"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-542" name="__codelineno-0-542"></a><span class="sd">            dict: Task-specific configuration kwargs</span>
+<a id="__codelineno-0-543" name="__codelineno-0-543"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-544" name="__codelineno-0-544"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-545" name="__codelineno-0-545"></a>
+<a id="__codelineno-0-546" name="__codelineno-0-546"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-547" name="__codelineno-0-547"></a>    <span class="k">def</span> <span class="nf">default_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-548" name="__codelineno-0-548"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-549" name="__codelineno-0-549"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-550" name="__codelineno-0-550"></a><span class="sd">            dict: Default configuration for this environment. May not be fully specified (i.e.: still requires @config</span>
+<a id="__codelineno-0-551" name="__codelineno-0-551"></a><span class="sd">                to be specified during environment creation)</span>
+<a id="__codelineno-0-552" name="__codelineno-0-552"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-553" name="__codelineno-0-553"></a>        <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-0-554" name="__codelineno-0-554"></a>            <span class="c1"># Environment kwargs</span>
+<a id="__codelineno-0-555" name="__codelineno-0-555"></a>            <span class="s2">&quot;env&quot;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-0-556" name="__codelineno-0-556"></a>                <span class="s2">&quot;initial_pos_z_offset&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+<a id="__codelineno-0-557" name="__codelineno-0-557"></a>            <span class="p">},</span>
+<a id="__codelineno-0-558" name="__codelineno-0-558"></a>
+<a id="__codelineno-0-559" name="__codelineno-0-559"></a>            <span class="c1"># Rendering kwargs</span>
+<a id="__codelineno-0-560" name="__codelineno-0-560"></a>            <span class="s2">&quot;render&quot;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-0-561" name="__codelineno-0-561"></a>                <span class="s2">&quot;viewer_width&quot;</span><span class="p">:</span> <span class="mi">1280</span><span class="p">,</span>
+<a id="__codelineno-0-562" name="__codelineno-0-562"></a>                <span class="s2">&quot;viewer_height&quot;</span><span class="p">:</span> <span class="mi">720</span><span class="p">,</span>
+<a id="__codelineno-0-563" name="__codelineno-0-563"></a>            <span class="p">},</span>
+<a id="__codelineno-0-564" name="__codelineno-0-564"></a>
+<a id="__codelineno-0-565" name="__codelineno-0-565"></a>            <span class="c1"># Scene kwargs</span>
+<a id="__codelineno-0-566" name="__codelineno-0-566"></a>            <span class="s2">&quot;scene&quot;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-0-567" name="__codelineno-0-567"></a>                <span class="c1"># Traversibility map kwargs</span>
+<a id="__codelineno-0-568" name="__codelineno-0-568"></a>                <span class="s2">&quot;waypoint_resolution&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+<a id="__codelineno-0-569" name="__codelineno-0-569"></a>                <span class="s2">&quot;num_waypoints&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-0-570" name="__codelineno-0-570"></a>                <span class="s2">&quot;build_graph&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-571" name="__codelineno-0-571"></a>                <span class="s2">&quot;trav_map_resolution&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+<a id="__codelineno-0-572" name="__codelineno-0-572"></a>                <span class="s2">&quot;trav_map_erosion&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-0-573" name="__codelineno-0-573"></a>                <span class="s2">&quot;trav_map_with_objects&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-574" name="__codelineno-0-574"></a>                <span class="s2">&quot;scene_instance&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-575" name="__codelineno-0-575"></a>                <span class="s2">&quot;scene_file&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-576" name="__codelineno-0-576"></a>            <span class="p">},</span>
+<a id="__codelineno-0-577" name="__codelineno-0-577"></a>
+<a id="__codelineno-0-578" name="__codelineno-0-578"></a>            <span class="c1"># Robot kwargs</span>
+<a id="__codelineno-0-579" name="__codelineno-0-579"></a>            <span class="s2">&quot;robots&quot;</span><span class="p">:</span> <span class="p">[],</span>   <span class="c1"># no robots by default</span>
+<a id="__codelineno-0-580" name="__codelineno-0-580"></a>
+<a id="__codelineno-0-581" name="__codelineno-0-581"></a>            <span class="c1"># Object kwargs</span>
+<a id="__codelineno-0-582" name="__codelineno-0-582"></a>            <span class="s2">&quot;objects&quot;</span><span class="p">:</span> <span class="p">[],</span>  <span class="c1"># no objects by default</span>
+<a id="__codelineno-0-583" name="__codelineno-0-583"></a>
+<a id="__codelineno-0-584" name="__codelineno-0-584"></a>            <span class="c1"># Task kwargs</span>
+<a id="__codelineno-0-585" name="__codelineno-0-585"></a>            <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-0-586" name="__codelineno-0-586"></a>                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;DummyTask&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-587" name="__codelineno-0-587"></a>            <span class="p">}</span>
+<a id="__codelineno-0-588" name="__codelineno-0-588"></a>        <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -7767,9 +7771,7 @@ This allows one to change the scene on the fly.</p>
 
       <details class="quote">
         <summary>Source code in <code>omnigibson/envs/env_base.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-428">428</a></span>
-<span class="normal"><a href="#__codelineno-0-429">429</a></span>
-<span class="normal"><a href="#__codelineno-0-430">430</a></span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-430">430</a></span>
 <span class="normal"><a href="#__codelineno-0-431">431</a></span>
 <span class="normal"><a href="#__codelineno-0-432">432</a></span>
 <span class="normal"><a href="#__codelineno-0-433">433</a></span>
@@ -7793,33 +7795,35 @@ This allows one to change the scene on the fly.</p>
 <span class="normal"><a href="#__codelineno-0-451">451</a></span>
 <span class="normal"><a href="#__codelineno-0-452">452</a></span>
 <span class="normal"><a href="#__codelineno-0-453">453</a></span>
-<span class="normal"><a href="#__codelineno-0-454">454</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-428" name="__codelineno-0-428"></a><span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-429" name="__codelineno-0-429"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-430" name="__codelineno-0-430"></a><span class="sd">    Reset episode.</span>
-<a id="__codelineno-0-431" name="__codelineno-0-431"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-432" name="__codelineno-0-432"></a>    <span class="c1"># Reset the task</span>
-<a id="__codelineno-0-433" name="__codelineno-0-433"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-<a id="__codelineno-0-434" name="__codelineno-0-434"></a>
-<a id="__codelineno-0-435" name="__codelineno-0-435"></a>    <span class="c1"># Reset internal variables</span>
-<a id="__codelineno-0-436" name="__codelineno-0-436"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_reset_variables</span><span class="p">()</span>
-<a id="__codelineno-0-437" name="__codelineno-0-437"></a>
-<a id="__codelineno-0-438" name="__codelineno-0-438"></a>    <span class="c1"># Run a single simulator step to make sure we can grab updated observations</span>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a>    <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a>
-<a id="__codelineno-0-441" name="__codelineno-0-441"></a>    <span class="c1"># Grab and return observations</span>
-<a id="__codelineno-0-442" name="__codelineno-0-442"></a>    <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_obs</span><span class="p">()</span>
-<a id="__codelineno-0-443" name="__codelineno-0-443"></a>
-<a id="__codelineno-0-444" name="__codelineno-0-444"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">obs</span><span class="p">):</span>
-<a id="__codelineno-0-445" name="__codelineno-0-445"></a>        <span class="c1"># Flatten obs, and print out all keys and values</span>
-<a id="__codelineno-0-446" name="__codelineno-0-446"></a>        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;OBSERVATION SPACE:&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">recursively_generate_flat_dict</span><span class="p">(</span><span class="n">dic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a>            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">((</span><span class="s2">&quot;obs_space&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a>        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ACTUAL OBSERVATIONS:&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">recursively_generate_flat_dict</span><span class="p">(</span><span class="n">dic</span><span class="o">=</span><span class="n">obs</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a>            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">((</span><span class="s2">&quot;obs&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-<a id="__codelineno-0-452" name="__codelineno-0-452"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Observation space does not match returned observations!&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a>    <span class="k">return</span> <span class="n">obs</span>
+<span class="normal"><a href="#__codelineno-0-454">454</a></span>
+<span class="normal"><a href="#__codelineno-0-455">455</a></span>
+<span class="normal"><a href="#__codelineno-0-456">456</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-430" name="__codelineno-0-430"></a><span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-431" name="__codelineno-0-431"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-432" name="__codelineno-0-432"></a><span class="sd">    Reset episode.</span>
+<a id="__codelineno-0-433" name="__codelineno-0-433"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-434" name="__codelineno-0-434"></a>    <span class="c1"># Reset the task</span>
+<a id="__codelineno-0-435" name="__codelineno-0-435"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a id="__codelineno-0-436" name="__codelineno-0-436"></a>
+<a id="__codelineno-0-437" name="__codelineno-0-437"></a>    <span class="c1"># Reset internal variables</span>
+<a id="__codelineno-0-438" name="__codelineno-0-438"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_reset_variables</span><span class="p">()</span>
+<a id="__codelineno-0-439" name="__codelineno-0-439"></a>
+<a id="__codelineno-0-440" name="__codelineno-0-440"></a>    <span class="c1"># Run a single simulator step to make sure we can grab updated observations</span>
+<a id="__codelineno-0-441" name="__codelineno-0-441"></a>    <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<a id="__codelineno-0-442" name="__codelineno-0-442"></a>
+<a id="__codelineno-0-443" name="__codelineno-0-443"></a>    <span class="c1"># Grab and return observations</span>
+<a id="__codelineno-0-444" name="__codelineno-0-444"></a>    <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_obs</span><span class="p">()</span>
+<a id="__codelineno-0-445" name="__codelineno-0-445"></a>
+<a id="__codelineno-0-446" name="__codelineno-0-446"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">obs</span><span class="p">):</span>
+<a id="__codelineno-0-447" name="__codelineno-0-447"></a>        <span class="c1"># Flatten obs, and print out all keys and values</span>
+<a id="__codelineno-0-448" name="__codelineno-0-448"></a>        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;OBSERVATION SPACE:&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-449" name="__codelineno-0-449"></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">recursively_generate_flat_dict</span><span class="p">(</span><span class="n">dic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-450" name="__codelineno-0-450"></a>            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">((</span><span class="s2">&quot;obs_space&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<a id="__codelineno-0-451" name="__codelineno-0-451"></a>        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ACTUAL OBSERVATIONS:&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-452" name="__codelineno-0-452"></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">recursively_generate_flat_dict</span><span class="p">(</span><span class="n">dic</span><span class="o">=</span><span class="n">obs</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-453" name="__codelineno-0-453"></a>            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">((</span><span class="s2">&quot;obs&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<a id="__codelineno-0-454" name="__codelineno-0-454"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Observation space does not match returned observations!&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-455" name="__codelineno-0-455"></a>
+<a id="__codelineno-0-456" name="__codelineno-0-456"></a>    <span class="k">return</span> <span class="n">obs</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -7949,7 +7953,9 @@ of actions</p>
 <span class="normal"><a href="#__codelineno-0-415">415</a></span>
 <span class="normal"><a href="#__codelineno-0-416">416</a></span>
 <span class="normal"><a href="#__codelineno-0-417">417</a></span>
-<span class="normal"><a href="#__codelineno-0-418">418</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-367" name="__codelineno-0-367"></a><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-418">418</a></span>
+<span class="normal"><a href="#__codelineno-0-419">419</a></span>
+<span class="normal"><a href="#__codelineno-0-420">420</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-367" name="__codelineno-0-367"></a><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
 <a id="__codelineno-0-368" name="__codelineno-0-368"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-369" name="__codelineno-0-369"></a><span class="sd">    Apply robot&#39;s action and return the next state, reward, done and info,</span>
 <a id="__codelineno-0-370" name="__codelineno-0-370"></a><span class="sd">    following OpenAI Gym&#39;s convention</span>
@@ -7974,33 +7980,35 @@ of actions</p>
 <a id="__codelineno-0-389" name="__codelineno-0-389"></a>            <span class="n">action_dim</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">action_dim</span>
 <a id="__codelineno-0-390" name="__codelineno-0-390"></a>            <span class="n">action_dict</span><span class="p">[</span><span class="n">robot</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">action_dim</span><span class="p">]</span>
 <a id="__codelineno-0-391" name="__codelineno-0-391"></a>            <span class="n">idx</span> <span class="o">+=</span> <span class="n">action_dim</span>
-<a id="__codelineno-0-392" name="__codelineno-0-392"></a>    <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-393" name="__codelineno-0-393"></a>        <span class="c1"># Our inputted action is the action dictionary</span>
-<a id="__codelineno-0-394" name="__codelineno-0-394"></a>        <span class="n">action_dict</span> <span class="o">=</span> <span class="n">action</span>
-<a id="__codelineno-0-395" name="__codelineno-0-395"></a>
-<a id="__codelineno-0-396" name="__codelineno-0-396"></a>    <span class="c1"># Iterate over all robots and apply actions</span>
-<a id="__codelineno-0-397" name="__codelineno-0-397"></a>    <span class="k">for</span> <span class="n">robot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots</span><span class="p">:</span>
-<a id="__codelineno-0-398" name="__codelineno-0-398"></a>        <span class="n">robot</span><span class="o">.</span><span class="n">apply_action</span><span class="p">(</span><span class="n">action_dict</span><span class="p">[</span><span class="n">robot</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
-<a id="__codelineno-0-399" name="__codelineno-0-399"></a>
-<a id="__codelineno-0-400" name="__codelineno-0-400"></a>    <span class="c1"># Run simulation step</span>
-<a id="__codelineno-0-401" name="__codelineno-0-401"></a>    <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-<a id="__codelineno-0-402" name="__codelineno-0-402"></a>
-<a id="__codelineno-0-403" name="__codelineno-0-403"></a>    <span class="c1"># Grab observations</span>
-<a id="__codelineno-0-404" name="__codelineno-0-404"></a>    <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_obs</span><span class="p">()</span>
-<a id="__codelineno-0-405" name="__codelineno-0-405"></a>
-<a id="__codelineno-0-406" name="__codelineno-0-406"></a>    <span class="c1"># Grab reward, done, and info, and populate with internal info</span>
-<a id="__codelineno-0-407" name="__codelineno-0-407"></a>    <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
-<a id="__codelineno-0-408" name="__codelineno-0-408"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_populate_info</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<a id="__codelineno-0-409" name="__codelineno-0-409"></a>
-<a id="__codelineno-0-410" name="__codelineno-0-410"></a>    <span class="k">if</span> <span class="n">done</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_automatic_reset</span><span class="p">:</span>
-<a id="__codelineno-0-411" name="__codelineno-0-411"></a>        <span class="c1"># Add lost observation to our information dict, and reset</span>
-<a id="__codelineno-0-412" name="__codelineno-0-412"></a>        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;last_observation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs</span>
-<a id="__codelineno-0-413" name="__codelineno-0-413"></a>        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<a id="__codelineno-0-414" name="__codelineno-0-414"></a>
-<a id="__codelineno-0-415" name="__codelineno-0-415"></a>    <span class="c1"># Increment step</span>
-<a id="__codelineno-0-416" name="__codelineno-0-416"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_current_step</span> <span class="o">+=</span> <span class="mi">1</span>
-<a id="__codelineno-0-417" name="__codelineno-0-417"></a>
-<a id="__codelineno-0-418" name="__codelineno-0-418"></a>    <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
+<a id="__codelineno-0-392" name="__codelineno-0-392"></a>        <span class="c1"># Make sure idx matches the length of the action</span>
+<a id="__codelineno-0-393" name="__codelineno-0-393"></a>        <span class="k">assert</span> <span class="n">idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">action</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Got mismatch in inputted action. Expected length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">action</span><span class="p">)</span><span class="si">}</span><span class="s2">, got: </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-394" name="__codelineno-0-394"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-395" name="__codelineno-0-395"></a>        <span class="c1"># Our inputted action is the action dictionary</span>
+<a id="__codelineno-0-396" name="__codelineno-0-396"></a>        <span class="n">action_dict</span> <span class="o">=</span> <span class="n">action</span>
+<a id="__codelineno-0-397" name="__codelineno-0-397"></a>
+<a id="__codelineno-0-398" name="__codelineno-0-398"></a>    <span class="c1"># Iterate over all robots and apply actions</span>
+<a id="__codelineno-0-399" name="__codelineno-0-399"></a>    <span class="k">for</span> <span class="n">robot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robots</span><span class="p">:</span>
+<a id="__codelineno-0-400" name="__codelineno-0-400"></a>        <span class="n">robot</span><span class="o">.</span><span class="n">apply_action</span><span class="p">(</span><span class="n">action_dict</span><span class="p">[</span><span class="n">robot</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+<a id="__codelineno-0-401" name="__codelineno-0-401"></a>
+<a id="__codelineno-0-402" name="__codelineno-0-402"></a>    <span class="c1"># Run simulation step</span>
+<a id="__codelineno-0-403" name="__codelineno-0-403"></a>    <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<a id="__codelineno-0-404" name="__codelineno-0-404"></a>
+<a id="__codelineno-0-405" name="__codelineno-0-405"></a>    <span class="c1"># Grab observations</span>
+<a id="__codelineno-0-406" name="__codelineno-0-406"></a>    <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_obs</span><span class="p">()</span>
+<a id="__codelineno-0-407" name="__codelineno-0-407"></a>
+<a id="__codelineno-0-408" name="__codelineno-0-408"></a>    <span class="c1"># Grab reward, done, and info, and populate with internal info</span>
+<a id="__codelineno-0-409" name="__codelineno-0-409"></a>    <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+<a id="__codelineno-0-410" name="__codelineno-0-410"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_populate_info</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<a id="__codelineno-0-411" name="__codelineno-0-411"></a>
+<a id="__codelineno-0-412" name="__codelineno-0-412"></a>    <span class="k">if</span> <span class="n">done</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_automatic_reset</span><span class="p">:</span>
+<a id="__codelineno-0-413" name="__codelineno-0-413"></a>        <span class="c1"># Add lost observation to our information dict, and reset</span>
+<a id="__codelineno-0-414" name="__codelineno-0-414"></a>        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;last_observation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs</span>
+<a id="__codelineno-0-415" name="__codelineno-0-415"></a>        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<a id="__codelineno-0-416" name="__codelineno-0-416"></a>
+<a id="__codelineno-0-417" name="__codelineno-0-417"></a>    <span class="c1"># Increment step</span>
+<a id="__codelineno-0-418" name="__codelineno-0-418"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_current_step</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="__codelineno-0-419" name="__codelineno-0-419"></a>
+<a id="__codelineno-0-420" name="__codelineno-0-420"></a>    <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
