@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1685843070555,
+  "lastUpdate": 1695431760003,
   "repoUrl": "https://github.com/StanfordVL/OmniGibson",
   "entries": {
     "Benchmark": [
@@ -375,6 +375,62 @@ window.BENCHMARK_DATA = {
           {
             "name": "Rs_int, with Fetch, cloth, fluids, macro particles",
             "value": 2.7341882387797036,
+            "unit": "fps",
+            "extra": [
+              "Non-physics step time",
+              "Non-physics step time"
+            ]
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "StanfordVL",
+            "username": "StanfordVL"
+          },
+          "committer": {
+            "name": "StanfordVL",
+            "username": "StanfordVL"
+          },
+          "id": "39a451fce77d87b169c3b33b92810d2762c9d574",
+          "message": "[WIP] Profiling",
+          "timestamp": "2023-09-22T08:51:32Z",
+          "url": "https://github.com/StanfordVL/OmniGibson/pull/139/commits/39a451fce77d87b169c3b33b92810d2762c9d574"
+        },
+        "date": 1695431755406,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "Empty scene",
+            "value": 13.30686887105306,
+            "unit": "fps",
+            "extra": [
+              "Total frame time",
+              "Total frame time"
+            ]
+          },
+          {
+            "name": "Empty scene",
+            "value": 8.098208904266357,
+            "unit": "fps",
+            "extra": [
+              "Physics step time",
+              "Physics step time"
+            ]
+          },
+          {
+            "name": "Empty scene",
+            "value": 4.860915342966715,
+            "unit": "fps",
+            "extra": [
+              "Render step time",
+              "Render step time"
+            ]
+          },
+          {
+            "name": "Empty scene",
+            "value": 0.2641932169596354,
             "unit": "fps",
             "extra": [
               "Non-physics step time",
