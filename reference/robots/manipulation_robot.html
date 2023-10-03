@@ -6825,17 +6825,7 @@ Provides common interface for a wide variety of robots.</p>
 <span class="normal"><a href="#__codelineno-0-1289">1289</a></span>
 <span class="normal"><a href="#__codelineno-0-1290">1290</a></span>
 <span class="normal"><a href="#__codelineno-0-1291">1291</a></span>
-<span class="normal"><a href="#__codelineno-0-1292">1292</a></span>
-<span class="normal"><a href="#__codelineno-0-1293">1293</a></span>
-<span class="normal"><a href="#__codelineno-0-1294">1294</a></span>
-<span class="normal"><a href="#__codelineno-0-1295">1295</a></span>
-<span class="normal"><a href="#__codelineno-0-1296">1296</a></span>
-<span class="normal"><a href="#__codelineno-0-1297">1297</a></span>
-<span class="normal"><a href="#__codelineno-0-1298">1298</a></span>
-<span class="normal"><a href="#__codelineno-0-1299">1299</a></span>
-<span class="normal"><a href="#__codelineno-0-1300">1300</a></span>
-<span class="normal"><a href="#__codelineno-0-1301">1301</a></span>
-<span class="normal"><a href="#__codelineno-0-1302">1302</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="k">class</span> <span class="nc">ManipulationRobot</span><span class="p">(</span><span class="n">BaseRobot</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-1292">1292</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="k">class</span> <span class="nc">ManipulationRobot</span><span class="p">(</span><span class="n">BaseRobot</span><span class="p">):</span>
 <a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="sd">    Robot that is is equipped with grasping (manipulation) capabilities.</span>
 <a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="sd">    Provides common interface for a wide variety of robots.</span>
@@ -7741,7 +7731,7 @@ Provides common interface for a wide variety of robots.</p>
 <a id="__codelineno-0-967" name="__codelineno-0-967"></a>
 <a id="__codelineno-0-968" name="__codelineno-0-968"></a>        <span class="k">return</span> <span class="n">cfg</span>
 <a id="__codelineno-0-969" name="__codelineno-0-969"></a>
-<a id="__codelineno-0-970" name="__codelineno-0-970"></a>    <span class="k">def</span> <span class="nf">_establish_grasp_rigid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">ag_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">contact_pos</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a id="__codelineno-0-970" name="__codelineno-0-970"></a>    <span class="k">def</span> <span class="nf">_establish_grasp_rigid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">ag_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <a id="__codelineno-0-971" name="__codelineno-0-971"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-972" name="__codelineno-0-972"></a><span class="sd">        Establishes an ag-assisted grasp, if enabled.</span>
 <a id="__codelineno-0-973" name="__codelineno-0-973"></a>
@@ -7750,330 +7740,320 @@ Provides common interface for a wide variety of robots.</p>
 <a id="__codelineno-0-976" name="__codelineno-0-976"></a><span class="sd">                Default is &quot;default&quot; which corresponds to the first entry in self.arm_names</span>
 <a id="__codelineno-0-977" name="__codelineno-0-977"></a><span class="sd">            ag_data (None or 2-tuple): if specified, assisted-grasp object, link tuple (i.e. :(BaseObject, RigidPrim)).</span>
 <a id="__codelineno-0-978" name="__codelineno-0-978"></a><span class="sd">                Otherwise, does a no-op</span>
-<a id="__codelineno-0-979" name="__codelineno-0-979"></a><span class="sd">            contact_pos (None or np.array): if specified, contact position to use for grasp.</span>
-<a id="__codelineno-0-980" name="__codelineno-0-980"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-981" name="__codelineno-0-981"></a>        <span class="n">arm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_arm</span> <span class="k">if</span> <span class="n">arm</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span> <span class="k">else</span> <span class="n">arm</span>
-<a id="__codelineno-0-982" name="__codelineno-0-982"></a>
-<a id="__codelineno-0-983" name="__codelineno-0-983"></a>        <span class="c1"># Return immediately if ag_data is None</span>
-<a id="__codelineno-0-984" name="__codelineno-0-984"></a>        <span class="k">if</span> <span class="n">ag_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-985" name="__codelineno-0-985"></a>            <span class="k">return</span>
-<a id="__codelineno-0-986" name="__codelineno-0-986"></a>        <span class="n">ag_obj</span><span class="p">,</span> <span class="n">ag_link</span> <span class="o">=</span> <span class="n">ag_data</span>
-<a id="__codelineno-0-987" name="__codelineno-0-987"></a>
-<a id="__codelineno-0-988" name="__codelineno-0-988"></a>        <span class="c1"># Create a p2p joint if it&#39;s a child link of a fixed URDF that is connected by a revolute or prismatic joint</span>
-<a id="__codelineno-0-989" name="__codelineno-0-989"></a>        <span class="n">joint_type</span> <span class="o">=</span> <span class="s2">&quot;FixedJoint&quot;</span>
-<a id="__codelineno-0-990" name="__codelineno-0-990"></a>        <span class="k">if</span> <span class="n">ag_obj</span><span class="o">.</span><span class="n">fixed_base</span><span class="p">:</span>
-<a id="__codelineno-0-991" name="__codelineno-0-991"></a>            <span class="c1"># We search up the tree path from the ag_link until we encounter the root (joint == 0) or a non fixed</span>
-<a id="__codelineno-0-992" name="__codelineno-0-992"></a>            <span class="c1"># joint (e.g.: revolute or fixed)</span>
-<a id="__codelineno-0-993" name="__codelineno-0-993"></a>            <span class="n">link_handle</span> <span class="o">=</span> <span class="n">ag_link</span><span class="o">.</span><span class="n">handle</span>
-<a id="__codelineno-0-994" name="__codelineno-0-994"></a>            <span class="n">joint_handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">get_rigid_body_parent_joint</span><span class="p">(</span><span class="n">link_handle</span><span class="p">)</span>
-<a id="__codelineno-0-995" name="__codelineno-0-995"></a>            <span class="k">while</span> <span class="n">joint_handle</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-0-996" name="__codelineno-0-996"></a>                <span class="c1"># If this joint type is not fixed, we&#39;ve encountered a valid moving joint</span>
-<a id="__codelineno-0-997" name="__codelineno-0-997"></a>                <span class="c1"># So we create a spherical joint rather than fixed joint</span>
-<a id="__codelineno-0-998" name="__codelineno-0-998"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">get_joint_type</span><span class="p">(</span><span class="n">joint_handle</span><span class="p">)</span> <span class="o">!=</span> <span class="n">JointType</span><span class="o">.</span><span class="n">JOINT_FIXED</span><span class="p">:</span>
-<a id="__codelineno-0-999" name="__codelineno-0-999"></a>                    <span class="n">joint_type</span> <span class="o">=</span> <span class="s2">&quot;SphericalJoint&quot;</span>
-<a id="__codelineno-0-1000" name="__codelineno-0-1000"></a>                    <span class="k">break</span>
-<a id="__codelineno-0-1001" name="__codelineno-0-1001"></a>                <span class="c1"># Grab the parent link and its parent joint for the link</span>
-<a id="__codelineno-0-1002" name="__codelineno-0-1002"></a>                <span class="n">link_handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">get_joint_parent_body</span><span class="p">(</span><span class="n">joint_handle</span><span class="p">)</span>
-<a id="__codelineno-0-1003" name="__codelineno-0-1003"></a>                <span class="n">joint_handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">get_rigid_body_parent_joint</span><span class="p">(</span><span class="n">link_handle</span><span class="p">)</span>
-<a id="__codelineno-0-1004" name="__codelineno-0-1004"></a>
-<a id="__codelineno-0-1005" name="__codelineno-0-1005"></a>        <span class="k">if</span> <span class="n">contact_pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-1006" name="__codelineno-0-1006"></a>            <span class="n">force_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_gripper_contacts</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">,</span> <span class="n">return_contact_positions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-0-1007" name="__codelineno-0-1007"></a>            <span class="k">for</span> <span class="n">c_link_prim_path</span><span class="p">,</span> <span class="n">c_contact_pos</span> <span class="ow">in</span> <span class="n">force_data</span><span class="p">:</span>
-<a id="__codelineno-0-1008" name="__codelineno-0-1008"></a>                <span class="k">if</span> <span class="n">c_link_prim_path</span> <span class="o">==</span> <span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="p">:</span>
-<a id="__codelineno-0-1009" name="__codelineno-0-1009"></a>                    <span class="n">contact_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">c_contact_pos</span><span class="p">)</span>
-<a id="__codelineno-0-1010" name="__codelineno-0-1010"></a>                    <span class="k">break</span>
-<a id="__codelineno-0-1011" name="__codelineno-0-1011"></a>        <span class="k">assert</span> <span class="n">contact_pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-<a id="__codelineno-0-1012" name="__codelineno-0-1012"></a>
-<a id="__codelineno-0-1013" name="__codelineno-0-1013"></a>        <span class="c1"># Joint frame set at the contact point</span>
-<a id="__codelineno-0-1014" name="__codelineno-0-1014"></a>        <span class="c1"># Need to find distance between robot and contact point in robot link&#39;s local frame and</span>
-<a id="__codelineno-0-1015" name="__codelineno-0-1015"></a>        <span class="c1"># ag link and contact point in ag link&#39;s local frame</span>
-<a id="__codelineno-0-1016" name="__codelineno-0-1016"></a>        <span class="n">joint_frame_pos</span> <span class="o">=</span> <span class="n">contact_pos</span>
-<a id="__codelineno-0-1017" name="__codelineno-0-1017"></a>        <span class="n">joint_frame_orn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-<a id="__codelineno-0-1018" name="__codelineno-0-1018"></a>        <span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eef_links</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span><span class="o">.</span><span class="n">get_position_orientation</span><span class="p">()</span>
-<a id="__codelineno-0-1019" name="__codelineno-0-1019"></a>        <span class="n">parent_frame_pos</span><span class="p">,</span> <span class="n">parent_frame_orn</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">relative_pose_transform</span><span class="p">(</span><span class="n">joint_frame_pos</span><span class="p">,</span> <span class="n">joint_frame_orn</span><span class="p">,</span> <span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span><span class="p">)</span>
-<a id="__codelineno-0-1020" name="__codelineno-0-1020"></a>        <span class="n">obj_link_pos</span><span class="p">,</span> <span class="n">obj_link_orn</span> <span class="o">=</span> <span class="n">ag_link</span><span class="o">.</span><span class="n">get_position_orientation</span><span class="p">()</span>
-<a id="__codelineno-0-1021" name="__codelineno-0-1021"></a>        <span class="n">child_frame_pos</span><span class="p">,</span> <span class="n">child_frame_orn</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">relative_pose_transform</span><span class="p">(</span><span class="n">joint_frame_pos</span><span class="p">,</span> <span class="n">joint_frame_orn</span><span class="p">,</span> <span class="n">obj_link_pos</span><span class="p">,</span> <span class="n">obj_link_orn</span><span class="p">)</span>
-<a id="__codelineno-0-1022" name="__codelineno-0-1022"></a>
-<a id="__codelineno-0-1023" name="__codelineno-0-1023"></a>        <span class="c1"># Create the joint</span>
-<a id="__codelineno-0-1024" name="__codelineno-0-1024"></a>        <span class="n">joint_prim_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">eef_links</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span><span class="o">.</span><span class="n">prim_path</span><span class="si">}</span><span class="s2">/ag_constraint&quot;</span>
-<a id="__codelineno-0-1025" name="__codelineno-0-1025"></a>        <span class="n">joint_prim</span> <span class="o">=</span> <span class="n">create_joint</span><span class="p">(</span>
-<a id="__codelineno-0-1026" name="__codelineno-0-1026"></a>            <span class="n">prim_path</span><span class="o">=</span><span class="n">joint_prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1027" name="__codelineno-0-1027"></a>            <span class="n">joint_type</span><span class="o">=</span><span class="n">joint_type</span><span class="p">,</span>
-<a id="__codelineno-0-1028" name="__codelineno-0-1028"></a>            <span class="n">body0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eef_links</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1029" name="__codelineno-0-1029"></a>            <span class="n">body1</span><span class="o">=</span><span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1030" name="__codelineno-0-1030"></a>            <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-1031" name="__codelineno-0-1031"></a>            <span class="n">joint_frame_in_parent_frame_pos</span><span class="o">=</span><span class="n">parent_frame_pos</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span>
-<a id="__codelineno-0-1032" name="__codelineno-0-1032"></a>            <span class="n">joint_frame_in_parent_frame_quat</span><span class="o">=</span><span class="n">parent_frame_orn</span><span class="p">,</span>
-<a id="__codelineno-0-1033" name="__codelineno-0-1033"></a>            <span class="n">joint_frame_in_child_frame_pos</span><span class="o">=</span><span class="n">child_frame_pos</span> <span class="o">/</span> <span class="n">ag_obj</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span>
-<a id="__codelineno-0-1034" name="__codelineno-0-1034"></a>            <span class="n">joint_frame_in_child_frame_quat</span><span class="o">=</span><span class="n">child_frame_orn</span><span class="p">,</span>
-<a id="__codelineno-0-1035" name="__codelineno-0-1035"></a>        <span class="p">)</span>
-<a id="__codelineno-0-1036" name="__codelineno-0-1036"></a>
-<a id="__codelineno-0-1037" name="__codelineno-0-1037"></a>        <span class="c1"># Save a reference to this joint prim</span>
-<a id="__codelineno-0-1038" name="__codelineno-0-1038"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraints</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="n">joint_prim</span>
-<a id="__codelineno-0-1039" name="__codelineno-0-1039"></a>
-<a id="__codelineno-0-1040" name="__codelineno-0-1040"></a>        <span class="c1"># Modify max force based on user-determined assist parameters</span>
-<a id="__codelineno-0-1041" name="__codelineno-0-1041"></a>        <span class="c1"># TODO</span>
-<a id="__codelineno-0-1042" name="__codelineno-0-1042"></a>        <span class="n">max_force</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">ASSIST_FORCE</span> <span class="k">if</span> <span class="n">joint_type</span> <span class="o">==</span> <span class="s2">&quot;FixedJoint&quot;</span> <span class="k">else</span> <span class="n">m</span><span class="o">.</span><span class="n">ASSIST_FORCE</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">ARTICULATED_ASSIST_FRACTION</span>
-<a id="__codelineno-0-1043" name="__codelineno-0-1043"></a>        <span class="c1"># joint_prim.GetAttribute(&quot;physics:breakForce&quot;).Set(max_force)</span>
-<a id="__codelineno-0-1044" name="__codelineno-0-1044"></a>
-<a id="__codelineno-0-1045" name="__codelineno-0-1045"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraint_params</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-0-1046" name="__codelineno-0-1046"></a>            <span class="s2">&quot;ag_obj_prim_path&quot;</span><span class="p">:</span> <span class="n">ag_obj</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1047" name="__codelineno-0-1047"></a>            <span class="s2">&quot;ag_link_prim_path&quot;</span><span class="p">:</span> <span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1048" name="__codelineno-0-1048"></a>            <span class="s2">&quot;ag_joint_prim_path&quot;</span><span class="p">:</span> <span class="n">joint_prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1049" name="__codelineno-0-1049"></a>            <span class="s2">&quot;joint_type&quot;</span><span class="p">:</span> <span class="n">joint_type</span><span class="p">,</span>
-<a id="__codelineno-0-1050" name="__codelineno-0-1050"></a>            <span class="s2">&quot;gripper_pos&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_joint_positions</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">gripper_control_idx</span><span class="p">[</span><span class="n">arm</span><span class="p">]],</span>
-<a id="__codelineno-0-1051" name="__codelineno-0-1051"></a>            <span class="s2">&quot;max_force&quot;</span><span class="p">:</span> <span class="n">max_force</span><span class="p">,</span>
-<a id="__codelineno-0-1052" name="__codelineno-0-1052"></a>            <span class="s2">&quot;contact_pos&quot;</span><span class="p">:</span> <span class="n">contact_pos</span><span class="p">,</span>
-<a id="__codelineno-0-1053" name="__codelineno-0-1053"></a>        <span class="p">}</span>
-<a id="__codelineno-0-1054" name="__codelineno-0-1054"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_in_hand</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="n">ag_obj</span>
-<a id="__codelineno-0-1055" name="__codelineno-0-1055"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_freeze_gripper</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<a id="__codelineno-0-1056" name="__codelineno-0-1056"></a>        <span class="c1"># Disable collisions while picking things up</span>
-<a id="__codelineno-0-1057" name="__codelineno-0-1057"></a>        <span class="c1"># TODO: Verify not needed!</span>
-<a id="__codelineno-0-1058" name="__codelineno-0-1058"></a>        <span class="c1"># for finger_link in self.finger_links[arm]:</span>
-<a id="__codelineno-0-1059" name="__codelineno-0-1059"></a>        <span class="c1">#     finger_link.add_filtered_collision_pair(prim=ag_obj)</span>
-<a id="__codelineno-0-1060" name="__codelineno-0-1060"></a>        <span class="k">for</span> <span class="n">joint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">finger_joints</span><span class="p">[</span><span class="n">arm</span><span class="p">]:</span>
-<a id="__codelineno-0-1061" name="__codelineno-0-1061"></a>            <span class="n">j_val</span> <span class="o">=</span> <span class="n">joint</span><span class="o">.</span><span class="n">get_state</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<a id="__codelineno-0-1062" name="__codelineno-0-1062"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_ag_freeze_joint_pos</span><span class="p">[</span><span class="n">arm</span><span class="p">][</span><span class="n">joint</span><span class="o">.</span><span class="n">joint_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">j_val</span>
-<a id="__codelineno-0-1063" name="__codelineno-0-1063"></a>
-<a id="__codelineno-0-1064" name="__codelineno-0-1064"></a>    <span class="k">def</span> <span class="nf">_handle_assisted_grasping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
-<a id="__codelineno-0-1065" name="__codelineno-0-1065"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-1066" name="__codelineno-0-1066"></a><span class="sd">        Handles assisted grasping.</span>
-<a id="__codelineno-0-1067" name="__codelineno-0-1067"></a>
-<a id="__codelineno-0-1068" name="__codelineno-0-1068"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-1069" name="__codelineno-0-1069"></a><span class="sd">            action (n-array): gripper action to apply. &gt;= 0 is release (open), &lt; 0 is grasp (close).</span>
-<a id="__codelineno-0-1070" name="__codelineno-0-1070"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-1071" name="__codelineno-0-1071"></a>        <span class="c1"># Loop over all arms</span>
-<a id="__codelineno-0-1072" name="__codelineno-0-1072"></a>        <span class="k">for</span> <span class="n">arm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm_names</span><span class="p">:</span>
-<a id="__codelineno-0-1073" name="__codelineno-0-1073"></a>            <span class="c1"># Make sure gripper action dimension is only 1</span>
-<a id="__codelineno-0-1074" name="__codelineno-0-1074"></a>            <span class="n">cmd_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_controllers</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;gripper_</span><span class="si">{</span><span class="n">arm</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">command_dim</span>
-<a id="__codelineno-0-1075" name="__codelineno-0-1075"></a>            <span class="k">assert</span> <span class="n">cmd_dim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> \
-<a id="__codelineno-0-1076" name="__codelineno-0-1076"></a>                <span class="sa">f</span><span class="s2">&quot;Gripper </span><span class="si">{</span><span class="n">arm</span><span class="si">}</span><span class="s2"> controller command dim must be 1 to use assisted grasping, got: </span><span class="si">{</span><span class="n">cmd_dim</span><span class="si">}</span><span class="s2">.&quot;</span>
-<a id="__codelineno-0-1077" name="__codelineno-0-1077"></a>
-<a id="__codelineno-0-1078" name="__codelineno-0-1078"></a>            <span class="c1"># TODO: Why are we separately checking for complementary conditions?</span>
-<a id="__codelineno-0-1079" name="__codelineno-0-1079"></a>            <span class="n">threshold</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_controllers</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;gripper_</span><span class="si">{</span><span class="n">arm</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">command_input_limits</span><span class="p">)</span>
-<a id="__codelineno-0-1080" name="__codelineno-0-1080"></a>            <span class="n">applying_grasp</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">controller_action_idx</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;gripper_</span><span class="si">{</span><span class="n">arm</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&lt;</span> <span class="n">threshold</span>
-<a id="__codelineno-0-1081" name="__codelineno-0-1081"></a>            <span class="n">releasing_grasp</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">controller_action_idx</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;gripper_</span><span class="si">{</span><span class="n">arm</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="n">threshold</span>
-<a id="__codelineno-0-1082" name="__codelineno-0-1082"></a>
-<a id="__codelineno-0-1083" name="__codelineno-0-1083"></a>            <span class="c1"># Execute gradual release of object</span>
-<a id="__codelineno-0-1084" name="__codelineno-0-1084"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_in_hand</span><span class="p">[</span><span class="n">arm</span><span class="p">]:</span>
-<a id="__codelineno-0-1085" name="__codelineno-0-1085"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_release_counter</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-1086" name="__codelineno-0-1086"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_handle_release_window</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">)</span>
-<a id="__codelineno-0-1087" name="__codelineno-0-1087"></a>                <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-1088" name="__codelineno-0-1088"></a>                    <span class="c1"># constraint_violated = (</span>
-<a id="__codelineno-0-1089" name="__codelineno-0-1089"></a>                    <span class="c1">#     get_constraint_violation(self._ag_obj_cid[arm]) &gt; m.CONSTRAINT_VIOLATION_THRESHOLD</span>
-<a id="__codelineno-0-1090" name="__codelineno-0-1090"></a>                    <span class="c1"># )</span>
-<a id="__codelineno-0-1091" name="__codelineno-0-1091"></a>                    <span class="c1"># if constraint_violated or releasing_grasp:</span>
-<a id="__codelineno-0-1092" name="__codelineno-0-1092"></a>                    <span class="k">if</span> <span class="n">gm</span><span class="o">.</span><span class="n">AG_CLOTH</span><span class="p">:</span>
-<a id="__codelineno-0-1093" name="__codelineno-0-1093"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">_update_constraint_cloth</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">)</span>
-<a id="__codelineno-0-1094" name="__codelineno-0-1094"></a>
-<a id="__codelineno-0-1095" name="__codelineno-0-1095"></a>                    <span class="k">if</span> <span class="n">releasing_grasp</span><span class="p">:</span>
-<a id="__codelineno-0-1096" name="__codelineno-0-1096"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">_release_grasp</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">)</span>
-<a id="__codelineno-0-1097" name="__codelineno-0-1097"></a>
-<a id="__codelineno-0-1098" name="__codelineno-0-1098"></a>            <span class="k">elif</span> <span class="n">applying_grasp</span><span class="p">:</span>
-<a id="__codelineno-0-1099" name="__codelineno-0-1099"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_ag_data</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_in_hand_object</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">)</span>
-<a id="__codelineno-0-1100" name="__codelineno-0-1100"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_establish_grasp</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">,</span> <span class="n">ag_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ag_data</span><span class="p">[</span><span class="n">arm</span><span class="p">])</span>
-<a id="__codelineno-0-1101" name="__codelineno-0-1101"></a>
-<a id="__codelineno-0-1102" name="__codelineno-0-1102"></a>    <span class="k">def</span> <span class="nf">_update_constraint_cloth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
-<a id="__codelineno-0-1103" name="__codelineno-0-1103"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-1104" name="__codelineno-0-1104"></a><span class="sd">        Update the AG constraint for cloth: for the fixed joint between the attachment point and the world, we set</span>
-<a id="__codelineno-0-1105" name="__codelineno-0-1105"></a><span class="sd">        the local pos to match the current eef link position plus the attachment_point_pos_local offset. As a result,</span>
-<a id="__codelineno-0-1106" name="__codelineno-0-1106"></a><span class="sd">        the joint will drive the attachment point to the updated position, which will then drive the cloth.</span>
-<a id="__codelineno-0-1107" name="__codelineno-0-1107"></a><span class="sd">        See _establish_grasp_cloth for more details.</span>
-<a id="__codelineno-0-1108" name="__codelineno-0-1108"></a>
-<a id="__codelineno-0-1109" name="__codelineno-0-1109"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-1110" name="__codelineno-0-1110"></a><span class="sd">            arm (str): specific arm to establish grasp.</span>
-<a id="__codelineno-0-1111" name="__codelineno-0-1111"></a><span class="sd">                Default is &quot;default&quot; which corresponds to the first entry in self.arm_names</span>
-<a id="__codelineno-0-1112" name="__codelineno-0-1112"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-1113" name="__codelineno-0-1113"></a>        <span class="n">attachment_point_pos_local</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraint_params</span><span class="p">[</span><span class="n">arm</span><span class="p">][</span><span class="s2">&quot;attachment_point_pos_local&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-1114" name="__codelineno-0-1114"></a>        <span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eef_links</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span><span class="o">.</span><span class="n">get_position_orientation</span><span class="p">()</span>
-<a id="__codelineno-0-1115" name="__codelineno-0-1115"></a>        <span class="n">attachment_point_pos</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">pose_transform</span><span class="p">(</span><span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span><span class="p">,</span> <span class="n">attachment_point_pos_local</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<a id="__codelineno-0-1116" name="__codelineno-0-1116"></a>        <span class="n">joint_prim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraints</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span>
-<a id="__codelineno-0-1117" name="__codelineno-0-1117"></a>        <span class="n">joint_prim</span><span class="o">.</span><span class="n">GetAttribute</span><span class="p">(</span><span class="s2">&quot;physics:localPos1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">Gf</span><span class="o">.</span><span class="n">Vec3f</span><span class="p">(</span><span class="o">*</span><span class="n">attachment_point_pos</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)))</span>
-<a id="__codelineno-0-1118" name="__codelineno-0-1118"></a>
-<a id="__codelineno-0-1119" name="__codelineno-0-1119"></a>    <span class="k">def</span> <span class="nf">_calculate_in_hand_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
-<a id="__codelineno-0-1120" name="__codelineno-0-1120"></a>        <span class="k">if</span> <span class="n">gm</span><span class="o">.</span><span class="n">AG_CLOTH</span><span class="p">:</span>
-<a id="__codelineno-0-1121" name="__codelineno-0-1121"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_in_hand_object_cloth</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
-<a id="__codelineno-0-1122" name="__codelineno-0-1122"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-1123" name="__codelineno-0-1123"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_in_hand_object_rigid</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
-<a id="__codelineno-0-1124" name="__codelineno-0-1124"></a>
-<a id="__codelineno-0-1125" name="__codelineno-0-1125"></a>    <span class="k">def</span> <span class="nf">_establish_grasp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">ag_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">contact_pos</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<a id="__codelineno-0-1126" name="__codelineno-0-1126"></a>        <span class="k">if</span> <span class="n">gm</span><span class="o">.</span><span class="n">AG_CLOTH</span><span class="p">:</span>
-<a id="__codelineno-0-1127" name="__codelineno-0-1127"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_establish_grasp_cloth</span><span class="p">(</span><span class="n">arm</span><span class="p">,</span> <span class="n">ag_data</span><span class="p">)</span>
-<a id="__codelineno-0-1128" name="__codelineno-0-1128"></a>        <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-1129" name="__codelineno-0-1129"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_establish_grasp_rigid</span><span class="p">(</span><span class="n">arm</span><span class="p">,</span> <span class="n">ag_data</span><span class="p">,</span> <span class="n">contact_pos</span><span class="p">)</span>
-<a id="__codelineno-0-1130" name="__codelineno-0-1130"></a>
-<a id="__codelineno-0-1131" name="__codelineno-0-1131"></a>    <span class="k">def</span> <span class="nf">_calculate_in_hand_object_cloth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
-<a id="__codelineno-0-1132" name="__codelineno-0-1132"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-1133" name="__codelineno-0-1133"></a><span class="sd">        Same as _calculate_in_hand_object_rigid, except for cloth. Only one should be used at any given time.</span>
-<a id="__codelineno-0-1134" name="__codelineno-0-1134"></a>
-<a id="__codelineno-0-1135" name="__codelineno-0-1135"></a><span class="sd">        Calculates which object to assisted-grasp for arm @arm. Returns an (BaseObject, RigidPrim, np.ndarray) tuple or</span>
-<a id="__codelineno-0-1136" name="__codelineno-0-1136"></a><span class="sd">        None if no valid AG-enabled object can be found.</span>
-<a id="__codelineno-0-1137" name="__codelineno-0-1137"></a>
-<a id="__codelineno-0-1138" name="__codelineno-0-1138"></a><span class="sd">        1) Check if the gripper is closed enough</span>
-<a id="__codelineno-0-1139" name="__codelineno-0-1139"></a><span class="sd">        2) Go through each of the cloth object, and check if its attachment point link position is within the &quot;ghost&quot;</span>
-<a id="__codelineno-0-1140" name="__codelineno-0-1140"></a><span class="sd">        box volume of the gripper link.</span>
+<a id="__codelineno-0-979" name="__codelineno-0-979"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-980" name="__codelineno-0-980"></a>        <span class="n">arm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_arm</span> <span class="k">if</span> <span class="n">arm</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span> <span class="k">else</span> <span class="n">arm</span>
+<a id="__codelineno-0-981" name="__codelineno-0-981"></a>
+<a id="__codelineno-0-982" name="__codelineno-0-982"></a>        <span class="c1"># Return immediately if ag_data is None</span>
+<a id="__codelineno-0-983" name="__codelineno-0-983"></a>        <span class="k">if</span> <span class="n">ag_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-984" name="__codelineno-0-984"></a>            <span class="k">return</span>
+<a id="__codelineno-0-985" name="__codelineno-0-985"></a>        <span class="n">ag_obj</span><span class="p">,</span> <span class="n">ag_link</span> <span class="o">=</span> <span class="n">ag_data</span>
+<a id="__codelineno-0-986" name="__codelineno-0-986"></a>
+<a id="__codelineno-0-987" name="__codelineno-0-987"></a>        <span class="c1"># Create a p2p joint if it&#39;s a child link of a fixed URDF that is connected by a revolute or prismatic joint</span>
+<a id="__codelineno-0-988" name="__codelineno-0-988"></a>        <span class="n">joint_type</span> <span class="o">=</span> <span class="s2">&quot;FixedJoint&quot;</span>
+<a id="__codelineno-0-989" name="__codelineno-0-989"></a>        <span class="k">if</span> <span class="n">ag_obj</span><span class="o">.</span><span class="n">fixed_base</span><span class="p">:</span>
+<a id="__codelineno-0-990" name="__codelineno-0-990"></a>            <span class="c1"># We search up the tree path from the ag_link until we encounter the root (joint == 0) or a non fixed</span>
+<a id="__codelineno-0-991" name="__codelineno-0-991"></a>            <span class="c1"># joint (e.g.: revolute or fixed)</span>
+<a id="__codelineno-0-992" name="__codelineno-0-992"></a>            <span class="n">link_handle</span> <span class="o">=</span> <span class="n">ag_link</span><span class="o">.</span><span class="n">handle</span>
+<a id="__codelineno-0-993" name="__codelineno-0-993"></a>            <span class="n">joint_handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">get_rigid_body_parent_joint</span><span class="p">(</span><span class="n">link_handle</span><span class="p">)</span>
+<a id="__codelineno-0-994" name="__codelineno-0-994"></a>            <span class="k">while</span> <span class="n">joint_handle</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-995" name="__codelineno-0-995"></a>                <span class="c1"># If this joint type is not fixed, we&#39;ve encountered a valid moving joint</span>
+<a id="__codelineno-0-996" name="__codelineno-0-996"></a>                <span class="c1"># So we create a spherical joint rather than fixed joint</span>
+<a id="__codelineno-0-997" name="__codelineno-0-997"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">get_joint_type</span><span class="p">(</span><span class="n">joint_handle</span><span class="p">)</span> <span class="o">!=</span> <span class="n">JointType</span><span class="o">.</span><span class="n">JOINT_FIXED</span><span class="p">:</span>
+<a id="__codelineno-0-998" name="__codelineno-0-998"></a>                    <span class="n">joint_type</span> <span class="o">=</span> <span class="s2">&quot;SphericalJoint&quot;</span>
+<a id="__codelineno-0-999" name="__codelineno-0-999"></a>                    <span class="k">break</span>
+<a id="__codelineno-0-1000" name="__codelineno-0-1000"></a>                <span class="c1"># Grab the parent link and its parent joint for the link</span>
+<a id="__codelineno-0-1001" name="__codelineno-0-1001"></a>                <span class="n">link_handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">get_joint_parent_body</span><span class="p">(</span><span class="n">joint_handle</span><span class="p">)</span>
+<a id="__codelineno-0-1002" name="__codelineno-0-1002"></a>                <span class="n">joint_handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dc</span><span class="o">.</span><span class="n">get_rigid_body_parent_joint</span><span class="p">(</span><span class="n">link_handle</span><span class="p">)</span>
+<a id="__codelineno-0-1003" name="__codelineno-0-1003"></a>
+<a id="__codelineno-0-1004" name="__codelineno-0-1004"></a>        <span class="n">force_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_gripper_contacts</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">,</span> <span class="n">return_contact_positions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-0-1005" name="__codelineno-0-1005"></a>        <span class="n">contact_pos</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-1006" name="__codelineno-0-1006"></a>        <span class="k">for</span> <span class="n">c_link_prim_path</span><span class="p">,</span> <span class="n">c_contact_pos</span> <span class="ow">in</span> <span class="n">force_data</span><span class="p">:</span>
+<a id="__codelineno-0-1007" name="__codelineno-0-1007"></a>            <span class="k">if</span> <span class="n">c_link_prim_path</span> <span class="o">==</span> <span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="p">:</span>
+<a id="__codelineno-0-1008" name="__codelineno-0-1008"></a>                <span class="n">contact_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">c_contact_pos</span><span class="p">)</span>
+<a id="__codelineno-0-1009" name="__codelineno-0-1009"></a>                <span class="k">break</span>
+<a id="__codelineno-0-1010" name="__codelineno-0-1010"></a>        <span class="k">assert</span> <span class="n">contact_pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<a id="__codelineno-0-1011" name="__codelineno-0-1011"></a>
+<a id="__codelineno-0-1012" name="__codelineno-0-1012"></a>        <span class="c1"># Joint frame set at the contact point</span>
+<a id="__codelineno-0-1013" name="__codelineno-0-1013"></a>        <span class="c1"># Need to find distance between robot and contact point in robot link&#39;s local frame and</span>
+<a id="__codelineno-0-1014" name="__codelineno-0-1014"></a>        <span class="c1"># ag link and contact point in ag link&#39;s local frame</span>
+<a id="__codelineno-0-1015" name="__codelineno-0-1015"></a>        <span class="n">joint_frame_pos</span> <span class="o">=</span> <span class="n">contact_pos</span>
+<a id="__codelineno-0-1016" name="__codelineno-0-1016"></a>        <span class="n">joint_frame_orn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<a id="__codelineno-0-1017" name="__codelineno-0-1017"></a>        <span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eef_links</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span><span class="o">.</span><span class="n">get_position_orientation</span><span class="p">()</span>
+<a id="__codelineno-0-1018" name="__codelineno-0-1018"></a>        <span class="n">parent_frame_pos</span><span class="p">,</span> <span class="n">parent_frame_orn</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">relative_pose_transform</span><span class="p">(</span><span class="n">joint_frame_pos</span><span class="p">,</span> <span class="n">joint_frame_orn</span><span class="p">,</span> <span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span><span class="p">)</span>
+<a id="__codelineno-0-1019" name="__codelineno-0-1019"></a>        <span class="n">obj_link_pos</span><span class="p">,</span> <span class="n">obj_link_orn</span> <span class="o">=</span> <span class="n">ag_link</span><span class="o">.</span><span class="n">get_position_orientation</span><span class="p">()</span>
+<a id="__codelineno-0-1020" name="__codelineno-0-1020"></a>        <span class="n">child_frame_pos</span><span class="p">,</span> <span class="n">child_frame_orn</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">relative_pose_transform</span><span class="p">(</span><span class="n">joint_frame_pos</span><span class="p">,</span> <span class="n">joint_frame_orn</span><span class="p">,</span> <span class="n">obj_link_pos</span><span class="p">,</span> <span class="n">obj_link_orn</span><span class="p">)</span>
+<a id="__codelineno-0-1021" name="__codelineno-0-1021"></a>
+<a id="__codelineno-0-1022" name="__codelineno-0-1022"></a>        <span class="c1"># Create the joint</span>
+<a id="__codelineno-0-1023" name="__codelineno-0-1023"></a>        <span class="n">joint_prim_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">eef_links</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span><span class="o">.</span><span class="n">prim_path</span><span class="si">}</span><span class="s2">/ag_constraint&quot;</span>
+<a id="__codelineno-0-1024" name="__codelineno-0-1024"></a>        <span class="n">joint_prim</span> <span class="o">=</span> <span class="n">create_joint</span><span class="p">(</span>
+<a id="__codelineno-0-1025" name="__codelineno-0-1025"></a>            <span class="n">prim_path</span><span class="o">=</span><span class="n">joint_prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1026" name="__codelineno-0-1026"></a>            <span class="n">joint_type</span><span class="o">=</span><span class="n">joint_type</span><span class="p">,</span>
+<a id="__codelineno-0-1027" name="__codelineno-0-1027"></a>            <span class="n">body0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eef_links</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1028" name="__codelineno-0-1028"></a>            <span class="n">body1</span><span class="o">=</span><span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1029" name="__codelineno-0-1029"></a>            <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-1030" name="__codelineno-0-1030"></a>            <span class="n">joint_frame_in_parent_frame_pos</span><span class="o">=</span><span class="n">parent_frame_pos</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span>
+<a id="__codelineno-0-1031" name="__codelineno-0-1031"></a>            <span class="n">joint_frame_in_parent_frame_quat</span><span class="o">=</span><span class="n">parent_frame_orn</span><span class="p">,</span>
+<a id="__codelineno-0-1032" name="__codelineno-0-1032"></a>            <span class="n">joint_frame_in_child_frame_pos</span><span class="o">=</span><span class="n">child_frame_pos</span> <span class="o">/</span> <span class="n">ag_obj</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span>
+<a id="__codelineno-0-1033" name="__codelineno-0-1033"></a>            <span class="n">joint_frame_in_child_frame_quat</span><span class="o">=</span><span class="n">child_frame_orn</span><span class="p">,</span>
+<a id="__codelineno-0-1034" name="__codelineno-0-1034"></a>        <span class="p">)</span>
+<a id="__codelineno-0-1035" name="__codelineno-0-1035"></a>
+<a id="__codelineno-0-1036" name="__codelineno-0-1036"></a>        <span class="c1"># Save a reference to this joint prim</span>
+<a id="__codelineno-0-1037" name="__codelineno-0-1037"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraints</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="n">joint_prim</span>
+<a id="__codelineno-0-1038" name="__codelineno-0-1038"></a>
+<a id="__codelineno-0-1039" name="__codelineno-0-1039"></a>        <span class="c1"># Modify max force based on user-determined assist parameters</span>
+<a id="__codelineno-0-1040" name="__codelineno-0-1040"></a>        <span class="c1"># TODO</span>
+<a id="__codelineno-0-1041" name="__codelineno-0-1041"></a>        <span class="n">max_force</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">ASSIST_FORCE</span> <span class="k">if</span> <span class="n">joint_type</span> <span class="o">==</span> <span class="s2">&quot;FixedJoint&quot;</span> <span class="k">else</span> <span class="n">m</span><span class="o">.</span><span class="n">ASSIST_FORCE</span> <span class="o">*</span> <span class="n">m</span><span class="o">.</span><span class="n">ARTICULATED_ASSIST_FRACTION</span>
+<a id="__codelineno-0-1042" name="__codelineno-0-1042"></a>        <span class="c1"># joint_prim.GetAttribute(&quot;physics:breakForce&quot;).Set(max_force)</span>
+<a id="__codelineno-0-1043" name="__codelineno-0-1043"></a>
+<a id="__codelineno-0-1044" name="__codelineno-0-1044"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraint_params</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-1045" name="__codelineno-0-1045"></a>            <span class="s2">&quot;ag_obj_prim_path&quot;</span><span class="p">:</span> <span class="n">ag_obj</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1046" name="__codelineno-0-1046"></a>            <span class="s2">&quot;ag_link_prim_path&quot;</span><span class="p">:</span> <span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1047" name="__codelineno-0-1047"></a>            <span class="s2">&quot;ag_joint_prim_path&quot;</span><span class="p">:</span> <span class="n">joint_prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1048" name="__codelineno-0-1048"></a>            <span class="s2">&quot;joint_type&quot;</span><span class="p">:</span> <span class="n">joint_type</span><span class="p">,</span>
+<a id="__codelineno-0-1049" name="__codelineno-0-1049"></a>            <span class="s2">&quot;gripper_pos&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_joint_positions</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">gripper_control_idx</span><span class="p">[</span><span class="n">arm</span><span class="p">]],</span>
+<a id="__codelineno-0-1050" name="__codelineno-0-1050"></a>            <span class="s2">&quot;max_force&quot;</span><span class="p">:</span> <span class="n">max_force</span><span class="p">,</span>
+<a id="__codelineno-0-1051" name="__codelineno-0-1051"></a>        <span class="p">}</span>
+<a id="__codelineno-0-1052" name="__codelineno-0-1052"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_in_hand</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="n">ag_obj</span>
+<a id="__codelineno-0-1053" name="__codelineno-0-1053"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_freeze_gripper</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<a id="__codelineno-0-1054" name="__codelineno-0-1054"></a>        <span class="c1"># Disable collisions while picking things up</span>
+<a id="__codelineno-0-1055" name="__codelineno-0-1055"></a>        <span class="c1"># TODO: Verify not needed!</span>
+<a id="__codelineno-0-1056" name="__codelineno-0-1056"></a>        <span class="c1"># for finger_link in self.finger_links[arm]:</span>
+<a id="__codelineno-0-1057" name="__codelineno-0-1057"></a>        <span class="c1">#     finger_link.add_filtered_collision_pair(prim=ag_obj)</span>
+<a id="__codelineno-0-1058" name="__codelineno-0-1058"></a>        <span class="k">for</span> <span class="n">joint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">finger_joints</span><span class="p">[</span><span class="n">arm</span><span class="p">]:</span>
+<a id="__codelineno-0-1059" name="__codelineno-0-1059"></a>            <span class="n">j_val</span> <span class="o">=</span> <span class="n">joint</span><span class="o">.</span><span class="n">get_state</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-0-1060" name="__codelineno-0-1060"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_ag_freeze_joint_pos</span><span class="p">[</span><span class="n">arm</span><span class="p">][</span><span class="n">joint</span><span class="o">.</span><span class="n">joint_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">j_val</span>
+<a id="__codelineno-0-1061" name="__codelineno-0-1061"></a>
+<a id="__codelineno-0-1062" name="__codelineno-0-1062"></a>    <span class="k">def</span> <span class="nf">_handle_assisted_grasping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<a id="__codelineno-0-1063" name="__codelineno-0-1063"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-1064" name="__codelineno-0-1064"></a><span class="sd">        Handles assisted grasping.</span>
+<a id="__codelineno-0-1065" name="__codelineno-0-1065"></a>
+<a id="__codelineno-0-1066" name="__codelineno-0-1066"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-1067" name="__codelineno-0-1067"></a><span class="sd">            action (n-array): gripper action to apply. &gt;= 0 is release (open), &lt; 0 is grasp (close).</span>
+<a id="__codelineno-0-1068" name="__codelineno-0-1068"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-1069" name="__codelineno-0-1069"></a>        <span class="c1"># Loop over all arms</span>
+<a id="__codelineno-0-1070" name="__codelineno-0-1070"></a>        <span class="k">for</span> <span class="n">arm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm_names</span><span class="p">:</span>
+<a id="__codelineno-0-1071" name="__codelineno-0-1071"></a>            <span class="c1"># Make sure gripper action dimension is only 1</span>
+<a id="__codelineno-0-1072" name="__codelineno-0-1072"></a>            <span class="n">cmd_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_controllers</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;gripper_</span><span class="si">{</span><span class="n">arm</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">command_dim</span>
+<a id="__codelineno-0-1073" name="__codelineno-0-1073"></a>            <span class="k">assert</span> <span class="n">cmd_dim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> \
+<a id="__codelineno-0-1074" name="__codelineno-0-1074"></a>                <span class="sa">f</span><span class="s2">&quot;Gripper </span><span class="si">{</span><span class="n">arm</span><span class="si">}</span><span class="s2"> controller command dim must be 1 to use assisted grasping, got: </span><span class="si">{</span><span class="n">cmd_dim</span><span class="si">}</span><span class="s2">.&quot;</span>
+<a id="__codelineno-0-1075" name="__codelineno-0-1075"></a>
+<a id="__codelineno-0-1076" name="__codelineno-0-1076"></a>            <span class="c1"># TODO: Why are we separately checking for complementary conditions?</span>
+<a id="__codelineno-0-1077" name="__codelineno-0-1077"></a>            <span class="n">threshold</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_controllers</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;gripper_</span><span class="si">{</span><span class="n">arm</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">command_input_limits</span><span class="p">)</span>
+<a id="__codelineno-0-1078" name="__codelineno-0-1078"></a>            <span class="n">applying_grasp</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">controller_action_idx</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;gripper_</span><span class="si">{</span><span class="n">arm</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&lt;</span> <span class="n">threshold</span>
+<a id="__codelineno-0-1079" name="__codelineno-0-1079"></a>            <span class="n">releasing_grasp</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">controller_action_idx</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;gripper_</span><span class="si">{</span><span class="n">arm</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="n">threshold</span>
+<a id="__codelineno-0-1080" name="__codelineno-0-1080"></a>
+<a id="__codelineno-0-1081" name="__codelineno-0-1081"></a>            <span class="c1"># Execute gradual release of object</span>
+<a id="__codelineno-0-1082" name="__codelineno-0-1082"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_in_hand</span><span class="p">[</span><span class="n">arm</span><span class="p">]:</span>
+<a id="__codelineno-0-1083" name="__codelineno-0-1083"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_release_counter</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-1084" name="__codelineno-0-1084"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_handle_release_window</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">)</span>
+<a id="__codelineno-0-1085" name="__codelineno-0-1085"></a>                <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-1086" name="__codelineno-0-1086"></a>                    <span class="c1"># constraint_violated = (</span>
+<a id="__codelineno-0-1087" name="__codelineno-0-1087"></a>                    <span class="c1">#     get_constraint_violation(self._ag_obj_cid[arm]) &gt; m.CONSTRAINT_VIOLATION_THRESHOLD</span>
+<a id="__codelineno-0-1088" name="__codelineno-0-1088"></a>                    <span class="c1"># )</span>
+<a id="__codelineno-0-1089" name="__codelineno-0-1089"></a>                    <span class="c1"># if constraint_violated or releasing_grasp:</span>
+<a id="__codelineno-0-1090" name="__codelineno-0-1090"></a>                    <span class="k">if</span> <span class="n">gm</span><span class="o">.</span><span class="n">AG_CLOTH</span><span class="p">:</span>
+<a id="__codelineno-0-1091" name="__codelineno-0-1091"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">_update_constraint_cloth</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">)</span>
+<a id="__codelineno-0-1092" name="__codelineno-0-1092"></a>
+<a id="__codelineno-0-1093" name="__codelineno-0-1093"></a>                    <span class="k">if</span> <span class="n">releasing_grasp</span><span class="p">:</span>
+<a id="__codelineno-0-1094" name="__codelineno-0-1094"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">_release_grasp</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">)</span>
+<a id="__codelineno-0-1095" name="__codelineno-0-1095"></a>
+<a id="__codelineno-0-1096" name="__codelineno-0-1096"></a>            <span class="k">elif</span> <span class="n">applying_grasp</span><span class="p">:</span>
+<a id="__codelineno-0-1097" name="__codelineno-0-1097"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_ag_data</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_in_hand_object</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">)</span>
+<a id="__codelineno-0-1098" name="__codelineno-0-1098"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_establish_grasp</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">,</span> <span class="n">ag_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ag_data</span><span class="p">[</span><span class="n">arm</span><span class="p">])</span>
+<a id="__codelineno-0-1099" name="__codelineno-0-1099"></a>
+<a id="__codelineno-0-1100" name="__codelineno-0-1100"></a>    <span class="k">def</span> <span class="nf">_update_constraint_cloth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+<a id="__codelineno-0-1101" name="__codelineno-0-1101"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-1102" name="__codelineno-0-1102"></a><span class="sd">        Update the AG constraint for cloth: for the fixed joint between the attachment point and the world, we set</span>
+<a id="__codelineno-0-1103" name="__codelineno-0-1103"></a><span class="sd">        the local pos to match the current eef link position plus the attachment_point_pos_local offset. As a result,</span>
+<a id="__codelineno-0-1104" name="__codelineno-0-1104"></a><span class="sd">        the joint will drive the attachment point to the updated position, which will then drive the cloth.</span>
+<a id="__codelineno-0-1105" name="__codelineno-0-1105"></a><span class="sd">        See _establish_grasp_cloth for more details.</span>
+<a id="__codelineno-0-1106" name="__codelineno-0-1106"></a>
+<a id="__codelineno-0-1107" name="__codelineno-0-1107"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-1108" name="__codelineno-0-1108"></a><span class="sd">            arm (str): specific arm to establish grasp.</span>
+<a id="__codelineno-0-1109" name="__codelineno-0-1109"></a><span class="sd">                Default is &quot;default&quot; which corresponds to the first entry in self.arm_names</span>
+<a id="__codelineno-0-1110" name="__codelineno-0-1110"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-1111" name="__codelineno-0-1111"></a>        <span class="n">attachment_point_pos_local</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraint_params</span><span class="p">[</span><span class="n">arm</span><span class="p">][</span><span class="s2">&quot;attachment_point_pos_local&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-1112" name="__codelineno-0-1112"></a>        <span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eef_links</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span><span class="o">.</span><span class="n">get_position_orientation</span><span class="p">()</span>
+<a id="__codelineno-0-1113" name="__codelineno-0-1113"></a>        <span class="n">attachment_point_pos</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">pose_transform</span><span class="p">(</span><span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span><span class="p">,</span> <span class="n">attachment_point_pos_local</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<a id="__codelineno-0-1114" name="__codelineno-0-1114"></a>        <span class="n">joint_prim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraints</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span>
+<a id="__codelineno-0-1115" name="__codelineno-0-1115"></a>        <span class="n">joint_prim</span><span class="o">.</span><span class="n">GetAttribute</span><span class="p">(</span><span class="s2">&quot;physics:localPos1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">Gf</span><span class="o">.</span><span class="n">Vec3f</span><span class="p">(</span><span class="o">*</span><span class="n">attachment_point_pos</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)))</span>
+<a id="__codelineno-0-1116" name="__codelineno-0-1116"></a>
+<a id="__codelineno-0-1117" name="__codelineno-0-1117"></a>    <span class="k">def</span> <span class="nf">_calculate_in_hand_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+<a id="__codelineno-0-1118" name="__codelineno-0-1118"></a>        <span class="k">if</span> <span class="n">gm</span><span class="o">.</span><span class="n">AG_CLOTH</span><span class="p">:</span>
+<a id="__codelineno-0-1119" name="__codelineno-0-1119"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_in_hand_object_cloth</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
+<a id="__codelineno-0-1120" name="__codelineno-0-1120"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-1121" name="__codelineno-0-1121"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_in_hand_object_rigid</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
+<a id="__codelineno-0-1122" name="__codelineno-0-1122"></a>
+<a id="__codelineno-0-1123" name="__codelineno-0-1123"></a>    <span class="k">def</span> <span class="nf">_establish_grasp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">ag_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a id="__codelineno-0-1124" name="__codelineno-0-1124"></a>        <span class="k">if</span> <span class="n">gm</span><span class="o">.</span><span class="n">AG_CLOTH</span><span class="p">:</span>
+<a id="__codelineno-0-1125" name="__codelineno-0-1125"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_establish_grasp_cloth</span><span class="p">(</span><span class="n">arm</span><span class="p">,</span> <span class="n">ag_data</span><span class="p">)</span>
+<a id="__codelineno-0-1126" name="__codelineno-0-1126"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-1127" name="__codelineno-0-1127"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_establish_grasp_rigid</span><span class="p">(</span><span class="n">arm</span><span class="p">,</span> <span class="n">ag_data</span><span class="p">)</span>
+<a id="__codelineno-0-1128" name="__codelineno-0-1128"></a>
+<a id="__codelineno-0-1129" name="__codelineno-0-1129"></a>    <span class="k">def</span> <span class="nf">_calculate_in_hand_object_cloth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+<a id="__codelineno-0-1130" name="__codelineno-0-1130"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-1131" name="__codelineno-0-1131"></a><span class="sd">        Same as _calculate_in_hand_object_rigid, except for cloth. Only one should be used at any given time.</span>
+<a id="__codelineno-0-1132" name="__codelineno-0-1132"></a>
+<a id="__codelineno-0-1133" name="__codelineno-0-1133"></a><span class="sd">        Calculates which object to assisted-grasp for arm @arm. Returns an (BaseObject, RigidPrim, np.ndarray) tuple or</span>
+<a id="__codelineno-0-1134" name="__codelineno-0-1134"></a><span class="sd">        None if no valid AG-enabled object can be found.</span>
+<a id="__codelineno-0-1135" name="__codelineno-0-1135"></a>
+<a id="__codelineno-0-1136" name="__codelineno-0-1136"></a><span class="sd">        1) Check if the gripper is closed enough</span>
+<a id="__codelineno-0-1137" name="__codelineno-0-1137"></a><span class="sd">        2) Go through each of the cloth object, and check if its attachment point link position is within the &quot;ghost&quot;</span>
+<a id="__codelineno-0-1138" name="__codelineno-0-1138"></a><span class="sd">        box volume of the gripper link.</span>
+<a id="__codelineno-0-1139" name="__codelineno-0-1139"></a>
+<a id="__codelineno-0-1140" name="__codelineno-0-1140"></a><span class="sd">        Only returns the first valid object and ignore the rest.</span>
 <a id="__codelineno-0-1141" name="__codelineno-0-1141"></a>
-<a id="__codelineno-0-1142" name="__codelineno-0-1142"></a><span class="sd">        Only returns the first valid object and ignore the rest.</span>
-<a id="__codelineno-0-1143" name="__codelineno-0-1143"></a>
-<a id="__codelineno-0-1144" name="__codelineno-0-1144"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-1145" name="__codelineno-0-1145"></a><span class="sd">            arm (str): specific arm to establish grasp.</span>
-<a id="__codelineno-0-1146" name="__codelineno-0-1146"></a><span class="sd">                Default is &quot;default&quot; which corresponds to the first entry in self.arm_names</span>
-<a id="__codelineno-0-1147" name="__codelineno-0-1147"></a>
-<a id="__codelineno-0-1148" name="__codelineno-0-1148"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-0-1149" name="__codelineno-0-1149"></a><span class="sd">            None or 3-tuple: If a valid assisted-grasp object is found,</span>
-<a id="__codelineno-0-1150" name="__codelineno-0-1150"></a><span class="sd">                returns the corresponding (object, object_link, attachment_point_position), i.e.</span>
-<a id="__codelineno-0-1151" name="__codelineno-0-1151"></a><span class="sd">                ((BaseObject, RigidPrim, np.ndarray)) to the contacted in-hand object. Otherwise, returns None</span>
-<a id="__codelineno-0-1152" name="__codelineno-0-1152"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-1153" name="__codelineno-0-1153"></a>        <span class="c1"># TODO (eric): Assume joint_pos = 0 means fully closed</span>
-<a id="__codelineno-0-1154" name="__codelineno-0-1154"></a>        <span class="n">GRIPPER_FINGER_CLOSE_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.03</span>
-<a id="__codelineno-0-1155" name="__codelineno-0-1155"></a>        <span class="n">gripper_finger_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_joint_positions</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">gripper_control_idx</span><span class="p">[</span><span class="n">arm</span><span class="p">]]</span>
-<a id="__codelineno-0-1156" name="__codelineno-0-1156"></a>        <span class="n">gripper_finger_close</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gripper_finger_pos</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">GRIPPER_FINGER_CLOSE_THRESHOLD</span>
-<a id="__codelineno-0-1157" name="__codelineno-0-1157"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">gripper_finger_close</span><span class="p">:</span>
-<a id="__codelineno-0-1158" name="__codelineno-0-1158"></a>            <span class="k">return</span> <span class="kc">None</span>
-<a id="__codelineno-0-1159" name="__codelineno-0-1159"></a>
-<a id="__codelineno-0-1160" name="__codelineno-0-1160"></a>        <span class="n">cloth_objs</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">object_registry</span><span class="p">(</span><span class="s2">&quot;prim_type&quot;</span><span class="p">,</span> <span class="n">PrimType</span><span class="o">.</span><span class="n">CLOTH</span><span class="p">)</span>
-<a id="__codelineno-0-1161" name="__codelineno-0-1161"></a>        <span class="k">if</span> <span class="n">cloth_objs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-1162" name="__codelineno-0-1162"></a>            <span class="k">return</span> <span class="kc">None</span>
-<a id="__codelineno-0-1163" name="__codelineno-0-1163"></a>
-<a id="__codelineno-0-1164" name="__codelineno-0-1164"></a>        <span class="c1"># TODO (eric): Only AG one cloth at any given moment.</span>
-<a id="__codelineno-0-1165" name="__codelineno-0-1165"></a>        <span class="c1"># Returns the first cloth that overlaps with the &quot;ghost&quot; box volume</span>
-<a id="__codelineno-0-1166" name="__codelineno-0-1166"></a>        <span class="k">for</span> <span class="n">cloth_obj</span> <span class="ow">in</span> <span class="n">cloth_objs</span><span class="p">:</span>
-<a id="__codelineno-0-1167" name="__codelineno-0-1167"></a>            <span class="n">attachment_point_pos</span> <span class="o">=</span> <span class="n">cloth_obj</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="s2">&quot;attachment_point&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
-<a id="__codelineno-0-1168" name="__codelineno-0-1168"></a>            <span class="n">particles_in_volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_check_in_volume</span><span class="p">[</span><span class="n">arm</span><span class="p">]([</span><span class="n">attachment_point_pos</span><span class="p">])</span>
-<a id="__codelineno-0-1169" name="__codelineno-0-1169"></a>            <span class="k">if</span> <span class="n">particles_in_volume</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-0-1170" name="__codelineno-0-1170"></a>                <span class="k">return</span> <span class="n">cloth_obj</span><span class="p">,</span> <span class="n">cloth_obj</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="s2">&quot;attachment_point&quot;</span><span class="p">],</span> <span class="n">attachment_point_pos</span>
+<a id="__codelineno-0-1142" name="__codelineno-0-1142"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-1143" name="__codelineno-0-1143"></a><span class="sd">            arm (str): specific arm to establish grasp.</span>
+<a id="__codelineno-0-1144" name="__codelineno-0-1144"></a><span class="sd">                Default is &quot;default&quot; which corresponds to the first entry in self.arm_names</span>
+<a id="__codelineno-0-1145" name="__codelineno-0-1145"></a>
+<a id="__codelineno-0-1146" name="__codelineno-0-1146"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-1147" name="__codelineno-0-1147"></a><span class="sd">            None or 3-tuple: If a valid assisted-grasp object is found,</span>
+<a id="__codelineno-0-1148" name="__codelineno-0-1148"></a><span class="sd">                returns the corresponding (object, object_link, attachment_point_position), i.e.</span>
+<a id="__codelineno-0-1149" name="__codelineno-0-1149"></a><span class="sd">                ((BaseObject, RigidPrim, np.ndarray)) to the contacted in-hand object. Otherwise, returns None</span>
+<a id="__codelineno-0-1150" name="__codelineno-0-1150"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-1151" name="__codelineno-0-1151"></a>        <span class="c1"># TODO (eric): Assume joint_pos = 0 means fully closed</span>
+<a id="__codelineno-0-1152" name="__codelineno-0-1152"></a>        <span class="n">GRIPPER_FINGER_CLOSE_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.03</span>
+<a id="__codelineno-0-1153" name="__codelineno-0-1153"></a>        <span class="n">gripper_finger_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_joint_positions</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">gripper_control_idx</span><span class="p">[</span><span class="n">arm</span><span class="p">]]</span>
+<a id="__codelineno-0-1154" name="__codelineno-0-1154"></a>        <span class="n">gripper_finger_close</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gripper_finger_pos</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">GRIPPER_FINGER_CLOSE_THRESHOLD</span>
+<a id="__codelineno-0-1155" name="__codelineno-0-1155"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">gripper_finger_close</span><span class="p">:</span>
+<a id="__codelineno-0-1156" name="__codelineno-0-1156"></a>            <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-0-1157" name="__codelineno-0-1157"></a>
+<a id="__codelineno-0-1158" name="__codelineno-0-1158"></a>        <span class="n">cloth_objs</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">object_registry</span><span class="p">(</span><span class="s2">&quot;prim_type&quot;</span><span class="p">,</span> <span class="n">PrimType</span><span class="o">.</span><span class="n">CLOTH</span><span class="p">)</span>
+<a id="__codelineno-0-1159" name="__codelineno-0-1159"></a>        <span class="k">if</span> <span class="n">cloth_objs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-1160" name="__codelineno-0-1160"></a>            <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-0-1161" name="__codelineno-0-1161"></a>
+<a id="__codelineno-0-1162" name="__codelineno-0-1162"></a>        <span class="c1"># TODO (eric): Only AG one cloth at any given moment.</span>
+<a id="__codelineno-0-1163" name="__codelineno-0-1163"></a>        <span class="c1"># Returns the first cloth that overlaps with the &quot;ghost&quot; box volume</span>
+<a id="__codelineno-0-1164" name="__codelineno-0-1164"></a>        <span class="k">for</span> <span class="n">cloth_obj</span> <span class="ow">in</span> <span class="n">cloth_objs</span><span class="p">:</span>
+<a id="__codelineno-0-1165" name="__codelineno-0-1165"></a>            <span class="n">attachment_point_pos</span> <span class="o">=</span> <span class="n">cloth_obj</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="s2">&quot;attachment_point&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+<a id="__codelineno-0-1166" name="__codelineno-0-1166"></a>            <span class="n">particles_in_volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_check_in_volume</span><span class="p">[</span><span class="n">arm</span><span class="p">]([</span><span class="n">attachment_point_pos</span><span class="p">])</span>
+<a id="__codelineno-0-1167" name="__codelineno-0-1167"></a>            <span class="k">if</span> <span class="n">particles_in_volume</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-1168" name="__codelineno-0-1168"></a>                <span class="k">return</span> <span class="n">cloth_obj</span><span class="p">,</span> <span class="n">cloth_obj</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="s2">&quot;attachment_point&quot;</span><span class="p">],</span> <span class="n">attachment_point_pos</span>
+<a id="__codelineno-0-1169" name="__codelineno-0-1169"></a>
+<a id="__codelineno-0-1170" name="__codelineno-0-1170"></a>        <span class="k">return</span> <span class="kc">None</span>
 <a id="__codelineno-0-1171" name="__codelineno-0-1171"></a>
-<a id="__codelineno-0-1172" name="__codelineno-0-1172"></a>        <span class="k">return</span> <span class="kc">None</span>
-<a id="__codelineno-0-1173" name="__codelineno-0-1173"></a>
-<a id="__codelineno-0-1174" name="__codelineno-0-1174"></a>    <span class="k">def</span> <span class="nf">_establish_grasp_cloth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">ag_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<a id="__codelineno-0-1175" name="__codelineno-0-1175"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-1176" name="__codelineno-0-1176"></a><span class="sd">        Same as _establish_grasp_cloth, except for cloth. Only one should be used at any given time.</span>
-<a id="__codelineno-0-1177" name="__codelineno-0-1177"></a><span class="sd">        Establishes an ag-assisted grasp, if enabled.</span>
-<a id="__codelineno-0-1178" name="__codelineno-0-1178"></a>
-<a id="__codelineno-0-1179" name="__codelineno-0-1179"></a><span class="sd">        Create a fixed joint between the attachment point link of the cloth object and the world.</span>
-<a id="__codelineno-0-1180" name="__codelineno-0-1180"></a><span class="sd">        In theory, we could have created a fixed joint to the eef link, but omni doesn&#39;t support this as the robot has</span>
-<a id="__codelineno-0-1181" name="__codelineno-0-1181"></a><span class="sd">        an articulation root API attached to it, which is incompatible with the attachment API.</span>
-<a id="__codelineno-0-1182" name="__codelineno-0-1182"></a>
-<a id="__codelineno-0-1183" name="__codelineno-0-1183"></a><span class="sd">        We also store attachment_point_pos_local as the attachment point position in the eef link frame when the fixed</span>
-<a id="__codelineno-0-1184" name="__codelineno-0-1184"></a><span class="sd">        joint is created. As the eef link frame changes its pose, we will use attachment_point_pos_local to figure out</span>
-<a id="__codelineno-0-1185" name="__codelineno-0-1185"></a><span class="sd">        the new attachment_point_pos in the world frame and set the fixed joint to there. See _update_constraint_cloth</span>
-<a id="__codelineno-0-1186" name="__codelineno-0-1186"></a><span class="sd">        for more details.</span>
-<a id="__codelineno-0-1187" name="__codelineno-0-1187"></a>
-<a id="__codelineno-0-1188" name="__codelineno-0-1188"></a><span class="sd">        Args:</span>
-<a id="__codelineno-0-1189" name="__codelineno-0-1189"></a><span class="sd">            arm (str): specific arm to establish grasp.</span>
-<a id="__codelineno-0-1190" name="__codelineno-0-1190"></a><span class="sd">                Default is &quot;default&quot; which corresponds to the first entry in self.arm_names</span>
-<a id="__codelineno-0-1191" name="__codelineno-0-1191"></a><span class="sd">            ag_data (None or 3-tuple): If specified, should be the corresponding</span>
-<a id="__codelineno-0-1192" name="__codelineno-0-1192"></a><span class="sd">                (object, object_link, attachment_point_position), i.e. ((BaseObject, RigidPrim, np.ndarray)) to the]</span>
-<a id="__codelineno-0-1193" name="__codelineno-0-1193"></a><span class="sd">                contacted in-hand object</span>
-<a id="__codelineno-0-1194" name="__codelineno-0-1194"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-0-1195" name="__codelineno-0-1195"></a>        <span class="n">arm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_arm</span> <span class="k">if</span> <span class="n">arm</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span> <span class="k">else</span> <span class="n">arm</span>
-<a id="__codelineno-0-1196" name="__codelineno-0-1196"></a>
-<a id="__codelineno-0-1197" name="__codelineno-0-1197"></a>        <span class="c1"># Return immediately if ag_data is None</span>
-<a id="__codelineno-0-1198" name="__codelineno-0-1198"></a>        <span class="k">if</span> <span class="n">ag_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-1199" name="__codelineno-0-1199"></a>            <span class="k">return</span>
+<a id="__codelineno-0-1172" name="__codelineno-0-1172"></a>    <span class="k">def</span> <span class="nf">_establish_grasp_cloth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">ag_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a id="__codelineno-0-1173" name="__codelineno-0-1173"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-1174" name="__codelineno-0-1174"></a><span class="sd">        Same as _establish_grasp_cloth, except for cloth. Only one should be used at any given time.</span>
+<a id="__codelineno-0-1175" name="__codelineno-0-1175"></a><span class="sd">        Establishes an ag-assisted grasp, if enabled.</span>
+<a id="__codelineno-0-1176" name="__codelineno-0-1176"></a>
+<a id="__codelineno-0-1177" name="__codelineno-0-1177"></a><span class="sd">        Create a fixed joint between the attachment point link of the cloth object and the world.</span>
+<a id="__codelineno-0-1178" name="__codelineno-0-1178"></a><span class="sd">        In theory, we could have created a fixed joint to the eef link, but omni doesn&#39;t support this as the robot has</span>
+<a id="__codelineno-0-1179" name="__codelineno-0-1179"></a><span class="sd">        an articulation root API attached to it, which is incompatible with the attachment API.</span>
+<a id="__codelineno-0-1180" name="__codelineno-0-1180"></a>
+<a id="__codelineno-0-1181" name="__codelineno-0-1181"></a><span class="sd">        We also store attachment_point_pos_local as the attachment point position in the eef link frame when the fixed</span>
+<a id="__codelineno-0-1182" name="__codelineno-0-1182"></a><span class="sd">        joint is created. As the eef link frame changes its pose, we will use attachment_point_pos_local to figure out</span>
+<a id="__codelineno-0-1183" name="__codelineno-0-1183"></a><span class="sd">        the new attachment_point_pos in the world frame and set the fixed joint to there. See _update_constraint_cloth</span>
+<a id="__codelineno-0-1184" name="__codelineno-0-1184"></a><span class="sd">        for more details.</span>
+<a id="__codelineno-0-1185" name="__codelineno-0-1185"></a>
+<a id="__codelineno-0-1186" name="__codelineno-0-1186"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-1187" name="__codelineno-0-1187"></a><span class="sd">            arm (str): specific arm to establish grasp.</span>
+<a id="__codelineno-0-1188" name="__codelineno-0-1188"></a><span class="sd">                Default is &quot;default&quot; which corresponds to the first entry in self.arm_names</span>
+<a id="__codelineno-0-1189" name="__codelineno-0-1189"></a><span class="sd">            ag_data (None or 3-tuple): If specified, should be the corresponding</span>
+<a id="__codelineno-0-1190" name="__codelineno-0-1190"></a><span class="sd">                (object, object_link, attachment_point_position), i.e. ((BaseObject, RigidPrim, np.ndarray)) to the]</span>
+<a id="__codelineno-0-1191" name="__codelineno-0-1191"></a><span class="sd">                contacted in-hand object</span>
+<a id="__codelineno-0-1192" name="__codelineno-0-1192"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-1193" name="__codelineno-0-1193"></a>        <span class="n">arm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_arm</span> <span class="k">if</span> <span class="n">arm</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span> <span class="k">else</span> <span class="n">arm</span>
+<a id="__codelineno-0-1194" name="__codelineno-0-1194"></a>
+<a id="__codelineno-0-1195" name="__codelineno-0-1195"></a>        <span class="c1"># Return immediately if ag_data is None</span>
+<a id="__codelineno-0-1196" name="__codelineno-0-1196"></a>        <span class="k">if</span> <span class="n">ag_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-1197" name="__codelineno-0-1197"></a>            <span class="k">return</span>
+<a id="__codelineno-0-1198" name="__codelineno-0-1198"></a>
+<a id="__codelineno-0-1199" name="__codelineno-0-1199"></a>        <span class="n">ag_obj</span><span class="p">,</span> <span class="n">ag_link</span><span class="p">,</span> <span class="n">attachment_point_pos</span> <span class="o">=</span> <span class="n">ag_data</span>
 <a id="__codelineno-0-1200" name="__codelineno-0-1200"></a>
-<a id="__codelineno-0-1201" name="__codelineno-0-1201"></a>        <span class="n">ag_obj</span><span class="p">,</span> <span class="n">ag_link</span><span class="p">,</span> <span class="n">attachment_point_pos</span> <span class="o">=</span> <span class="n">ag_data</span>
-<a id="__codelineno-0-1202" name="__codelineno-0-1202"></a>
-<a id="__codelineno-0-1203" name="__codelineno-0-1203"></a>        <span class="c1"># Find the attachment point position in the eef frame</span>
-<a id="__codelineno-0-1204" name="__codelineno-0-1204"></a>        <span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eef_links</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span><span class="o">.</span><span class="n">get_position_orientation</span><span class="p">()</span>
-<a id="__codelineno-0-1205" name="__codelineno-0-1205"></a>        <span class="n">attachment_point_pos_local</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> \
-<a id="__codelineno-0-1206" name="__codelineno-0-1206"></a>            <span class="n">T</span><span class="o">.</span><span class="n">relative_pose_transform</span><span class="p">(</span><span class="n">attachment_point_pos</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span><span class="p">)</span>
-<a id="__codelineno-0-1207" name="__codelineno-0-1207"></a>
-<a id="__codelineno-0-1208" name="__codelineno-0-1208"></a>        <span class="c1"># Create the joint</span>
-<a id="__codelineno-0-1209" name="__codelineno-0-1209"></a>        <span class="n">joint_prim_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="si">}</span><span class="s2">/ag_constraint&quot;</span>
-<a id="__codelineno-0-1210" name="__codelineno-0-1210"></a>        <span class="n">joint_type</span> <span class="o">=</span> <span class="s2">&quot;FixedJoint&quot;</span>
-<a id="__codelineno-0-1211" name="__codelineno-0-1211"></a>        <span class="n">joint_prim</span> <span class="o">=</span> <span class="n">create_joint</span><span class="p">(</span>
-<a id="__codelineno-0-1212" name="__codelineno-0-1212"></a>            <span class="n">prim_path</span><span class="o">=</span><span class="n">joint_prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1213" name="__codelineno-0-1213"></a>            <span class="n">joint_type</span><span class="o">=</span><span class="n">joint_type</span><span class="p">,</span>
-<a id="__codelineno-0-1214" name="__codelineno-0-1214"></a>            <span class="n">body0</span><span class="o">=</span><span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1215" name="__codelineno-0-1215"></a>            <span class="n">body1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-1216" name="__codelineno-0-1216"></a>            <span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-1217" name="__codelineno-0-1217"></a>            <span class="n">joint_frame_in_child_frame_pos</span><span class="o">=</span><span class="n">attachment_point_pos</span><span class="p">,</span>
-<a id="__codelineno-0-1218" name="__codelineno-0-1218"></a>        <span class="p">)</span>
-<a id="__codelineno-0-1219" name="__codelineno-0-1219"></a>
-<a id="__codelineno-0-1220" name="__codelineno-0-1220"></a>        <span class="c1"># Save a reference to this joint prim</span>
-<a id="__codelineno-0-1221" name="__codelineno-0-1221"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraints</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="n">joint_prim</span>
-<a id="__codelineno-0-1222" name="__codelineno-0-1222"></a>
-<a id="__codelineno-0-1223" name="__codelineno-0-1223"></a>        <span class="c1"># Modify max force based on user-determined assist parameters</span>
-<a id="__codelineno-0-1224" name="__codelineno-0-1224"></a>        <span class="c1"># TODO</span>
-<a id="__codelineno-0-1225" name="__codelineno-0-1225"></a>        <span class="n">max_force</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">ASSIST_FORCE</span>
-<a id="__codelineno-0-1226" name="__codelineno-0-1226"></a>        <span class="c1"># joint_prim.GetAttribute(&quot;physics:breakForce&quot;).Set(max_force)</span>
-<a id="__codelineno-0-1227" name="__codelineno-0-1227"></a>
-<a id="__codelineno-0-1228" name="__codelineno-0-1228"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraint_params</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-0-1229" name="__codelineno-0-1229"></a>            <span class="s2">&quot;ag_obj_prim_path&quot;</span><span class="p">:</span> <span class="n">ag_obj</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1230" name="__codelineno-0-1230"></a>            <span class="s2">&quot;ag_link_prim_path&quot;</span><span class="p">:</span> <span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1231" name="__codelineno-0-1231"></a>            <span class="s2">&quot;ag_joint_prim_path&quot;</span><span class="p">:</span> <span class="n">joint_prim_path</span><span class="p">,</span>
-<a id="__codelineno-0-1232" name="__codelineno-0-1232"></a>            <span class="s2">&quot;joint_type&quot;</span><span class="p">:</span> <span class="n">joint_type</span><span class="p">,</span>
-<a id="__codelineno-0-1233" name="__codelineno-0-1233"></a>            <span class="s2">&quot;gripper_pos&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_joint_positions</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">gripper_control_idx</span><span class="p">[</span><span class="n">arm</span><span class="p">]],</span>
-<a id="__codelineno-0-1234" name="__codelineno-0-1234"></a>            <span class="s2">&quot;max_force&quot;</span><span class="p">:</span> <span class="n">max_force</span><span class="p">,</span>
-<a id="__codelineno-0-1235" name="__codelineno-0-1235"></a>            <span class="s2">&quot;attachment_point_pos_local&quot;</span><span class="p">:</span> <span class="n">attachment_point_pos_local</span><span class="p">,</span>
-<a id="__codelineno-0-1236" name="__codelineno-0-1236"></a>        <span class="p">}</span>
-<a id="__codelineno-0-1237" name="__codelineno-0-1237"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_in_hand</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="n">ag_obj</span>
-<a id="__codelineno-0-1238" name="__codelineno-0-1238"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_freeze_gripper</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<a id="__codelineno-0-1239" name="__codelineno-0-1239"></a>        <span class="c1"># Disable collisions while picking things up</span>
-<a id="__codelineno-0-1240" name="__codelineno-0-1240"></a>        <span class="c1"># for finger_link in self.finger_links[arm]:</span>
-<a id="__codelineno-0-1241" name="__codelineno-0-1241"></a>        <span class="c1">#     finger_link.add_filtered_collision_pair(prim=ag_obj)</span>
-<a id="__codelineno-0-1242" name="__codelineno-0-1242"></a>        <span class="k">for</span> <span class="n">joint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">finger_joints</span><span class="p">[</span><span class="n">arm</span><span class="p">]:</span>
-<a id="__codelineno-0-1243" name="__codelineno-0-1243"></a>            <span class="n">j_val</span> <span class="o">=</span> <span class="n">joint</span><span class="o">.</span><span class="n">get_state</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<a id="__codelineno-0-1244" name="__codelineno-0-1244"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_ag_freeze_joint_pos</span><span class="p">[</span><span class="n">arm</span><span class="p">][</span><span class="n">joint</span><span class="o">.</span><span class="n">joint_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">j_val</span>
-<a id="__codelineno-0-1245" name="__codelineno-0-1245"></a>
-<a id="__codelineno-0-1246" name="__codelineno-0-1246"></a>    <span class="k">def</span> <span class="nf">_dump_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-1247" name="__codelineno-0-1247"></a>        <span class="c1"># Call super first</span>
-<a id="__codelineno-0-1248" name="__codelineno-0-1248"></a>        <span class="n">state</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_dump_state</span><span class="p">()</span>
-<a id="__codelineno-0-1249" name="__codelineno-0-1249"></a>
-<a id="__codelineno-0-1250" name="__codelineno-0-1250"></a>        <span class="c1"># If we&#39;re using actual physical grasping, no extra state needed to save</span>
-<a id="__codelineno-0-1251" name="__codelineno-0-1251"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grasping_mode</span> <span class="o">==</span> <span class="s2">&quot;physical&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-1252" name="__codelineno-0-1252"></a>            <span class="k">return</span> <span class="n">state</span>
+<a id="__codelineno-0-1201" name="__codelineno-0-1201"></a>        <span class="c1"># Find the attachment point position in the eef frame</span>
+<a id="__codelineno-0-1202" name="__codelineno-0-1202"></a>        <span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eef_links</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span><span class="o">.</span><span class="n">get_position_orientation</span><span class="p">()</span>
+<a id="__codelineno-0-1203" name="__codelineno-0-1203"></a>        <span class="n">attachment_point_pos_local</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> \
+<a id="__codelineno-0-1204" name="__codelineno-0-1204"></a>            <span class="n">T</span><span class="o">.</span><span class="n">relative_pose_transform</span><span class="p">(</span><span class="n">attachment_point_pos</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">eef_link_pos</span><span class="p">,</span> <span class="n">eef_link_orn</span><span class="p">)</span>
+<a id="__codelineno-0-1205" name="__codelineno-0-1205"></a>
+<a id="__codelineno-0-1206" name="__codelineno-0-1206"></a>        <span class="c1"># Create the joint</span>
+<a id="__codelineno-0-1207" name="__codelineno-0-1207"></a>        <span class="n">joint_prim_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="si">}</span><span class="s2">/ag_constraint&quot;</span>
+<a id="__codelineno-0-1208" name="__codelineno-0-1208"></a>        <span class="n">joint_type</span> <span class="o">=</span> <span class="s2">&quot;FixedJoint&quot;</span>
+<a id="__codelineno-0-1209" name="__codelineno-0-1209"></a>        <span class="n">joint_prim</span> <span class="o">=</span> <span class="n">create_joint</span><span class="p">(</span>
+<a id="__codelineno-0-1210" name="__codelineno-0-1210"></a>            <span class="n">prim_path</span><span class="o">=</span><span class="n">joint_prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1211" name="__codelineno-0-1211"></a>            <span class="n">joint_type</span><span class="o">=</span><span class="n">joint_type</span><span class="p">,</span>
+<a id="__codelineno-0-1212" name="__codelineno-0-1212"></a>            <span class="n">body0</span><span class="o">=</span><span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1213" name="__codelineno-0-1213"></a>            <span class="n">body1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-1214" name="__codelineno-0-1214"></a>            <span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-1215" name="__codelineno-0-1215"></a>            <span class="n">joint_frame_in_child_frame_pos</span><span class="o">=</span><span class="n">attachment_point_pos</span><span class="p">,</span>
+<a id="__codelineno-0-1216" name="__codelineno-0-1216"></a>        <span class="p">)</span>
+<a id="__codelineno-0-1217" name="__codelineno-0-1217"></a>
+<a id="__codelineno-0-1218" name="__codelineno-0-1218"></a>        <span class="c1"># Save a reference to this joint prim</span>
+<a id="__codelineno-0-1219" name="__codelineno-0-1219"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraints</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="n">joint_prim</span>
+<a id="__codelineno-0-1220" name="__codelineno-0-1220"></a>
+<a id="__codelineno-0-1221" name="__codelineno-0-1221"></a>        <span class="c1"># Modify max force based on user-determined assist parameters</span>
+<a id="__codelineno-0-1222" name="__codelineno-0-1222"></a>        <span class="c1"># TODO</span>
+<a id="__codelineno-0-1223" name="__codelineno-0-1223"></a>        <span class="n">max_force</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">ASSIST_FORCE</span>
+<a id="__codelineno-0-1224" name="__codelineno-0-1224"></a>        <span class="c1"># joint_prim.GetAttribute(&quot;physics:breakForce&quot;).Set(max_force)</span>
+<a id="__codelineno-0-1225" name="__codelineno-0-1225"></a>
+<a id="__codelineno-0-1226" name="__codelineno-0-1226"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraint_params</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-1227" name="__codelineno-0-1227"></a>            <span class="s2">&quot;ag_obj_prim_path&quot;</span><span class="p">:</span> <span class="n">ag_obj</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1228" name="__codelineno-0-1228"></a>            <span class="s2">&quot;ag_link_prim_path&quot;</span><span class="p">:</span> <span class="n">ag_link</span><span class="o">.</span><span class="n">prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1229" name="__codelineno-0-1229"></a>            <span class="s2">&quot;ag_joint_prim_path&quot;</span><span class="p">:</span> <span class="n">joint_prim_path</span><span class="p">,</span>
+<a id="__codelineno-0-1230" name="__codelineno-0-1230"></a>            <span class="s2">&quot;joint_type&quot;</span><span class="p">:</span> <span class="n">joint_type</span><span class="p">,</span>
+<a id="__codelineno-0-1231" name="__codelineno-0-1231"></a>            <span class="s2">&quot;gripper_pos&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_joint_positions</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">gripper_control_idx</span><span class="p">[</span><span class="n">arm</span><span class="p">]],</span>
+<a id="__codelineno-0-1232" name="__codelineno-0-1232"></a>            <span class="s2">&quot;max_force&quot;</span><span class="p">:</span> <span class="n">max_force</span><span class="p">,</span>
+<a id="__codelineno-0-1233" name="__codelineno-0-1233"></a>            <span class="s2">&quot;attachment_point_pos_local&quot;</span><span class="p">:</span> <span class="n">attachment_point_pos_local</span><span class="p">,</span>
+<a id="__codelineno-0-1234" name="__codelineno-0-1234"></a>        <span class="p">}</span>
+<a id="__codelineno-0-1235" name="__codelineno-0-1235"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_in_hand</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="n">ag_obj</span>
+<a id="__codelineno-0-1236" name="__codelineno-0-1236"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ag_freeze_gripper</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<a id="__codelineno-0-1237" name="__codelineno-0-1237"></a>        <span class="c1"># Disable collisions while picking things up</span>
+<a id="__codelineno-0-1238" name="__codelineno-0-1238"></a>        <span class="c1"># for finger_link in self.finger_links[arm]:</span>
+<a id="__codelineno-0-1239" name="__codelineno-0-1239"></a>        <span class="c1">#     finger_link.add_filtered_collision_pair(prim=ag_obj)</span>
+<a id="__codelineno-0-1240" name="__codelineno-0-1240"></a>        <span class="k">for</span> <span class="n">joint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">finger_joints</span><span class="p">[</span><span class="n">arm</span><span class="p">]:</span>
+<a id="__codelineno-0-1241" name="__codelineno-0-1241"></a>            <span class="n">j_val</span> <span class="o">=</span> <span class="n">joint</span><span class="o">.</span><span class="n">get_state</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-0-1242" name="__codelineno-0-1242"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_ag_freeze_joint_pos</span><span class="p">[</span><span class="n">arm</span><span class="p">][</span><span class="n">joint</span><span class="o">.</span><span class="n">joint_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">j_val</span>
+<a id="__codelineno-0-1243" name="__codelineno-0-1243"></a>
+<a id="__codelineno-0-1244" name="__codelineno-0-1244"></a>    <span class="k">def</span> <span class="nf">_dump_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-1245" name="__codelineno-0-1245"></a>        <span class="c1"># Call super first</span>
+<a id="__codelineno-0-1246" name="__codelineno-0-1246"></a>        <span class="n">state</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_dump_state</span><span class="p">()</span>
+<a id="__codelineno-0-1247" name="__codelineno-0-1247"></a>
+<a id="__codelineno-0-1248" name="__codelineno-0-1248"></a>        <span class="c1"># If we&#39;re using actual physical grasping, no extra state needed to save</span>
+<a id="__codelineno-0-1249" name="__codelineno-0-1249"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grasping_mode</span> <span class="o">==</span> <span class="s2">&quot;physical&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-1250" name="__codelineno-0-1250"></a>            <span class="k">return</span> <span class="n">state</span>
+<a id="__codelineno-0-1251" name="__codelineno-0-1251"></a>
+<a id="__codelineno-0-1252" name="__codelineno-0-1252"></a>        <span class="c1"># TODO: Include AG_state</span>
 <a id="__codelineno-0-1253" name="__codelineno-0-1253"></a>
-<a id="__codelineno-0-1254" name="__codelineno-0-1254"></a>        <span class="c1"># Include AG_state</span>
-<a id="__codelineno-0-1255" name="__codelineno-0-1255"></a>        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;ag_obj_constraint_params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ag_obj_constraint_params</span>
-<a id="__codelineno-0-1256" name="__codelineno-0-1256"></a>        <span class="k">return</span> <span class="n">state</span>
-<a id="__codelineno-0-1257" name="__codelineno-0-1257"></a>
-<a id="__codelineno-0-1258" name="__codelineno-0-1258"></a>    <span class="k">def</span> <span class="nf">_load_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-1259" name="__codelineno-0-1259"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_load_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
-<a id="__codelineno-0-1260" name="__codelineno-0-1260"></a>
-<a id="__codelineno-0-1261" name="__codelineno-0-1261"></a>        <span class="c1"># No additional loading needed if we&#39;re using physical grasping</span>
-<a id="__codelineno-0-1262" name="__codelineno-0-1262"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grasping_mode</span> <span class="o">==</span> <span class="s2">&quot;physical&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-1263" name="__codelineno-0-1263"></a>            <span class="k">return</span>
+<a id="__codelineno-0-1254" name="__codelineno-0-1254"></a>        <span class="k">return</span> <span class="n">state</span>
+<a id="__codelineno-0-1255" name="__codelineno-0-1255"></a>
+<a id="__codelineno-0-1256" name="__codelineno-0-1256"></a>    <span class="k">def</span> <span class="nf">_load_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-1257" name="__codelineno-0-1257"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_load_state</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
+<a id="__codelineno-0-1258" name="__codelineno-0-1258"></a>
+<a id="__codelineno-0-1259" name="__codelineno-0-1259"></a>        <span class="c1"># No additional loading needed if we&#39;re using physical grasping</span>
+<a id="__codelineno-0-1260" name="__codelineno-0-1260"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grasping_mode</span> <span class="o">==</span> <span class="s2">&quot;physical&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-1261" name="__codelineno-0-1261"></a>            <span class="k">return</span>
+<a id="__codelineno-0-1262" name="__codelineno-0-1262"></a>
+<a id="__codelineno-0-1263" name="__codelineno-0-1263"></a>        <span class="c1"># TODO: Include AG_state</span>
 <a id="__codelineno-0-1264" name="__codelineno-0-1264"></a>
-<a id="__codelineno-0-1265" name="__codelineno-0-1265"></a>        <span class="c1"># Include AG_state</span>
-<a id="__codelineno-0-1266" name="__codelineno-0-1266"></a>        <span class="c1"># TODO: currently does not take care of cloth objects</span>
-<a id="__codelineno-0-1267" name="__codelineno-0-1267"></a>        <span class="k">for</span> <span class="n">arm</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;ag_obj_constraint_params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-<a id="__codelineno-0-1268" name="__codelineno-0-1268"></a>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;ag_obj_constraint_params&quot;</span><span class="p">][</span><span class="n">arm</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-0-1269" name="__codelineno-0-1269"></a>                <span class="n">data</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;ag_obj_constraint_params&quot;</span><span class="p">][</span><span class="n">arm</span><span class="p">]</span>
-<a id="__codelineno-0-1270" name="__codelineno-0-1270"></a>                <span class="n">obj</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">object_registry</span><span class="p">(</span><span class="s2">&quot;prim_path&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;ag_obj_prim_path&quot;</span><span class="p">])</span>
-<a id="__codelineno-0-1271" name="__codelineno-0-1271"></a>                <span class="n">link</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;ag_link_prim_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
-<a id="__codelineno-0-1272" name="__codelineno-0-1272"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_ag_data</span><span class="p">[</span><span class="n">arm</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">link</span><span class="p">)</span>
-<a id="__codelineno-0-1273" name="__codelineno-0-1273"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_establish_grasp</span><span class="p">(</span><span class="n">arm</span><span class="o">=</span><span class="n">arm</span><span class="p">,</span> <span class="n">ag_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ag_data</span><span class="p">[</span><span class="n">arm</span><span class="p">],</span> <span class="n">contact_pos</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;contact_pos&quot;</span><span class="p">])</span>
-<a id="__codelineno-0-1274" name="__codelineno-0-1274"></a>
-<a id="__codelineno-0-1275" name="__codelineno-0-1275"></a>    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-1276" name="__codelineno-0-1276"></a>        <span class="c1"># Call super first</span>
-<a id="__codelineno-0-1277" name="__codelineno-0-1277"></a>        <span class="n">state_flat</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
-<a id="__codelineno-0-1278" name="__codelineno-0-1278"></a>
-<a id="__codelineno-0-1279" name="__codelineno-0-1279"></a>        <span class="c1"># No additional serialization needed if we&#39;re using physical grasping</span>
-<a id="__codelineno-0-1280" name="__codelineno-0-1280"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grasping_mode</span> <span class="o">==</span> <span class="s2">&quot;physical&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-1281" name="__codelineno-0-1281"></a>            <span class="k">return</span> <span class="n">state_flat</span>
-<a id="__codelineno-0-1282" name="__codelineno-0-1282"></a>
-<a id="__codelineno-0-1283" name="__codelineno-0-1283"></a>        <span class="c1"># TODO AG</span>
-<a id="__codelineno-0-1284" name="__codelineno-0-1284"></a>        <span class="k">return</span> <span class="n">state_flat</span>
-<a id="__codelineno-0-1285" name="__codelineno-0-1285"></a>
-<a id="__codelineno-0-1286" name="__codelineno-0-1286"></a>    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-<a id="__codelineno-0-1287" name="__codelineno-0-1287"></a>        <span class="c1"># Call super first</span>
-<a id="__codelineno-0-1288" name="__codelineno-0-1288"></a>        <span class="n">state_dict</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_deserialize</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
-<a id="__codelineno-0-1289" name="__codelineno-0-1289"></a>
-<a id="__codelineno-0-1290" name="__codelineno-0-1290"></a>        <span class="c1"># No additional deserialization needed if we&#39;re using physical grasping</span>
-<a id="__codelineno-0-1291" name="__codelineno-0-1291"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grasping_mode</span> <span class="o">==</span> <span class="s2">&quot;physical&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-1292" name="__codelineno-0-1292"></a>            <span class="k">return</span> <span class="n">state_dict</span><span class="p">,</span> <span class="n">idx</span>
-<a id="__codelineno-0-1293" name="__codelineno-0-1293"></a>
-<a id="__codelineno-0-1294" name="__codelineno-0-1294"></a>        <span class="c1"># TODO AG</span>
-<a id="__codelineno-0-1295" name="__codelineno-0-1295"></a>        <span class="k">return</span> <span class="n">state_dict</span><span class="p">,</span> <span class="n">idx</span>
-<a id="__codelineno-0-1296" name="__codelineno-0-1296"></a>
-<a id="__codelineno-0-1297" name="__codelineno-0-1297"></a>    <span class="nd">@classproperty</span>
-<a id="__codelineno-0-1298" name="__codelineno-0-1298"></a>    <span class="k">def</span> <span class="nf">_do_not_register_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-<a id="__codelineno-0-1299" name="__codelineno-0-1299"></a>        <span class="c1"># Don&#39;t register this class since it&#39;s an abstract template</span>
-<a id="__codelineno-0-1300" name="__codelineno-0-1300"></a>        <span class="n">classes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_do_not_register_classes</span>
-<a id="__codelineno-0-1301" name="__codelineno-0-1301"></a>        <span class="n">classes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;ManipulationRobot&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-1302" name="__codelineno-0-1302"></a>        <span class="k">return</span> <span class="n">classes</span>
+<a id="__codelineno-0-1265" name="__codelineno-0-1265"></a>    <span class="k">def</span> <span class="nf">_serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-1266" name="__codelineno-0-1266"></a>        <span class="c1"># Call super first</span>
+<a id="__codelineno-0-1267" name="__codelineno-0-1267"></a>        <span class="n">state_flat</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_serialize</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
+<a id="__codelineno-0-1268" name="__codelineno-0-1268"></a>
+<a id="__codelineno-0-1269" name="__codelineno-0-1269"></a>        <span class="c1"># No additional serialization needed if we&#39;re using physical grasping</span>
+<a id="__codelineno-0-1270" name="__codelineno-0-1270"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grasping_mode</span> <span class="o">==</span> <span class="s2">&quot;physical&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-1271" name="__codelineno-0-1271"></a>            <span class="k">return</span> <span class="n">state_flat</span>
+<a id="__codelineno-0-1272" name="__codelineno-0-1272"></a>
+<a id="__codelineno-0-1273" name="__codelineno-0-1273"></a>        <span class="c1"># TODO AG</span>
+<a id="__codelineno-0-1274" name="__codelineno-0-1274"></a>        <span class="k">return</span> <span class="n">state_flat</span>
+<a id="__codelineno-0-1275" name="__codelineno-0-1275"></a>
+<a id="__codelineno-0-1276" name="__codelineno-0-1276"></a>    <span class="k">def</span> <span class="nf">_deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<a id="__codelineno-0-1277" name="__codelineno-0-1277"></a>        <span class="c1"># Call super first</span>
+<a id="__codelineno-0-1278" name="__codelineno-0-1278"></a>        <span class="n">state_dict</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_deserialize</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
+<a id="__codelineno-0-1279" name="__codelineno-0-1279"></a>
+<a id="__codelineno-0-1280" name="__codelineno-0-1280"></a>        <span class="c1"># No additional deserialization needed if we&#39;re using physical grasping</span>
+<a id="__codelineno-0-1281" name="__codelineno-0-1281"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grasping_mode</span> <span class="o">==</span> <span class="s2">&quot;physical&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-1282" name="__codelineno-0-1282"></a>            <span class="k">return</span> <span class="n">state_dict</span><span class="p">,</span> <span class="n">idx</span>
+<a id="__codelineno-0-1283" name="__codelineno-0-1283"></a>
+<a id="__codelineno-0-1284" name="__codelineno-0-1284"></a>        <span class="c1"># TODO AG</span>
+<a id="__codelineno-0-1285" name="__codelineno-0-1285"></a>        <span class="k">return</span> <span class="n">state_dict</span><span class="p">,</span> <span class="n">idx</span>
+<a id="__codelineno-0-1286" name="__codelineno-0-1286"></a>
+<a id="__codelineno-0-1287" name="__codelineno-0-1287"></a>    <span class="nd">@classproperty</span>
+<a id="__codelineno-0-1288" name="__codelineno-0-1288"></a>    <span class="k">def</span> <span class="nf">_do_not_register_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<a id="__codelineno-0-1289" name="__codelineno-0-1289"></a>        <span class="c1"># Don&#39;t register this class since it&#39;s an abstract template</span>
+<a id="__codelineno-0-1290" name="__codelineno-0-1290"></a>        <span class="n">classes</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_do_not_register_classes</span>
+<a id="__codelineno-0-1291" name="__codelineno-0-1291"></a>        <span class="n">classes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;ManipulationRobot&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-1292" name="__codelineno-0-1292"></a>        <span class="k">return</span> <span class="n">classes</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -8095,8 +8075,8 @@ Provides common interface for a wide variety of robots.</p>
 <code class="highlight language-python"><span class="n">arm_control_idx</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8138,8 +8118,8 @@ vector corresponding to arm joints.</p>
 <code class="highlight language-python"><span class="n">arm_joint_names</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8181,8 +8161,8 @@ should correspond to specific joint names in this robot's underlying model file<
 <code class="highlight language-python"><span class="n">arm_link_names</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8448,8 +8428,8 @@ wishes to use assisted grasping.</p>
 <code class="highlight language-python"><span class="n">eef_link_names</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8533,8 +8513,8 @@ eef link</p>
 <code class="highlight language-python"><span class="n">finger_joint_names</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8660,8 +8640,8 @@ hand defined from the palm (assuming all fingers in one hand are equally long)</
 <code class="highlight language-python"><span class="n">finger_link_names</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
@@ -8787,8 +8767,8 @@ that arm's finger links</p>
 <code class="highlight language-python"><span class="n">gripper_control_idx</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
 
 </h3>
