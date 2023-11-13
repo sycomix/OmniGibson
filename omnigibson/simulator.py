@@ -173,7 +173,7 @@ class Simulator(SimulationContext, Serializable):
         self._viewer_camera = VisionSensor(
             prim_path=prim_path,
             name=prim_path.split("/")[-1],                  # Assume name is the lowest-level name in the prim_path
-            modalities="rgb",
+            modalities="all",
             image_height=self.viewer_height,
             image_width=self.viewer_width,
             viewport_name=viewport_name,
