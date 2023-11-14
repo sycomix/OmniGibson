@@ -1,0 +1,164 @@
+env: {}
+
+render:
+  viewer_width: 800
+  viewer_height: 1000
+
+scene:
+  type: Scene
+
+robots: []
+
+objects:
+  # lights
+  - type: LightObject
+    light_type: Sphere
+    name: light_1
+    radius: 0.01
+    intensity: 10000000
+    position: [2, 1, 2.5]
+  # - type: LightObject
+  #   light_type: Sphere
+  #   name: light_2
+  #   radius: 0.01
+  #   intensity: 100000
+  #   position: [2, 2, 2]
+  # - type: LightObject
+  #   light_type: Sphere
+  #   name: light_3
+  #   radius: 0.01
+  #   intensity: 100000
+  #   position: [2, 0, 2]
+
+  - type: DatasetObject
+    category: fridge
+    model: petcxr
+    name: fridge
+    scale: [1, 1, 1]
+    position: [-2.5, 6, 0.8]
+    orientation: [0, 0, 0.31, 0.95]
+  - type: DatasetObject
+    category: bottom_cabinet
+    model: dsbcxl 
+    name: bottom_cabinet_1
+    scale: [2, 2, 2]
+    position: [-0.8, 6, 0.9]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: washer
+    model: ynwamu
+    name: washer
+    scale: [0.8, 1.5, 1.5]
+    position: [1, 6, 0.9]
+    orientation: [0, 0, -0.707, 0.707]
+  - type: DatasetObject
+    category: grand_piano
+    name: grand_piano
+    model: qlcpph
+    scale: [1, 1, 1]
+    position: [2.5, 6, 0.8]
+    orientation: [0.675, -0.21, -0.21, 0.675]
+
+
+  - type: DatasetObject
+    category: electric_kettle
+    model: hkdsla 
+    name: electric_kettle
+    scale: [3, 3, 3]
+    position: [-2, 4.5, 0.3]
+    orientation: [0, 0, 0.707, 0.707] 
+  - type: DatasetObject
+    category: instant_pot
+    model: wengzf
+    name: instant_pot
+    scale: [2, 2, 2]
+    position: [-0.75, 4.5, 0.3]
+    orientation: [0, 0, 1, 0]
+  - type: DatasetObject
+    category: table_lamp
+    model: jbjckk 
+    name: table_lamp
+    scale: [0.7, 0.7, 0.7]
+    position: [0.75, 4.5, 0.5]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: toaster_oven
+    model: ctrngh 
+    name: toaster_oven
+    scale: [2, 2, 2]
+    position: [2, 4.5, 0.3]
+    orientation: [0, 0, 0, 1]
+
+  - type: DatasetObject
+    category: gym_shoe
+    model: uuvwev 
+    name: gym_shoe
+    scale: [5, 5, 5]
+    position: [-1.5, 3.2, 0.3]
+    orientation: [0, 0, 0.707, 0.707]
+  - type: DatasetObject
+    category: bowl
+    model: tvtive 
+    name: bowl
+    scale: [3, 3, 3]
+    position: [-0.5, 3.5, 0.3]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: vase
+    model: hkwtnf 
+    name: vase
+    scale: [3, 3, 3]
+    position: [0.5, 3.5, 0.2]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: bottle_of_beer
+    model: bwaboq 
+    name: bottle_of_beer
+    scale: [5, 5, 5]
+    position: [1.5, 3.1, 0.3]
+    orientation: [0, 0, 0, 1]
+
+
+  - type: DatasetObject
+    category: seashell
+    model: snrgok 
+    name: seashell
+    scale: [3, 3, 3]
+    position: [-1.75, 2.2, 0.2]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: grape
+    model: venbog 
+    name: grape
+    scale: [4, 4, 4]
+    position: [-1.2, 2.5, 0.14150819]
+    orientation: [0.43206239, 0.28789812, 0.39051777, -0.76021892]
+  - type: DatasetObject
+    category: watermelon
+    model: hqbjke 
+    name: watermelon
+    scale: [1, 1, 1]
+    position: [-0.4, 2.5, 0.1]
+    orientation: [0.707, 0, 0, 0.707]
+  - type: DatasetObject
+    category: steak
+    model: lcebsq 
+    name: steak
+    scale: [2, 2, 2]
+    position: [0.4, 2.5, 0.3]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: fruitcake
+    model: kxckts 
+    name: fruitcake
+    scale: [2, 2, 2]
+    position: [1.2, 2.5, 0.4]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: apple
+    model: rizrsp 
+    name: apple
+    scale: [6, 6, 6]
+    position: [1.75, 2.5, 0.4]
+    orientation: [0, 0, 0, 1]
+

@@ -16,7 +16,7 @@ gm = macros.globals
 # Path (either relative to OmniGibson/omnigibson directory or global absolute path) for data
 # Assets correspond to non-objects / scenes (e.g.: robots), and dataset incliudes objects + scene
 gm.ASSET_PATH = "data/assets"
-gm.DATASET_PATH = "data/og_dataset_new"
+gm.DATASET_PATH = "data/og_dataset"
 gm.KEY_PATH = "data/omnigibson.key"
 
 # Which GPU to use -- None will result in omni automatically using an appropriate GPU. Otherwise, set with either
