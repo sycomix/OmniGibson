@@ -1,0 +1,68 @@
+env: {}
+
+render:
+  viewer_width: 800
+  viewer_height: 1000
+
+scene:
+  type: Scene
+
+robots: []
+
+objects:
+  # lights
+  - type: LightObject
+    light_type: Sphere
+    name: light_1
+    radius: 0.01
+    intensity: 10000000
+    position: [2, 1, 2.5]
+
+
+  - type: DatasetObject
+    category: fridge
+    name: fridge
+    model: petcxr
+    scale: [0.4, 0.4, 0.4]
+    position: [-2, -1, 0.8]
+    orientation: [0, 0, 0.7071, 0.7071]
+  - type: DatasetObject
+    category: bottom_cabinet
+    name: bottom_cabinet
+    model: sxppcj 
+    scale: [1, 1, 1]
+    position: [-2, 0, 0.9]
+    orientation: [0, 0, 0.7071, 0.7071]
+
+  - type: DatasetObject
+    category: sink
+    name: sink
+    model: zexzrc
+    scale: [3, 3, 3]
+    position: [-1, -1, 0.8]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: breakfast_table
+    name: breakfast_table
+    model: dnsjnv
+    scale: [1, 1, 1]
+    position: [-1, 0, 0.8]
+    orientation: [0, 0, 0, 1]
+
+  - type: DatasetObject
+    category: bed
+    name: bed
+    model: wyxtqf
+    scale: [0.35, 0.35, 0.35]
+    position: [0, -1, 0.9]
+    orientation: [0, 0, 0.707, 0.707]
+  - type: DatasetObject
+    category: armchair
+    name: armchair
+    model: bslhmj
+    scale: [0.6, 0.6, 0.6]
+    position: [0, 0, 0.8]
+    orientation: [0, 0, 0.31, 0.95]
+
+
+

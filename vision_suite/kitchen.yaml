@@ -1,0 +1,69 @@
+env: {}
+
+render:
+  viewer_width: 800
+  viewer_height: 1000
+
+scene:
+  type: Scene
+
+robots: []
+
+objects:
+  # lights
+  - type: LightObject
+    light_type: Sphere
+    name: light_1
+    radius: 0.01
+    intensity: 50000000
+    position: [2, 1, 2.5]
+
+
+  - type: DatasetObject
+
+    category: cleaver
+    name: cleaver
+    model: vpmydv
+    scale: [4, 4, 4]
+    position: [-2, -1, 0.5]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: plate
+    name: plate
+    model: haewxp
+    scale: [1.8, 1.8, 1.8]
+    position: [-2, 0, 0.5]
+    orientation: [0, 0, 0, 1]
+
+  - type: DatasetObject
+    category: bowl
+    name: bowl
+    model: fiarri
+    scale: [5, 5, 5]
+    position: [-1, -1, 0.5]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: tablefork
+    name: tablefork
+    model: hktwlm 
+    scale: [5, 5, 5]
+    position: [-1, 0, 0.5]
+    orientation: [0, 0, 0, 1]
+
+  - type: DatasetObject
+    category: frying_pan
+    name: frying_pan
+    model: jpzusm
+    scale: [2, 2, 2]
+    position: [0, -1, 0.5]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: coffee_cup
+    name: coffee_cup
+    model: ykuftq
+    scale: [5, 5, 5]
+    position: [0, 0, 0.5]
+    orientation: [0, 0.7071, 0, 0.7071]
+
+
+

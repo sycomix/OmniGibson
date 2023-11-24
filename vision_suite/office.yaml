@@ -1,0 +1,69 @@
+env: {}
+
+render:
+  viewer_width: 800
+  viewer_height: 1000
+
+scene:
+  type: Scene
+
+robots: []
+
+objects:
+  # lights
+  - type: LightObject
+    light_type: Sphere
+    name: light_1
+    radius: 0.01
+    intensity: 50000000
+    position: [2, 1, 2.5]
+
+
+  - type: DatasetObject
+
+    category: pencil
+    name: pencil
+    model: ilaszu
+    scale: [7, 7, 7]
+    position: [-2, -1, 0.5]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: stapler
+    name: stapler
+    model: kgnsas
+    scale: [7, 7, 7]
+    position: [-2, 0, 0.5]
+    orientation: [0, 0, 0, 1]
+
+  - type: DatasetObject
+    category: post_it
+    name: post_it
+    model: drlhqi
+    scale: [7, 7, 7]
+    position: [-1, -1, 0.5]
+    orientation: [0, 0, 0.31, 0.95]
+  - type: DatasetObject
+    category: notebook
+    name: notebook
+    model: ksxknp 
+    scale: [7, 7, 7]
+    position: [-1, 0, 0.5]
+    orientation: [0, 0, 0, 1]
+
+  - type: DatasetObject
+    category: marker
+    name: marker
+    model: tcsmqv
+    scale: [7, 7, 7]
+    position: [0, -1, 0.5]
+    orientation: [0, 0, -0.707, 0.707]
+  - type: DatasetObject
+    category: shears
+    name: shears
+    model: hqfure
+    scale: [7, 7, 7]
+    position: [0, 0, 0.5]
+    orientation: [0, 0, 0.31, 0.95]
+
+
+

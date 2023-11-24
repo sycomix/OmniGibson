@@ -1,0 +1,63 @@
+env: {}
+
+render:
+  viewer_width: 800
+  viewer_height: 1000
+
+scene:
+  type: Scene
+
+robots: []
+
+objects:
+  # lights
+  - type: LightObject
+    light_type: Sphere
+    name: light_1
+    radius: 0.01
+    intensity: 10000000
+    position: [2, 1, 2.5]
+
+
+  - type: DatasetObject
+    category: teacup
+    name: teacup
+    model: vckahe
+    scale: [1, 1, 1]
+    position: [0, 0, 0.8]
+    orientation: [0, 0, 0.7071, 0.7071]
+
+
+  - type: DatasetObject
+    category: ink_bottle
+    name: ink_bottle
+    model: gcyvrx 
+    scale: [1, 1, 1]
+    position: [0, 3, 0.9]
+    orientation: [0, 0, 0.7071, 0.7071]
+
+  - type: DatasetObject
+    category: can
+    name: can
+    model: gqwnfv
+    scale: [1, 1, 1]
+    position: [0, 6, 0.8]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: coffee_cup
+    name: coffee_cup
+    model: ckkwmj
+    scale: [1, 1, 1]
+    position: [0, 9, 0.9]
+    orientation: [0, 0, 0, 1]
+
+  - type: DatasetObject
+    category: beer_glass
+    name: beer_glass
+    model: mxsliu
+    scale: [1, 1, 1]
+    position: [0, 12, 0.9]
+    orientation: [0, 0, 0.707, 0.707]
+
+
+

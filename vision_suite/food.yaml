@@ -1,0 +1,69 @@
+env: {}
+
+render:
+  viewer_width: 800
+  viewer_height: 1000
+
+scene:
+  type: Scene
+
+robots: []
+
+objects:
+  # lights
+  - type: LightObject
+    light_type: Sphere
+    name: light_1
+    radius: 0.01
+    intensity: 50000000
+    position: [2, 1, 2.5]
+
+
+  - type: DatasetObject
+
+    category: banana
+    name: banana
+    model: znakxm
+    scale: [5, 5, 5]
+    position: [-2, -1, 0.8]
+    orientation: [0, 0, 0, 1]
+  - type: DatasetObject
+    category: hamburger
+    name: hamburger
+    model: fyswch
+    scale: [5, 5, 5]
+    position: [-2, 0, 0.9]
+    orientation: [0, 0, 0, 1]
+
+  - type: DatasetObject
+    category: pork_chop
+    name: pork_chop
+    model: bdwvkg
+    scale: [5, 5, 5]
+    position: [-1, -1, 0.8]
+    orientation: [0, 0, 0.31, 0.95]
+  - type: DatasetObject
+    category: bell_pepper
+    name: bell_pepper
+    model: ggurxn 
+    scale: [5, 5, 5]
+    position: [-1, 0, 0.8]
+    orientation: [0.675, -0.21, -0.21, 0.675]
+
+  - type: DatasetObject
+    category: cucumber
+    name: cucumber
+    model: wcvwye
+    scale: [5, 5, 5]
+    position: [0, -1, 0.9]
+    orientation: [0, 0, -0.707, 0.707]
+  - type: DatasetObject
+    category: muffin
+    name: muffin
+    model: pxrntz
+    scale: [5, 5, 5]
+    position: [0, 0, 0.8]
+    orientation: [0, 0, 0.31, 0.95]
+
+
+
