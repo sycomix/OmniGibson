@@ -42,7 +42,7 @@ class TraversableScene(Scene):
             floor_plane_color (3-array): if @floor_plane_visible is True, this determines the (R,G,B) color assigned
                 to the generated floor plane
         """
-        log.info("TraversableScene model: {}".format(scene_model))
+        log.info(f"TraversableScene model: {scene_model}")
         self.scene_model = scene_model
 
         # Create traversable map

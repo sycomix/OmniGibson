@@ -228,7 +228,7 @@ class PointNavigationTask(BaseTask):
 
         # Possibly sample initial ori
         initial_quat = T.euler2quat(np.array([0, 0, np.random.uniform(0, np.pi * 2)])) if \
-            self._randomize_initial_quat else self._initial_quat
+                self._randomize_initial_quat else self._initial_quat
 
         # Possibly sample goal pos
         if self._randomize_goal_pos:
@@ -250,8 +250,8 @@ class PointNavigationTask(BaseTask):
             goal_pos = self._goal_pos
 
         # Add additional logging info
-        log.info("Sampled initial pose: {}, {}".format(initial_pos, initial_quat))
-        log.info("Sampled goal position: {}".format(goal_pos))
+        log.info(f"Sampled initial pose: {initial_pos}, {initial_quat}")
+        log.info(f"Sampled goal position: {goal_pos}")
         return initial_pos, initial_quat, goal_pos
 
     def _get_geodesic_potential(self, env):
@@ -306,7 +306,7 @@ class PointNavigationTask(BaseTask):
         success, max_trials = False, 100
 
         initial_pos, initial_quat, goal_pos = None, None, None
-        for i in range(max_trials):
+        for _ in range(max_trials):
             initial_pos, initial_quat, goal_pos = self._sample_initial_pose_and_goal_pos(env)
             # Make sure the sampled robot start pose and goal position are both collision-free
             success = test_valid_pose(

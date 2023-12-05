@@ -50,11 +50,6 @@ def main(random_selection=False, headless=False, short_exec=False):
         random_selection=random_selection,
     )
 
-    modification_metalink = {
-        "particleApplier": "particleapplier_link",
-        "particleRemover": "particleremover_link",
-    }
-
     particle_types = ["stain", "water"]
     particle_type = choose_from_options(
         options={name: f"{name} particles will be applied or removed from the simulator" for name in particle_types},
@@ -156,6 +151,11 @@ def main(random_selection=False, headless=False, short_exec=False):
     modifier_root_link_path = f"{modifier.prim_path}/base_link"
     modifier._prim = modifier._load()
     if method_type == "Projection":
+        modification_metalink = {
+            "particleApplier": "particleapplier_link",
+            "particleRemover": "particleremover_link",
+        }
+
         metalink_path = f"{modifier.prim_path}/{modification_metalink[modifier_type]}"
         og.sim.stage.DefinePrim(metalink_path, "Xform")
         create_joint(
@@ -210,7 +210,7 @@ def main(random_selection=False, headless=False, short_exec=False):
         [60, np.array([0, 0.01, 0])],
     ]
     for t, delta in deltas:
-        for i in range(t):
+        for _ in range(t):
             modifier.set_position(modifier.get_position() + delta)
             env.step(np.array([]))
 

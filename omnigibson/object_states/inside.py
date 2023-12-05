@@ -51,23 +51,15 @@ class Inside(RelativeObjectState, KinematicsMixin, BooleanStateMixin):
         # First, check if the body can be found on both sides in Z
         on_both_sides_Z = other in vertical_adjacency.negative_neighbors and other in vertical_adjacency.positive_neighbors
         if on_both_sides_Z:
-            # If the object is on both sides of Z, we already found 1 axis, so just
-            # find another axis where the object is on both sides.
-            on_both_sides_in_any_axis = any(
-                other in adjacency_list.positive_neighbors and
-                other in adjacency_list.negative_neighbors
+            return any(
+                other in adjacency_list.positive_neighbors
+                and other in adjacency_list.negative_neighbors
                 for adjacency_list in flatten_planes(horizontal_adjacency)
             )
-            return on_both_sides_in_any_axis
-
-        # If the object was not on both sides of Z, then we need to look at each
-        # plane and try to find one where the object is on both sides of both
-        # axes in that plane.
-        on_both_sides_of_both_axes_in_any_plane = any(
-            other in adjacency_list_by_axis[0].positive_neighbors and
-            other in adjacency_list_by_axis[0].negative_neighbors and
-            other in adjacency_list_by_axis[1].positive_neighbors and
-            other in adjacency_list_by_axis[1].negative_neighbors
+        return any(
+            other in adjacency_list_by_axis[0].positive_neighbors
+            and other in adjacency_list_by_axis[0].negative_neighbors
+            and other in adjacency_list_by_axis[1].positive_neighbors
+            and other in adjacency_list_by_axis[1].negative_neighbors
             for adjacency_list_by_axis in horizontal_adjacency
         )
-        return on_both_sides_of_both_axes_in_any_plane

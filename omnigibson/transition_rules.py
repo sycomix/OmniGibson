@@ -379,16 +379,24 @@ class TouchingAnyCondition(RuleCondition):
             impulses = RigidContactAPI.get_all_impulses()
             idxs_to_check = np.concatenate([self._filter_2_idxs[obj] for obj in object_candidates[self._filter_2_name]])
             # Batch check for each object
-            for obj in object_candidates[self._filter_1_name]:
-                if np.any(impulses[self._filter_1_idxs[obj]][:, idxs_to_check]):
-                    objs.append(obj)
+            objs.extend(
+                obj
+                for obj in object_candidates[self._filter_1_name]
+                if np.any(impulses[self._filter_1_idxs[obj]][:, idxs_to_check])
+            )
         else:
             # Manually check contact
             filter_2_bodies = set.union(*(self._filter_2_bodies[obj] for obj in object_candidates[self._filter_2_name]))
-            for obj in object_candidates[self._filter_1_name]:
-                if len(obj.states[ContactBodies].get_value().intersection(filter_2_bodies)) > 0:
-                    objs.append(obj)
-
+            objs.extend(
+                obj
+                for obj in object_candidates[self._filter_1_name]
+                if len(
+                    obj.states[ContactBodies]
+                    .get_value()
+                    .intersection(filter_2_bodies)
+                )
+                > 0
+            )
         # Update candidates
         object_candidates[self._filter_1_name] = objs
 
@@ -984,10 +992,10 @@ class RecipeRule(BaseTransitionRule):
         Returns:
             bool: True if all the input object quantities are contained
         """
-        for obj_category, obj_quantity in recipe["input_objects"].items():
-            if np.sum(in_volume[cls._CATEGORY_IDXS[obj_category]]) < obj_quantity:
-                return False
-        return True
+        return all(
+            np.sum(in_volume[cls._CATEGORY_IDXS[obj_category]]) >= obj_quantity
+            for obj_category, obj_quantity in recipe["input_objects"].items()
+        )
 
     @classmethod
     def _validate_nonrecipe_objects_not_contained(cls, recipe, in_volume):
@@ -1018,10 +1026,10 @@ class RecipeRule(BaseTransitionRule):
         Returns:
             bool: True if all the input systems are active
         """
-        for system_name in recipe["input_systems"]:
-            if not is_system_active(system_name=system_name):
-                return False
-        return True
+        return all(
+            is_system_active(system_name=system_name)
+            for system_name in recipe["input_systems"]
+        )
 
     @classmethod
     def _validate_recipe_objects_exist(cls, recipe):
@@ -1034,10 +1042,15 @@ class RecipeRule(BaseTransitionRule):
         Returns:
             bool: True if all the input objects exist in the scene
         """
-        for obj_category, obj_quantity in recipe["input_objects"].items():
-            if len(og.sim.scene.object_registry("category", obj_category, default_val=set())) < obj_quantity:
-                return False
-        return True
+        return all(
+            len(
+                og.sim.scene.object_registry(
+                    "category", obj_category, default_val=set()
+                )
+            )
+            >= obj_quantity
+            for obj_category, obj_quantity in recipe["input_objects"].items()
+        )
 
     @classmethod
     def _is_recipe_active(cls, recipe):
@@ -1055,10 +1068,7 @@ class RecipeRule(BaseTransitionRule):
             return False
 
         # Check valid object quantities
-        if not cls._validate_recipe_objects_exist(recipe=recipe):
-            return False
-
-        return True
+        return bool(cls._validate_recipe_objects_exist(recipe=recipe))
 
     @classmethod
     def _is_recipe_executable(cls, recipe, container, global_info, container_info):
@@ -1091,10 +1101,12 @@ class RecipeRule(BaseTransitionRule):
             return False
 
         # Verify no non-relevant object is contained if we're not ignoring them
-        if not cls.ignore_nonrecipe_objects and not cls._validate_nonrecipe_objects_not_contained(recipe=recipe, in_volume=in_volume):
-            return False
-
-        return True
+        return bool(
+            cls.ignore_nonrecipe_objects
+            or cls._validate_nonrecipe_objects_not_contained(
+                recipe=recipe, in_volume=in_volume
+            )
+        )
 
     @classmethod
     def _compute_global_rule_info(cls, object_candidates):
@@ -1450,13 +1462,15 @@ class CookingRule(RecipeRule):
         if fillable_categories is None:
             # Any is valid
             return True
-        # Otherwise, at least one valid type must exist
-        for category in fillable_categories:
-            if len(og.sim.scene.object_registry("category", category, default_val=set())) > 0:
-                return True
-
-        # None found, return False
-        return False
+        return any(
+            len(
+                og.sim.scene.object_registry(
+                    "category", category, default_val=set()
+                )
+            )
+            > 0
+            for category in fillable_categories
+        )
 
     @classmethod
     def _validate_recipe_heatsources_exist(cls, recipe):
@@ -1473,13 +1487,15 @@ class CookingRule(RecipeRule):
         if heatsource_categories is None:
             # Any is valid
             return True
-        # Otherwise, at least one valid type must exist
-        for category in heatsource_categories:
-            if len(og.sim.scene.object_registry("category", category, default_val=set())) > 0:
-                return True
-
-        # None found, return False
-        return False
+        return any(
+            len(
+                og.sim.scene.object_registry(
+                    "category", category, default_val=set()
+                )
+            )
+            > 0
+            for category in heatsource_categories
+        )
 
     @classmethod
     def _validate_recipe_container_is_valid(cls, recipe, container):
@@ -1521,8 +1537,11 @@ class CookingRule(RecipeRule):
         info = super()._compute_container_info(object_candidates=object_candidates, container=container, global_info=global_info)
 
         # Compute whether each heatsource is affecting the container
-        info["heatsource_categories"] = set(obj.category for obj in object_candidates["heatSource"] if
-                                                        obj.states[HeatSourceOrSink].affects_obj(container))
+        info["heatsource_categories"] = {
+            obj.category
+            for obj in object_candidates["heatSource"]
+            if obj.states[HeatSourceOrSink].affects_obj(container)
+        }
 
         return info
 

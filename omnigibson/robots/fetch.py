@@ -124,7 +124,7 @@ class Fetch(ManipulationRobot, TwoWheelRobot, ActiveCameraRobot):
         if isinstance(reset_joint_pos, str):
             assert (
                 reset_joint_pos in RESET_JOINT_OPTIONS
-            ), "reset_joint_pos should be one of {} if using a string!".format(RESET_JOINT_OPTIONS)
+            ), f"reset_joint_pos should be one of {RESET_JOINT_OPTIONS} if using a string!"
             reset_joint_pos = (
                 self.tucked_default_joint_pos if reset_joint_pos == "tuck" else self.untucked_default_joint_pos
             )
@@ -208,7 +208,7 @@ class Fetch(ManipulationRobot, TwoWheelRobot, ActiveCameraRobot):
                 [-1.43016, 0.20965, 1.86816, 1.77576, -0.27289, 1.31715, 2.01226]
             )
         else:
-            raise ValueError("Unknown default arm pose: {}".format(self.default_arm_pose))
+            raise ValueError(f"Unknown default arm pose: {self.default_arm_pose}")
         return pos
 
     @property
@@ -273,7 +273,12 @@ class Fetch(ManipulationRobot, TwoWheelRobot, ActiveCameraRobot):
     @property
     def controller_order(self):
         # Ordered by general robot kinematics chain
-        return ["base", "camera", "arm_{}".format(self.default_arm), "gripper_{}".format(self.default_arm)]
+        return [
+            "base",
+            "camera",
+            f"arm_{self.default_arm}",
+            f"gripper_{self.default_arm}",
+        ]
 
     @property
     def _default_controllers(self):
@@ -283,8 +288,8 @@ class Fetch(ManipulationRobot, TwoWheelRobot, ActiveCameraRobot):
         # We use multi finger gripper, differential drive, and IK controllers as default
         controllers["base"] = "DifferentialDriveController"
         controllers["camera"] = "JointController"
-        controllers["arm_{}".format(self.default_arm)] = "InverseKinematicsController"
-        controllers["gripper_{}".format(self.default_arm)] = "MultiFingerGripperController"
+        controllers[f"arm_{self.default_arm}"] = "InverseKinematicsController"
+        controllers[f"gripper_{self.default_arm}"] = "MultiFingerGripperController"
 
         return controllers
 

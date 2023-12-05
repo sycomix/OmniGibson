@@ -170,13 +170,9 @@ class ToneMappingSettings(SubSettingsBase):
         }
         tonemap_op_idx = self._carb_settings.get("/rtx/post/tonemap/op")
         if tonemap_op_idx == 3:  # Modified Reinhard
-            settings.update(
-                {"/rtx/post/tonemap/maxWhiteLuminance": self.max_white_luminance,}
-            )
+            settings["/rtx/post/tonemap/maxWhiteLuminance"] = self.max_white_luminance
         if tonemap_op_idx == 5:  # HableUc2
-            settings.update(
-                {"/rtx/post/tonemap/whiteScale": self.white_scale,}
-            )
+            settings["/rtx/post/tonemap/whiteScale"] = self.white_scale
         if tonemap_op_idx == 7:  # Iray
             settings.update(
                 {
@@ -188,9 +184,7 @@ class ToneMappingSettings(SubSettingsBase):
                 }
             )
         if tonemap_op_idx != 0:  # Clamp is never using srgb conversion
-            settings.update(
-                {"/rtx/post/tonemap/enableSrgbToGamma": self.enable_srgb_to_gamma,}
-            )
+            settings["/rtx/post/tonemap/enableSrgbToGamma"] = self.enable_srgb_to_gamma
         return settings
 
 
@@ -276,9 +270,7 @@ class ColorCorrectionSettings(SubSettingsBase):
         }
         cc_mode = self._carb_settings.get("/rtx/post/colorcorr/mode")
         if cc_mode == 0:
-            settings.update(
-                {"/rtx/post/colorcorr/outputMode": self.outputMode,}
-            )
+            settings["/rtx/post/colorcorr/outputMode"] = self.outputMode
         return settings
 
     @property
@@ -328,9 +320,7 @@ class ColorGradingSettings(SubSettingsBase):
         }
         cg_mode = self._carb_settings.get("/rtx/post/colorgrad/mode")
         if cg_mode == 0:
-            settings.update(
-                {"/rtx/post/colorgrad/outputMode": self.output_mode,}
-            )
+            settings["/rtx/post/colorgrad/outputMode"] = self.output_mode
         return settings
 
     @property

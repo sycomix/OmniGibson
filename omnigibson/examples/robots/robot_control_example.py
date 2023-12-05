@@ -47,7 +47,9 @@ def choose_controllers(robot, random_selection=False):
         # Select controller
         options = list(sorted(controller_options.keys()))
         choice = choose_from_options(
-            options=options, name="{} controller".format(component), random_selection=random_selection
+            options=options,
+            name=f"{component} controller",
+            random_selection=random_selection,
         )
 
         # Add to user responses

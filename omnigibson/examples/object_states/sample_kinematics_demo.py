@@ -20,13 +20,6 @@ def main(random_selection=False, headless=False, short_exec=False):
     """
     og.log.info(f"Demo {__file__}\n    " + "*" * 80 + "\n    Description:\n" + main.__doc__ + "*" * 80)
 
-    # Create the scene config to load -- empty scene
-    cfg = {
-        "scene": {
-            "type": "Scene",
-        },
-    }
-
     # Define objects we want to sample at runtime
     microwave_cfg = dict(
             type="DatasetObject",
@@ -61,11 +54,11 @@ def main(random_selection=False, headless=False, short_exec=False):
     ) for i in range(4)]
 
     shelf_cfg = dict(
-            type="DatasetObject",
-            name=f"shelf",
-            category="shelf",
-            model="pkgbcp",
-            bounding_box=np.array([1.0, 0.4, 2.0]),
+        type="DatasetObject",
+        name="shelf",
+        category="shelf",
+        model="pkgbcp",
+        bounding_box=np.array([1.0, 0.4, 2.0]),
     )
 
     box_cfgs = [dict(
@@ -90,8 +83,7 @@ def main(random_selection=False, headless=False, short_exec=False):
     for i, obj_cfg in enumerate(objects_cfg):
         obj_cfg["position"] = [100 + i, 100 + i, 100 + i]
 
-    cfg["objects"] = objects_cfg
-
+    cfg = {"scene": {"type": "Scene"}, "objects": objects_cfg}
     # Create the environment
     env = og.Environment(configs=cfg, action_timestep=1/60., physics_timestep=1/60.)
     env.step([])
@@ -133,7 +125,7 @@ def sample_microwave_plates_apples(env):
         env.step(np.array([]))
 
     og.log.info("Placing plates")
-    n_apples_per_plate = int(len(apples) / len(plates))
+    n_apples_per_plate = len(apples) // len(plates)
     for i, plate in enumerate(plates):
         # Put the 1st plate in the microwave
         if i == 0:

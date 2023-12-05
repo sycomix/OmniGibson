@@ -637,8 +637,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
             particle_local_poses_batch = np.zeros_like(link_tfs_batch)
             for i, name in enumerate(particles):
                 obj = cls._particles_info[name]["obj"]
-                is_cloth = cls._is_cloth_obj(obj=obj)
-                if is_cloth:
+                if is_cloth := cls._is_cloth_obj(obj=obj):
                     if obj not in link_tfs:
                         # We want World --> obj transform, NOT the World --> root_link transform, since these particles
                         # do NOT exist under a link but rather the object prim itself. So we use XFormPrim to directly
@@ -729,8 +728,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
             link_tfs_batch = np.zeros((cls.n_particles, 4, 4))
             for i, name in enumerate(particles):
                 obj = cls._particles_info[name]["obj"]
-                is_cloth = cls._is_cloth_obj(obj=obj)
-                if is_cloth:
+                if is_cloth := cls._is_cloth_obj(obj=obj):
                     if obj not in link_tfs:
                         # We want World --> obj transform, NOT the World --> root_link transform, since these particles
                         # do NOT exist under a link but rather the object prim itself. So we use XFormPrim to directly
@@ -890,7 +888,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
             zip(group_objects, particle_idns, particle_attached_references)}
 
         current_group_names = cls.groups
-        desired_group_names = set(obj.name for obj in group_objects)
+        desired_group_names = {obj.name for obj in group_objects}
         groups_to_delete = current_group_names - desired_group_names
         groups_to_create = desired_group_names - current_group_names
         common_groups = current_group_names.intersection(desired_group_names)
@@ -935,7 +933,7 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
             # Also store the cloth face IDs as a vector
             if is_cloth:
                 cls._cloth_face_ids[cls.get_group_name(obj)] = \
-                    np.array([cls._particles_info[particle_name]["face_id"] for particle_name in cls._group_particles[name]])
+                        np.array([cls._particles_info[particle_name]["face_id"] for particle_name in cls._group_particles[name]])
 
     @classmethod
     def create(cls, name, create_particle_template, min_scale=None, max_scale=None, scale_relative_to_parent=False, **kwargs):
@@ -1066,11 +1064,11 @@ class MacroVisualParticleSystem(MacroParticleSystem, VisualParticleSystem):
         group_objs = []
         # Index starts at 1 because index 0 is n_groups
         idx = 1
-        for i in range(n_groups):
+        for _ in range(n_groups):
             obj_uuid, n_particles = int(state[idx]), int(state[idx + 1])
             obj = og.sim.scene.object_registry("uuid", obj_uuid)
             is_cloth = cls._is_cloth_obj(obj=obj)
-            group_obj_id2link = {i: link_name for i, link_name in enumerate(obj.links.keys())}
+            group_obj_id2link = dict(enumerate(obj.links.keys()))
             group_objs.append(obj)
             groups_dict[obj.name] = dict(
                 particle_attached_obj_uuid=obj_uuid,
@@ -1414,7 +1412,7 @@ class MacroPhysicalParticleSystem(PhysicalParticleSystem, MacroParticleSystem):
 
         # If positive, add particles
         if n_particles_to_generate > 0:
-            for i in range(n_particles_to_generate):
+            for _ in range(n_particles_to_generate):
                 # Min scale == max scale, so no need for sampling
                 cls.add_particle(prim_path=f"{cls.prim_path}/particles", scale=cls.max_scale)
         else:

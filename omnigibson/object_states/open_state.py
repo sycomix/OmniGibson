@@ -87,7 +87,7 @@ def _get_relevant_joints(obj):
     default_joint_directions = [1] * len(default_relevant_joints)
 
     if not hasattr(obj, "metadata"):
-        log.debug("No openable joint metadata found for object %s" % obj.name)
+        log.debug(f"No openable joint metadata found for object {obj.name}")
         return default_both_sides, default_relevant_joints, default_joint_directions
 
     # Get joint IDs and names from metadata annotation. If not, return default values.
@@ -225,11 +225,7 @@ class Open(AbsoluteObjectState, BooleanStateMixin):
                 threshold, open_end, closed_end = _compute_joint_threshold(joint, joint_direction * side)
 
                 # Get the range
-                if new_value:
-                    joint_range = (threshold, open_end)
-                else:
-                    joint_range = (threshold, closed_end)
-
+                joint_range = (threshold, open_end) if new_value else (threshold, closed_end)
                 if fully:
                     joint_pos = joint_range[1]
                 else:

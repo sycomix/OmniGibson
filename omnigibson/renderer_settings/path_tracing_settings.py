@@ -144,7 +144,7 @@ class PathTracingSettings(SubSettingsBase):
             self.spp = SettingItem(
                 self,
                 SettingType.INT,
-                "Samples per Pixel per Frame (1 to {})".format(clamp_spp),
+                f"Samples per Pixel per Frame (1 to {clamp_spp})",
                 "/rtx/pathtracing/spp",
                 range_from=1,
                 range_to=clamp_spp,
@@ -318,9 +318,7 @@ class PathTracedVolumeSettings(SubSettingsBase):
             "/rtx/pathtracing/ptvol/fastVdb": self.fast_vdb,
         }
         if self._carb_settings.get("/rtx/pathtracing/ptvol/fastVdb"):
-            settings.update(
-                {"/rtx/pathtracing/ptvol/autoMajorantVdb": self.autoMajorant_vdb,}
-            )
+            settings["/rtx/pathtracing/ptvol/autoMajorantVdb"] = self.autoMajorant_vdb
         return settings
 
     @property

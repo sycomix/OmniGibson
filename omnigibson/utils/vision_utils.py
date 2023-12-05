@@ -61,11 +61,10 @@ class RandomScale:
             if w < h:
                 ow = size
                 oh = int(size * h / w)
-                return img.resize((ow, oh), self.interpolation)
             else:
                 oh = size
                 ow = int(size * w / h)
-                return img.resize((ow, oh), self.interpolation)
+            return img.resize((ow, oh), self.interpolation)
         else:
             raise NotImplementedError()
 
@@ -107,11 +106,7 @@ def segmentation_to_rgb(seg_im, N, colors=None):
     # ensure all values lie within [0, N]
     seg_im = np.mod(seg_im, N)
 
-    if colors is None:
-        use_colors = randomize_colors(N=N, bright=True)
-    else:
-        use_colors = colors
-
+    use_colors = randomize_colors(N=N, bright=True) if colors is None else colors
     if N <= 256:
         return (255.0 * use_colors[seg_im]).astype(np.uint8)
     else:

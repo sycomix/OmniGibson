@@ -272,7 +272,7 @@ class StatefulObject(BaseObject):
             emitter_config["name"] = "flowEmitterSphere"
             emitter_config["type"] = "FlowEmitterSphere"
             emitter_config["position"] = (0.0, 0.0, 0.0) if fire_at_metalink \
-                else (0.0, 0.0, bbox_extent_local[2] * m.FIRE_EMITTER_HEIGHT_RATIO)
+                    else (0.0, 0.0, bbox_extent_local[2] * m.FIRE_EMITTER_HEIGHT_RATIO)
             emitter_config["fuel"] = 0.6
             emitter_config["coupleRateFuel"] = 1.2
             emitter_config["buoyancyPerTemp"] = 0.04
@@ -308,11 +308,22 @@ class StatefulObject(BaseObject):
         simulate = stage.DefinePrim(flowSimulate_prim_path, "FlowSimulate")
         offscreen = stage.DefinePrim(flowOffscreen_prim_path, "FlowOffscreen")
         renderer = stage.DefinePrim(flowRender_prim_path, "FlowRender")
-        advection = stage.DefinePrim(flowSimulate_prim_path + "/advection", "FlowAdvectionCombustionParams")
-        smoke = stage.DefinePrim(flowSimulate_prim_path + "/advection/smoke", "FlowAdvectionCombustionParams")
-        vorticity = stage.DefinePrim(flowSimulate_prim_path + "/vorticity", "FlowVorticityParams")
-        rayMarch = stage.DefinePrim(flowRender_prim_path + "/rayMarch", "FlowRayMarchParams")
-        colormap = stage.DefinePrim(flowOffscreen_prim_path + "/colormap", "FlowRayMarchColormapParams")
+        advection = stage.DefinePrim(
+            f"{flowSimulate_prim_path}/advection", "FlowAdvectionCombustionParams"
+        )
+        smoke = stage.DefinePrim(
+            f"{flowSimulate_prim_path}/advection/smoke",
+            "FlowAdvectionCombustionParams",
+        )
+        vorticity = stage.DefinePrim(
+            f"{flowSimulate_prim_path}/vorticity", "FlowVorticityParams"
+        )
+        rayMarch = stage.DefinePrim(
+            f"{flowRender_prim_path}/rayMarch", "FlowRayMarchParams"
+        )
+        colormap = stage.DefinePrim(
+            f"{flowOffscreen_prim_path}/colormap", "FlowRayMarchColormapParams"
+        )
 
         self._emitters[emitter_type] = emitter
 
@@ -344,8 +355,7 @@ class StatefulObject(BaseObject):
             simulate.CreateAttribute("densityCellSize", VT.Float, False).Set(radius*0.2)
             smoke.CreateAttribute("fade", Sdf.ValueTypeNames.Float, False).Set(2.0)
             # Set fire colormap.
-            rgbaPoints = []
-            rgbaPoints.append(Gf.Vec4f(0.0154, 0.0177, 0.0154, 0.004902))
+            rgbaPoints = [Gf.Vec4f(0.0154, 0.0177, 0.0154, 0.004902)]
             rgbaPoints.append(Gf.Vec4f(0.03575, 0.03575, 0.03575, 0.504902))
             rgbaPoints.append(Gf.Vec4f(0.03575, 0.03575, 0.03575, 0.504902))
             rgbaPoints.append(Gf.Vec4f(1, 0.1594, 0.0134, 0.8))
@@ -384,35 +394,36 @@ class StatefulObject(BaseObject):
         Update the prim's visuals (texture change, steam/fire effects, etc).
         Should be called after all the states are updated.
         """
-        if len(self._visual_states) > 0:
-            texture_change_states = []
-            emitter_enabled = defaultdict(bool)
-            for state_type in self._visual_states:
-                state = self.states[state_type]
-                if state_type in get_texture_change_states():
-                    if state_type == Saturated:
-                        for particle_system in ParticleRemover.supported_active_systems:
-                            if state.get_value(particle_system):
-                                texture_change_states.append(state)
-                                # Only need to do this once, since soaked handles all fluid systems
-                                break
-                    elif state.get_value():
-                        texture_change_states.append(state)
-                if state_type in get_steam_states():
-                    emitter_enabled[EmitterType.STEAM] |= state.get_value()
-                if state_type in get_fire_states():
-                    emitter_enabled[EmitterType.FIRE] |= state.get_value()
+        if len(self._visual_states) <= 0:
+            return
+        texture_change_states = []
+        emitter_enabled = defaultdict(bool)
+        for state_type in self._visual_states:
+            state = self.states[state_type]
+            if state_type in get_texture_change_states():
+                if state_type == Saturated:
+                    for particle_system in ParticleRemover.supported_active_systems:
+                        if state.get_value(particle_system):
+                            texture_change_states.append(state)
+                            # Only need to do this once, since soaked handles all fluid systems
+                            break
+                elif state.get_value():
+                    texture_change_states.append(state)
+            if state_type in get_steam_states():
+                emitter_enabled[EmitterType.STEAM] |= state.get_value()
+            if state_type in get_fire_states():
+                emitter_enabled[EmitterType.FIRE] |= state.get_value()
 
-                for emitter_type in emitter_enabled:
-                    self.set_emitter_enabled(emitter_type, emitter_enabled[emitter_type])
+            for emitter_type in emitter_enabled:
+                self.set_emitter_enabled(emitter_type, emitter_enabled[emitter_type])
 
-            texture_change_states.sort(key=lambda s: get_texture_change_priority()[s.__class__])
-            object_state = texture_change_states[-1] if len(texture_change_states) > 0 else None
+        texture_change_states.sort(key=lambda s: get_texture_change_priority()[s.__class__])
+        object_state = texture_change_states[-1] if texture_change_states else None
 
-            # Only update our texture change if it's a different object state than the one we already have
-            if object_state != self._current_texture_state:
-                self._update_texture_change(object_state)
-                self._current_texture_state = object_state
+        # Only update our texture change if it's a different object state than the one we already have
+        if object_state != self._current_texture_state:
+            self._update_texture_change(object_state)
+            self._current_texture_state = object_state
 
     def _update_texture_change(self, object_state):
         """

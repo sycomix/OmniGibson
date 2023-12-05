@@ -28,15 +28,14 @@ class Heated(AbsoluteObjectState, BooleanStateMixin):
         return deps
 
     def _set_value(self, new_value):
-        if new_value:
-            temperature = np.random.uniform(
-                self.heat_temperature + m.HEATED_SAMPLING_RANGE_MIN,
-                self.heat_temperature + m.HEATED_SAMPLING_RANGE_MAX,
-            )
-            return self.obj.states[Temperature].set_value(temperature)
-        else:
+        if not new_value:
             # We'll set the temperature just one degree below heating.
             return self.obj.states[Temperature].set_value(self.heat_temperature - 1.0)
+        temperature = np.random.uniform(
+            self.heat_temperature + m.HEATED_SAMPLING_RANGE_MIN,
+            self.heat_temperature + m.HEATED_SAMPLING_RANGE_MAX,
+        )
+        return self.obj.states[Temperature].set_value(temperature)
 
     def _get_value(self):
         return self.obj.states[Temperature].get_value() >= self.heat_temperature

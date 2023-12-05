@@ -197,7 +197,9 @@ class Simulator(SimulationContext, Serializable):
         """
         Set the physics engine with specified settings
         """
-        assert self.is_stopped(), f"Cannot set simulator physics settings while simulation is playing!"
+        assert (
+            self.is_stopped()
+        ), "Cannot set simulator physics settings while simulation is playing!"
         self._physics_context.set_gravity(value=-self.gravity)
         # Also make sure we invert the collision group filter settings so that different collision groups cannot
         # collide with each other, and modify settings for speed optimization
@@ -573,7 +575,7 @@ class Simulator(SimulationContext, Serializable):
         if render:
             super().step(render=True)
         else:
-            for i in range(self.n_physics_timesteps_per_render):
+            for _ in range(self.n_physics_timesteps_per_render):
                 super().step(render=False)
 
         # Additionally run non physics things
@@ -596,53 +598,58 @@ class Simulator(SimulationContext, Serializable):
         For each of the pair of objects in each contact, we invoke the on_contact function for each of its states
         that subclass ContactSubscribedStateMixin. These states update based on contact events.
         """
-        if gm.ENABLE_OBJECT_STATES and self._objects_require_contact_callback:
-            headers = defaultdict(list)
-            for contact_header in contact_headers:
-                actor0_obj = self._link_id_to_objects.get(contact_header.actor0, None)
-                actor1_obj = self._link_id_to_objects.get(contact_header.actor1, None)
-                # If any of the objects cannot be found, skip
-                if actor0_obj is None or actor1_obj is None:
-                    continue
-                # If any of the objects is not initialized, skip
-                if not actor0_obj.initialized or not actor1_obj.initialized:
-                    continue
-                # If any of the objects is not stateful, skip
-                if not isinstance(actor0_obj, StatefulObject) or not isinstance(actor1_obj, StatefulObject):
-                    continue
-                # If any of the objects doesn't have states that require on_contact callbacks, skip
-                if len(actor0_obj.states.keys() & self.object_state_types_on_contact) == 0 or len(actor1_obj.states.keys() & self.object_state_types_on_contact) == 0:
-                    continue
-                headers[tuple(sorted((actor0_obj, actor1_obj), key=lambda x: x.uuid))].append(contact_header)
+        if (
+            not gm.ENABLE_OBJECT_STATES
+            or not self._objects_require_contact_callback
+        ):
+            return
+        headers = defaultdict(list)
+        for contact_header in contact_headers:
+            actor0_obj = self._link_id_to_objects.get(contact_header.actor0, None)
+            actor1_obj = self._link_id_to_objects.get(contact_header.actor1, None)
+            # If any of the objects cannot be found, skip
+            if actor0_obj is None or actor1_obj is None:
+                continue
+            # If any of the objects is not initialized, skip
+            if not actor0_obj.initialized or not actor1_obj.initialized:
+                continue
+            # If any of the objects is not stateful, skip
+            if not isinstance(actor0_obj, StatefulObject) or not isinstance(actor1_obj, StatefulObject):
+                continue
+            # If any of the objects doesn't have states that require on_contact callbacks, skip
+            if len(actor0_obj.states.keys() & self.object_state_types_on_contact) == 0 or len(actor1_obj.states.keys() & self.object_state_types_on_contact) == 0:
+                continue
+            headers[tuple(sorted((actor0_obj, actor1_obj), key=lambda x: x.uuid))].append(contact_header)
 
-            for (actor0_obj, actor1_obj) in headers:
-                for obj0, obj1 in [(actor0_obj, actor1_obj), (actor1_obj, actor0_obj)]:
-                    for state_type in self.object_state_types_on_contact:
-                        if state_type in obj0.states:
-                            obj0.states[state_type].on_contact(obj1, headers[(actor0_obj, actor1_obj)], contact_data)
+        for (actor0_obj, actor1_obj) in headers:
+            for obj0, obj1 in [(actor0_obj, actor1_obj), (actor1_obj, actor0_obj)]:
+                for state_type in self.object_state_types_on_contact:
+                    if state_type in obj0.states:
+                        obj0.states[state_type].on_contact(obj1, headers[(actor0_obj, actor1_obj)], contact_data)
 
     def _on_simulation_event(self, event):
         """
         This callback will be invoked if there is any simulation event. Currently it only processes JOINT_BREAK event.
         """
-        if gm.ENABLE_OBJECT_STATES:
-            if event.type == int(SimulationEvent.JOINT_BREAK) and self._objects_require_joint_break_callback:
-                joint_path = str(PhysicsSchemaTools.decodeSdfPath(event.payload["jointPath"][0], event.payload["jointPath"][1]))
-                obj = None
-                # TODO: recursively try to find the parent object of this joint
-                tokens = joint_path.split("/")
-                for i in range(2, len(tokens) + 1):
-                    obj = self._scene.object_registry("prim_path", "/".join(tokens[:i]))
-                    if obj is not None:
-                        break
+        if not gm.ENABLE_OBJECT_STATES:
+            return
+        if event.type == int(SimulationEvent.JOINT_BREAK) and self._objects_require_joint_break_callback:
+            joint_path = str(PhysicsSchemaTools.decodeSdfPath(event.payload["jointPath"][0], event.payload["jointPath"][1]))
+            obj = None
+            # TODO: recursively try to find the parent object of this joint
+            tokens = joint_path.split("/")
+            for i in range(2, len(tokens) + 1):
+                obj = self._scene.object_registry("prim_path", "/".join(tokens[:i]))
+                if obj is not None:
+                    break
 
-                if obj is None or not obj.initialized or not isinstance(obj, StatefulObject):
-                    return
-                if len(obj.states.keys() & self.object_state_types_on_joint_break) == 0:
-                    return
-                for state_type in self.object_state_types_on_joint_break:
-                    if state_type in obj.states:
-                        obj.states[state_type].on_joint_break(joint_path)
+            if obj is None or not obj.initialized or not isinstance(obj, StatefulObject):
+                return
+            if len(obj.states.keys() & self.object_state_types_on_joint_break) == 0:
+                return
+            for state_type in self.object_state_types_on_joint_break:
+                if state_type in obj.states:
+                    obj.states[state_type].on_joint_break(joint_path)
 
     def is_paused(self):
         """

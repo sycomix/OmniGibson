@@ -92,10 +92,13 @@ def get_available_og_scenes():
     """
     og_dataset_path = gm.DATASET_PATH
     og_scenes_path = os.path.join(og_dataset_path, "scenes")
-    available_og_scenes = sorted(
-        [f for f in os.listdir(og_scenes_path) if (not is_dot_file(f) and f != "background")]
+    return sorted(
+        [
+            f
+            for f in os.listdir(og_scenes_path)
+            if (not is_dot_file(f) and f != "background")
+        ]
     )
-    return available_og_scenes
 
 
 def get_og_scene_path(scene_name):
@@ -110,8 +113,10 @@ def get_og_scene_path(scene_name):
     """
     og_dataset_path = gm.DATASET_PATH
     og_scenes_path = os.path.join(og_dataset_path, "scenes")
-    log.info("Scene name: {}".format(scene_name))
-    assert scene_name in os.listdir(og_scenes_path), "Scene {} does not exist".format(scene_name)
+    log.info(f"Scene name: {scene_name}")
+    assert scene_name in os.listdir(
+        og_scenes_path
+    ), f"Scene {scene_name} does not exist"
     return os.path.join(og_scenes_path, scene_name)
 
 
@@ -127,7 +132,9 @@ def get_og_category_path(category_name):
     """
     og_dataset_path = gm.DATASET_PATH
     og_categories_path = os.path.join(og_dataset_path, "objects")
-    assert category_name in os.listdir(og_categories_path), "Category {} does not exist".format(category_name)
+    assert category_name in os.listdir(
+        og_categories_path
+    ), f"Category {category_name} does not exist"
     return os.path.join(og_categories_path, category_name)
 
 
@@ -143,9 +150,9 @@ def get_og_model_path(category_name, model_name):
         str: file path to the object model
     """
     og_category_path = get_og_category_path(category_name)
-    assert model_name in os.listdir(og_category_path), "Model {} from category {} does not exist".format(
-        model_name, category_name
-    )
+    assert model_name in os.listdir(
+        og_category_path
+    ), f"Model {model_name} from category {category_name} does not exist"
     return os.path.join(og_category_path, model_name)
 
 
@@ -287,7 +294,7 @@ def get_og_assets_version():
         ["git", "-C", gm.DATASET_PATH, "rev-parse", "HEAD"], shell=False, stdout=subprocess.PIPE
     )
     git_head_hash = str(process.communicate()[0].strip())
-    return "{}".format(git_head_hash)
+    return f"{git_head_hash}"
 
 
 def get_available_g_scenes():
@@ -296,8 +303,7 @@ def get_available_g_scenes():
         list: available Gibson scenes
     """
     data_path = og.g_dataset_path
-    available_g_scenes = sorted([f for f in os.listdir(data_path) if not is_dot_file(f)])
-    return available_g_scenes
+    return sorted([f for f in os.listdir(data_path) if not is_dot_file(f)])
 
 
 def get_scene_path(scene_id):
@@ -309,7 +315,7 @@ def get_scene_path(scene_id):
         str: scene path for this scene_id
     """
     data_path = og.g_dataset_path
-    assert scene_id in os.listdir(data_path), "Scene {} does not exist".format(scene_id)
+    assert scene_id in os.listdir(data_path), f"Scene {scene_id} does not exist"
     return os.path.join(data_path, scene_id)
 
 
@@ -326,14 +332,14 @@ def get_texture_file(mesh_file):
     model_dir = os.path.dirname(mesh_file)
     with open(mesh_file, "r") as f:
         lines = [line.strip() for line in f.readlines() if "mtllib" in line]
-        if len(lines) == 0:
+        if not lines:
             return
         mtl_file = lines[0].split()[1]
         mtl_file = os.path.join(model_dir, mtl_file)
 
     with open(mtl_file, "r") as f:
         lines = [line.strip() for line in f.readlines() if "map_Kd" in line]
-        if len(lines) == 0:
+        if not lines:
             return
         texture_file = lines[0].split()[1]
         texture_file = os.path.join(model_dir, texture_file)

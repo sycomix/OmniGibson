@@ -220,7 +220,7 @@ def sample_origin_positions(mins, maxes, count, bimodal_mean_fraction, bimodal_s
     assert mins.shape == maxes.shape
 
     results = []
-    for i in range(count):
+    for _ in range(count):
         # Get the uniform sample first.
         position = np.random.rand(3)
 
@@ -233,11 +233,9 @@ def sample_origin_positions(mins, maxes, count, bimodal_mean_fraction, bimodal_s
         bimodal_axis = np.random.choice([0, 1, 2], p=axis_probabilities)
 
         # Choose which side of the axis to sample from. We only sample from the top for the Z axis.
-        if bimodal_axis == 2:
-            bimodal_axis_top_side = True
-        else:
-            bimodal_axis_top_side = np.random.choice([True, False])
-
+        bimodal_axis_top_side = (
+            True if bimodal_axis == 2 else np.random.choice([True, False])
+        )
         # Move sample based on chosen side.
         position[bimodal_axis] = bimodal_sample if bimodal_axis_top_side else 1 - bimodal_sample
 
@@ -279,18 +277,16 @@ def raytest_batch(start_points, end_points, only_closest=True, ignore_bodies=Non
 
             Note that only "hit" = False exists in the dict if no hit was found
     """
-    # For now, we do a naive for loop over individual raytests until a better API comes out
-    results = []
-    for start_point, end_point in zip(start_points, end_points):
-        results.append(raytest(
+    return [
+        raytest(
             start_point=start_point,
             end_point=end_point,
             only_closest=only_closest,
             ignore_bodies=ignore_bodies,
             ignore_collisions=ignore_collisions,
-        ))
-
-    return results
+        )
+        for start_point, end_point in zip(start_points, end_points)
+    ]
 
 
 def raytest(
@@ -332,48 +328,50 @@ def raytest(
     distance = np.linalg.norm(point_diff)
     direction = point_diff / distance
 
-    # For efficiency's sake, we handle special case of no ignore_bodies, ignore_collisions, and closest_hit
     if only_closest and ignore_bodies is None and ignore_collisions is None:
         return og.sim.psqi.raycast_closest(
             origin=start_point,
             dir=direction,
             distance=distance,
         )
-    else:
-        # Compose callback function for finding raycasts
-        hits = []
-        ignore_bodies = set() if ignore_bodies is None else set(ignore_bodies)
-        ignore_collisions = set() if ignore_collisions is None else set(ignore_collisions)
+    # Compose callback function for finding raycasts
+    hits = []
+    ignore_bodies = set() if ignore_bodies is None else set(ignore_bodies)
+    ignore_collisions = set() if ignore_collisions is None else set(ignore_collisions)
 
-        def callback(hit):
-            # Only add to hits if we're not ignoring this body or collision
-            if hit.rigid_body not in ignore_bodies and hit.collision not in ignore_collisions:
-                hits.append({
-                    "hit": True,
-                    "position": np.array(hit.position),
-                    "normal": np.array(hit.normal),
-                    "distance": hit.distance,
-                    "collision": hit.collision,
-                    "rigidBody": hit.rigid_body,
-                })
-            # We always want to continue traversing to collect all hits
-            return True
+    def callback(hit):
+        # Only add to hits if we're not ignoring this body or collision
+        if hit.rigid_body not in ignore_bodies and hit.collision not in ignore_collisions:
+            hits.append({
+                "hit": True,
+                "position": np.array(hit.position),
+                "normal": np.array(hit.normal),
+                "distance": hit.distance,
+                "collision": hit.collision,
+                "rigidBody": hit.rigid_body,
+            })
+        # We always want to continue traversing to collect all hits
+        return True
 
-        # Grab all collisions
-        og.sim.psqi.raycast_all(
-            origin=start_point,
-            dir=direction,
-            distance=distance,
-            reportFn=callback,
-        )
+    # Grab all collisions
+    og.sim.psqi.raycast_all(
+        origin=start_point,
+        dir=direction,
+        distance=distance,
+        reportFn=callback,
+    )
 
         # If we only want the closest, we need to sort these hits, otherwise we return them all
-        if only_closest:
+    if only_closest:
             # Return the empty hit dictionary if our ray did not hit anything, otherwise we return the closest
-            return {"hit": False} if len(hits) == 0 else sorted(hits, key=lambda hit: hit["distance"])[0]
-        else:
-            # Return all hits (list)
-            return hits
+        return (
+            {"hit": False}
+            if not hits
+            else sorted(hits, key=lambda hit: hit["distance"])[0]
+        )
+    else:
+        # Return all hits (list)
+        return hits
 
 
 def sample_raytest_start_end_symmetric_bimodal_distribution(
@@ -790,7 +788,7 @@ def sample_cuboid_on_object(
             if hits is None:
                 continue
 
-            center_idx = int(len(hits) / 2)
+            center_idx = len(hits) // 2
             # Only consider objects whose center idx has a ray hit
             if not hits[center_idx]:
                 continue

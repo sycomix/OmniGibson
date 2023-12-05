@@ -237,8 +237,8 @@ class InverseKinematicsController(ManipulationController):
             Array[float]: outputted (non-clipped!) velocity control signal to deploy
         """
         # Grab important info from control dict
-        pos_relative = np.array(control_dict["{}_pos_relative".format(self.task_name)])
-        quat_relative = np.array(control_dict["{}_quat_relative".format(self.task_name)])
+        pos_relative = np.array(control_dict[f"{self.task_name}_pos_relative"])
+        quat_relative = np.array(control_dict[f"{self.task_name}_quat_relative"])
 
         # The first three values of the command are always the (delta) position, convert to absolute values
         dpos = command[:3]
@@ -276,19 +276,20 @@ class InverseKinematicsController(ManipulationController):
         if target_joint_pos is None:
             # Print warning that we couldn't find a valid solution, and return the current joint configuration
             # instead so that we execute a no-op control
-            log.warning(f"Could not find valid IK configuration! Returning no-op control instead.")
+            log.warning(
+                "Could not find valid IK configuration! Returning no-op control instead."
+            )
             target_joint_pos = current_joint_pos
 
         # Optionally pass through smoothing filter for better stability
         if self.control_filter is not None:
             target_joint_pos = self.control_filter.estimate(target_joint_pos)
 
-        # Grab the resulting error and scale it by the velocity gain, or else simply use the target_joint_pos
-        u = -self.kv * (current_joint_pos - target_joint_pos) if \
-            self.control_type == ControlType.VELOCITY else target_joint_pos
-
-        # Return these commanded velocities (this only includes the relevant dof idx)
-        return u
+        return (
+            -self.kv * (current_joint_pos - target_joint_pos)
+            if self.control_type == ControlType.VELOCITY
+            else target_joint_pos
+        )
 
     @property
     def control_type(self):

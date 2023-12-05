@@ -87,7 +87,7 @@ class SegmentationMap(BaseMap):
             room_sem_name_to_sem_id[sem_name] = sem_id
             for i, ins_id in enumerate(ins_ids):
                 # valid class start from 1
-                ins_name = "{}_{}".format(sem_name, i)
+                ins_name = f"{sem_name}_{i}"
                 room_ins_name_to_ins_id[ins_name] = ins_id
                 if sem_name not in room_sem_name_to_ins_name:
                     room_sem_name_to_ins_name[sem_name] = []
@@ -116,7 +116,7 @@ class SegmentationMap(BaseMap):
                 - 3-array: (x,y,z) randomly sampled point in a room of type @room_type
         """
         if room_type not in self.room_sem_name_to_sem_id:
-            log.warning("room_type [{}] does not exist.".format(room_type))
+            log.warning(f"room_type [{room_type}] does not exist.")
             return None, None
 
         sem_id = self.room_sem_name_to_sem_id[room_type]
@@ -142,7 +142,7 @@ class SegmentationMap(BaseMap):
                 - 3-array: (x,y,z) randomly sampled point in room @room_instance
         """
         if room_instance not in self.room_ins_name_to_ins_id:
-            log.warning("room_instance [{}] does not exist.".format(room_instance))
+            log.warning(f"room_instance [{room_instance}] does not exist.")
             return None, None
 
         ins_id = self.room_ins_name_to_ins_id[room_instance]
@@ -170,10 +170,7 @@ class SegmentationMap(BaseMap):
             return None
         sem_id = self.room_sem_map[x, y]
         # room boundary
-        if sem_id == 0:
-            return None
-        else:
-            return self.room_sem_id_to_sem_name[sem_id]
+        return None if sem_id == 0 else self.room_sem_id_to_sem_name[sem_id]
 
     def get_room_instance_by_point(self, xy):
         """
@@ -190,7 +187,4 @@ class SegmentationMap(BaseMap):
             return None
         ins_id = self.room_ins_map[x, y]
         # room boundary
-        if ins_id == 0:
-            return None
-        else:
-            return self.room_ins_id_to_ins_name[ins_id]
+        return None if ins_id == 0 else self.room_ins_id_to_ins_name[ins_id]

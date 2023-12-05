@@ -102,8 +102,10 @@ class KeyboardEventHandler:
         Meta callback function that is hooked up to omni's backend
         """
         # Check if we've received a key press or repeat
-        if event.type == carb.input.KeyboardEventType.KEY_PRESS \
-                or event.type == carb.input.KeyboardEventType.KEY_REPEAT:
+        if event.type in [
+            carb.input.KeyboardEventType.KEY_PRESS,
+            carb.input.KeyboardEventType.KEY_REPEAT,
+        ]:
             # Run the specific callback
             cls.KEYBOARD_CALLBACKS.get(event.input, lambda: None)()
 
@@ -223,21 +225,21 @@ def choose_from_options(options, name, random_selection=False):
         str: Requested option
     """
     # Select robot
-    print("\nHere is a list of available {}s:\n".format(name))
+    print(f"\nHere is a list of available {name}s:\n")
 
     for k, option in enumerate(options):
-        docstring = ": {}".format(options[option]) if isinstance(options, dict) else ""
-        print("[{}] {}{}".format(k + 1, option, docstring))
+        docstring = f": {options[option]}" if isinstance(options, dict) else ""
+        print(f"[{k + 1}] {option}{docstring}")
     print()
 
     if not random_selection:
         try:
-            s = input("Choose a {} (enter a number from 1 to {}): ".format(name, len(options)))
+            s = input(f"Choose a {name} (enter a number from 1 to {len(options)}): ")
             # parse input into a number within range
             k = min(max(int(s), 1), len(options)) - 1
         except:
             k = 0
-            print("Input is not valid. Use {} by default.".format(list(options)[k]))
+            print(f"Input is not valid. Use {list(options)[k]} by default.")
     else:
         k = random.choice(range(len(options)))
 
@@ -493,8 +495,10 @@ class CameraMover:
         Args:
             event (int): keyboard event type
         """
-        if event.type == carb.input.KeyboardEventType.KEY_PRESS \
-                or event.type == carb.input.KeyboardEventType.KEY_REPEAT:
+        if event.type in [
+            carb.input.KeyboardEventType.KEY_PRESS,
+            carb.input.KeyboardEventType.KEY_REPEAT,
+        ]:
 
             if event.type == carb.input.KeyboardEventType.KEY_PRESS and event.input in self.input_to_function:
                 self.input_to_function[event.input]()
@@ -536,7 +540,7 @@ class KeyboardRobotController:
             idx += controller.command_dim
 
         # Other persistent variables we need to keep track of
-        self.joint_names = [name for name in robot.joints.keys()]  # Ordered list of joint names belonging to the robot
+        self.joint_names = list(robot.joints.keys())
         self.joint_command_idx = None   # Indices of joints being directly controlled in the action array
         self.joint_control_idx = None  # Indices of joints being directly controlled in the actual joint array
         self.active_joint_command_idx_idx = 0   # Which index within the joint_command_idx variable is being controlled by the user
@@ -579,22 +583,56 @@ class KeyboardRobotController:
         Returns:
             dict: Populated keypress mappings for IK to control the specified controller
         """
-        mapping = {}
-
-        mapping[carb.input.KeyboardInput.UP] = {"idx": controller_info["start_idx"] + 0, "val": 0.5}
-        mapping[carb.input.KeyboardInput.DOWN] = {"idx": controller_info["start_idx"] + 0, "val": -0.5}
-        mapping[carb.input.KeyboardInput.RIGHT] = {"idx": controller_info["start_idx"] + 1, "val": -0.5}
-        mapping[carb.input.KeyboardInput.LEFT] = {"idx": controller_info["start_idx"] + 1, "val": 0.5}
-        mapping[carb.input.KeyboardInput.P] = {"idx": controller_info["start_idx"] + 2, "val": 0.5}
-        mapping[carb.input.KeyboardInput.SEMICOLON] = {"idx": controller_info["start_idx"] + 2, "val": -0.5}
-        mapping[carb.input.KeyboardInput.N] = {"idx": controller_info["start_idx"] + 3, "val": 0.5}
-        mapping[carb.input.KeyboardInput.B] = {"idx": controller_info["start_idx"] + 3, "val": -0.5}
-        mapping[carb.input.KeyboardInput.O] = {"idx": controller_info["start_idx"] + 4, "val": 0.5}
-        mapping[carb.input.KeyboardInput.U] = {"idx": controller_info["start_idx"] + 4, "val": -0.5}
-        mapping[carb.input.KeyboardInput.V] = {"idx": controller_info["start_idx"] + 5, "val": 0.5}
-        mapping[carb.input.KeyboardInput.C] = {"idx": controller_info["start_idx"] + 5, "val": -0.5}
-
-        return mapping
+        return {
+            carb.input.KeyboardInput.UP: {
+                "idx": controller_info["start_idx"] + 0,
+                "val": 0.5,
+            },
+            carb.input.KeyboardInput.DOWN: {
+                "idx": controller_info["start_idx"] + 0,
+                "val": -0.5,
+            },
+            carb.input.KeyboardInput.RIGHT: {
+                "idx": controller_info["start_idx"] + 1,
+                "val": -0.5,
+            },
+            carb.input.KeyboardInput.LEFT: {
+                "idx": controller_info["start_idx"] + 1,
+                "val": 0.5,
+            },
+            carb.input.KeyboardInput.P: {
+                "idx": controller_info["start_idx"] + 2,
+                "val": 0.5,
+            },
+            carb.input.KeyboardInput.SEMICOLON: {
+                "idx": controller_info["start_idx"] + 2,
+                "val": -0.5,
+            },
+            carb.input.KeyboardInput.N: {
+                "idx": controller_info["start_idx"] + 3,
+                "val": 0.5,
+            },
+            carb.input.KeyboardInput.B: {
+                "idx": controller_info["start_idx"] + 3,
+                "val": -0.5,
+            },
+            carb.input.KeyboardInput.O: {
+                "idx": controller_info["start_idx"] + 4,
+                "val": 0.5,
+            },
+            carb.input.KeyboardInput.U: {
+                "idx": controller_info["start_idx"] + 4,
+                "val": -0.5,
+            },
+            carb.input.KeyboardInput.V: {
+                "idx": controller_info["start_idx"] + 5,
+                "val": 0.5,
+            },
+            carb.input.KeyboardInput.C: {
+                "idx": controller_info["start_idx"] + 5,
+                "val": -0.5,
+            },
+        }
 
     def populate_keypress_mapping(self):
         """
@@ -604,16 +642,15 @@ class KeyboardRobotController:
                 idx: <int>
                 val: <float>
         """
-        self.keypress_mapping = {}
         self.joint_command_idx = []
         self.joint_control_idx = []
         self.gripper_direction = {}
         self.persistent_gripper_action = {}
 
-        # Add mapping for joint control directions (no index because these are inferred at runtime)
-        self.keypress_mapping[carb.input.KeyboardInput.RIGHT_BRACKET] = {"idx": None, "val": 0.1}
-        self.keypress_mapping[carb.input.KeyboardInput.LEFT_BRACKET] = {"idx": None, "val": -0.1}
-
+        self.keypress_mapping = {
+            carb.input.KeyboardInput.RIGHT_BRACKET: {"idx": None, "val": 0.1},
+            carb.input.KeyboardInput.LEFT_BRACKET: {"idx": None, "val": -0.1},
+        }
         # Iterate over all controller info and populate mapping
         for component, info in self.controller_info.items():
             if info["name"] == "JointController":
@@ -644,26 +681,28 @@ class KeyboardRobotController:
                 # We won't send actions if using a null gripper controller
                 self.keypress_mapping[carb.input.KeyboardInput.T] = {"idx": None, "val": None}
             else:
-                raise ValueError("Unknown controller name received: {}".format(info["name"]))
+                raise ValueError(f'Unknown controller name received: {info["name"]}')
 
     def keyboard_event_handler(self, event, *args, **kwargs):
         # Check if we've received a key press or repeat
-        if event.type == carb.input.KeyboardEventType.KEY_PRESS \
-                or event.type == carb.input.KeyboardEventType.KEY_REPEAT:
+        if event.type in [
+            carb.input.KeyboardEventType.KEY_PRESS,
+            carb.input.KeyboardEventType.KEY_REPEAT,
+        ]:
 
             # Handle special cases
             if event.input in {carb.input.KeyboardInput.KEY_1, carb.input.KeyboardInput.KEY_2} and len(self.joint_control_idx) > 1:
                 # Update joint and print out new joint being controlled
                 self.active_joint_command_idx_idx = max(0, self.active_joint_command_idx_idx - 1) \
-                    if event.input == carb.input.KeyboardInput.KEY_1 \
-                    else min(len(self.joint_control_idx) - 1, self.active_joint_command_idx_idx + 1)
+                        if event.input == carb.input.KeyboardInput.KEY_1 \
+                        else min(len(self.joint_control_idx) - 1, self.active_joint_command_idx_idx + 1)
                 print(f"Now controlling joint {self.joint_names[self.joint_control_idx[self.active_joint_command_idx_idx]]}")
 
             elif event.input in {carb.input.KeyboardInput.KEY_3, carb.input.KeyboardInput.KEY_4} and len(self.ik_arms) > 1:
                 # Update arm, update keypress mapping, and print out new arm being controlled
                 self.active_arm_idx = max(0, self.active_arm_idx - 1) \
-                    if event.input == carb.input.KeyboardInput.KEY_3 \
-                    else min(len(self.ik_arms) - 1, self.active_arm_idx + 1)
+                        if event.input == carb.input.KeyboardInput.KEY_3 \
+                        else min(len(self.ik_arms) - 1, self.active_arm_idx + 1)
                 new_arm = self.ik_arms[self.active_arm_idx]
                 self.keypress_mapping.update(self.generate_ik_keypress_mapping(self.controller_info[new_arm]))
                 print(f"Now controlling arm {new_arm} with IK")
@@ -671,8 +710,8 @@ class KeyboardRobotController:
             elif event.input in {carb.input.KeyboardInput.KEY_5, carb.input.KeyboardInput.KEY_6} and len(self.binary_grippers) > 1:
                 # Update gripper, update keypress mapping, and print out new gripper being controlled
                 self.active_gripper_idx = max(0, self.active_gripper_idx - 1) \
-                    if event.input == carb.input.KeyboardInput.KEY_5 \
-                    else min(len(self.binary_grippers) - 1, self.active_gripper_idx + 1)
+                        if event.input == carb.input.KeyboardInput.KEY_5 \
+                        else min(len(self.binary_grippers) - 1, self.active_gripper_idx + 1)
                 print(f"Now controlling gripper {self.binary_grippers[self.active_gripper_idx]} with binary toggling")
 
             elif event.input == carb.input.KeyboardInput.R:
@@ -695,7 +734,6 @@ class KeyboardRobotController:
                 if event.input == carb.input.KeyboardInput.T:
                     self.toggling_gripper = True
 
-        # If we release a key, clear the active action and keypress
         elif event.type == carb.input.KeyboardEventType.KEY_RELEASE:
             self.active_action = None
             self.current_keypress = None
@@ -741,7 +779,7 @@ class KeyboardRobotController:
                     # We toggle the gripper direction or this gripper
                     self.gripper_direction[binary_gripper] *= -1.0
                     self.persistent_gripper_action[binary_gripper] = \
-                        self.keypress_mapping[carb.input.KeyboardInput.T]["val"] * self.gripper_direction[binary_gripper]
+                            self.keypress_mapping[carb.input.KeyboardInput.T]["val"] * self.gripper_direction[binary_gripper]
 
                     # Clear the toggling gripper flag
                     self.toggling_gripper = False
@@ -752,7 +790,7 @@ class KeyboardRobotController:
         # Print out the user what is being pressed / controlled
         sys.stdout.write("\033[K")
         keypress_str = self.current_keypress.__str__().split(".")[-1]
-        print("Pressed {}. Action: {}".format(keypress_str, action))
+        print(f"Pressed {keypress_str}. Action: {action}")
         sys.stdout.write("\033[F")
 
         # Return action

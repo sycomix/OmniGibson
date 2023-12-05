@@ -506,10 +506,7 @@ class MicroParticleSystem(BaseSystem):
         return MaterialPrim(
             prim_path=cls.mat_path,
             name=cls.mat_name,
-            load_config={
-                "mdl_name": f"OmniPBR.mdl",
-                "mtl_name": f"OmniPBR",
-            }
+            load_config={"mdl_name": "OmniPBR.mdl", "mtl_name": "OmniPBR"},
         )
 
     @classmethod
@@ -607,7 +604,9 @@ class MicroPhysicalParticleSystem(MicroParticleSystem, PhysicalParticleSystem):
 
     @classproperty
     def n_particles(cls):
-        return sum([instancer.n_particles for instancer in cls.particle_instancers.values()])
+        return sum(
+            instancer.n_particles for instancer in cls.particle_instancers.values()
+        )
 
     @classproperty
     def n_instancers(cls):
@@ -647,10 +646,9 @@ class MicroPhysicalParticleSystem(MicroParticleSystem, PhysicalParticleSystem):
         """
         if cls.n_instancers == 0:
             return cls.default_instancer_idn
-        else:
-            for idn in range(max(cls.instancer_idns) + 2):
-                if idn not in cls.instancer_idns:
-                    return idn
+        for idn in range(max(cls.instancer_idns) + 2):
+            if idn not in cls.instancer_idns:
+                return idn
 
     @classproperty
     def default_instancer_idn(cls):
@@ -1083,7 +1081,9 @@ class MicroPhysicalParticleSystem(MicroParticleSystem, PhysicalParticleSystem):
         idn_to_info_mapping = {idn: {"group": group, "count": count}
                                for idn, group, count in zip(idns, particle_groups, particle_counts)}
         current_instancer_names = set(cls.particle_instancers.keys())
-        desired_instancer_names = set(cls.particle_instancer_idn_to_name(idn=idn) for idn in idns)
+        desired_instancer_names = {
+            cls.particle_instancer_idn_to_name(idn=idn) for idn in idns
+        }
         instancers_to_delete = current_instancer_names - desired_instancer_names
         instancers_to_create = desired_instancer_names - current_instancer_names
         common_instancers = current_instancer_names.intersection(desired_instancer_names)
@@ -1118,10 +1118,16 @@ class MicroPhysicalParticleSystem(MicroParticleSystem, PhysicalParticleSystem):
         return dict(
             n_instancers=cls.n_instancers,
             instancer_idns=cls.instancer_idns,
-            instancer_particle_groups=[inst.particle_group for inst in cls.particle_instancers.values()],
-            instancer_particle_counts=[inst.n_particles for inst in cls.particle_instancers.values()],
-            particle_states=dict(((name, inst.dump_state(serialized=False))
-                                  for name, inst in cls.particle_instancers.items())),
+            instancer_particle_groups=[
+                inst.particle_group for inst in cls.particle_instancers.values()
+            ],
+            instancer_particle_counts=[
+                inst.n_particles for inst in cls.particle_instancers.values()
+            ],
+            particle_states={
+                name: inst.dump_state(serialized=False)
+                for name, inst in cls.particle_instancers.items()
+            },
         )
 
     @classmethod
@@ -1320,8 +1326,8 @@ class FluidSystem(MicroPhysicalParticleSystem):
             name=cls.mat_name,
             load_config={
                 "mdl_name": f"OmniSurface{'' if cls._material_mtl_name is None else 'Presets'}.mdl",
-                "mtl_name": f"OmniSurface{'' if cls._material_mtl_name is None else ('_' + cls._material_mtl_name)}"
-            }
+                "mtl_name": f"OmniSurface{'' if cls._material_mtl_name is None else f'_{cls._material_mtl_name}'}",
+            },
         )
 
     @classmethod

@@ -164,9 +164,7 @@ class ClothPrim(GeomPrim):
         # Don't copy to save compute, since we won't be returning a reference to the underlying object anyways
         p_local = np.array(self.get_attribute(attr="points"), copy=False)
         p_local = p_local[idxs] if idxs is not None else p_local
-        p_world = (r @ (p_local * s).T).T + t
-
-        return p_world
+        return (r @ (p_local * s).T).T + t
 
     def set_particle_positions(self, positions, idxs=None):
         """

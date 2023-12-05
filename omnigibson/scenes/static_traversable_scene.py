@@ -89,7 +89,7 @@ class StaticTraversableScene(TraversableScene):
         assert os.path.isfile(floor_height_path), f"floor_heights.txt cannot be found in model: {self.scene_model}"
         with open(floor_height_path, "r") as f:
             self.floor_heights = sorted(list(map(float, f.readlines())))
-            log.debug("Floors {}".format(self.floor_heights))
+            log.debug(f"Floors {self.floor_heights}")
 
         # Move the floor plane to the first floor by default
         self.move_floor_plane(floor=0)

@@ -34,7 +34,7 @@ def sample_stable_orientations(obj, n_samples=10, drop_aabb_offset=0.1):
         pos = drop_pos + T.quat2mat(drop_orientation) @ center_offset
         obj.set_position_orientation(pos, drop_orientation)
         obj.keep_still()
-        for j in range(25):
+        for _ in range(25):
             og.sim.step()
         stable_orientations[i] = obj.get_orientation()
 

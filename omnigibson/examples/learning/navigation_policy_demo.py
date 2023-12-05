@@ -81,15 +81,13 @@ class CustomCombinedExtractor(BaseFeaturesExtractor):
         self._features_dim = total_concat_size
 
     def forward(self, observations) -> th.Tensor:
-        encoded_tensor_list = []
         self.step_index += 1
 
-        # self.extractors contain nn.Modules that do all the processing.
-        for key, extractor in self.extractors.items():
-            encoded_tensor_list.append(extractor(observations[key]))
-
-        feature = th.cat(encoded_tensor_list, dim=1)
-        return feature
+        encoded_tensor_list = [
+            extractor(observations[key])
+            for key, extractor in self.extractors.items()
+        ]
+        return th.cat(encoded_tensor_list, dim=1)
 
 
 def main():
@@ -112,7 +110,6 @@ def main():
     args = parser.parse_args()
     tensorboard_log_dir = os.path.join("log_dir", time.strftime("%Y%m%d-%H%M%S"))
     os.makedirs(tensorboard_log_dir, exist_ok=True)
-    prefix = ''
     seed = 0
 
     # Load config
@@ -170,6 +167,7 @@ def main():
             batch_size=8,
             device='cuda',
         )
+        prefix = ''
         checkpoint_callback = CheckpointCallback(save_freq=1000, save_path=tensorboard_log_dir, name_prefix=prefix)
         eval_callback = EvalCallback(eval_env=env, eval_freq=1000, n_eval_episodes=20)
         callback = CallbackList([checkpoint_callback, eval_callback])

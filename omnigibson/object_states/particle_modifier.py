@@ -162,7 +162,7 @@ def create_projection_visualization(
     # Make sure we render 4 times to fully propagate changes (validated empirically)
     # Omni likes to complain here again, but we have no control over the low-level information, so we suppress warnings
     with suppress_omni_log(channels=["omni.particle.system.core.plugin", "omni.hydra.scene_delegate.plugin", "omni.usd"]):
-        for i in range(4):
+        for _ in range(4):
             og.sim.render()
 
     # Return the particle system prim which "owns" everything
@@ -233,11 +233,16 @@ class ParticleModifier(IntrinsicObjectState, LinkBasedStateMixin, UpdateStateMix
         # Check whether this state has toggledon if required or saturated if required for any condition
         conditions = kwargs.get("conditions", dict())
         cond_types = {cond[0] for _, conds in conditions.items() for cond in conds}
-        for cond_type, state_type in zip((ParticleModifyCondition.TOGGLEDON,), (ToggledOn,)):
-            if cond_type in cond_types and state_type not in obj.states:
-                return False, f"{cls.__name__} requires {state_type.__name__} state!"
-
-        return True, None
+        return next(
+            (
+                (False, f"{cls.__name__} requires {state_type.__name__} state!")
+                for cond_type, state_type in zip(
+                    (ParticleModifyCondition.TOGGLEDON,), (ToggledOn,)
+                )
+                if cond_type in cond_types and state_type not in obj.states
+            ),
+            (True, None),
+        )
 
     @classmethod
     def is_compatible_asset(cls, prim, **kwargs):
@@ -249,11 +254,17 @@ class ParticleModifier(IntrinsicObjectState, LinkBasedStateMixin, UpdateStateMix
         # Check whether this state has toggledon if required or saturated if required for any condition
         conditions = kwargs.get("conditions", dict())
         cond_types = {cond[0] for _, conds in conditions.items() for cond in conds}
-        for cond_type, state_type in zip((ParticleModifyCondition.TOGGLEDON,), (ToggledOn,)):
-            if cond_type in cond_types and not state_type.is_compatible_asset(prim=prim, **kwargs):
-                return False, f"{cls.__name__} requires {state_type.__name__} state!"
-
-        return True, None
+        return next(
+            (
+                (False, f"{cls.__name__} requires {state_type.__name__} state!")
+                for cond_type, state_type in zip(
+                    (ParticleModifyCondition.TOGGLEDON,), (ToggledOn,)
+                )
+                if cond_type in cond_types
+                and not state_type.is_compatible_asset(prim=prim, **kwargs)
+            ),
+            (True, None),
+        )
 
     def _initialize(self):
         super()._initialize()
@@ -824,8 +835,9 @@ class ParticleApplier(ParticleModifier):
     def _initialize(self):
         # First, sanity check to make sure only one system is being applied, since unlike a ParticleRemover, which
         # can potentially remove multiple types of particles, a ParticleApplier should only apply one type of particle
-        assert len(self.conditions) == 1, f"A ParticleApplier can only have a single ParticleSystem associated " \
-                                          f"with it! Got: {[system_name for system_name in self.conditions.keys()]}"
+        assert (
+            len(self.conditions) == 1
+        ), f"A ParticleApplier can only have a single ParticleSystem associated with it! Got: {list(self.conditions.keys())}"
         # Run super
         super()._initialize()
 
@@ -836,11 +848,11 @@ class ParticleApplier(ParticleModifier):
 
         if self.visualize:
             assert self._projection_mesh_params["type"] in {"Cylinder", "Cone"}, \
-                f"{self.__class__.__name__} visualization only supports Cylinder and Cone types!"
+                    f"{self.__class__.__name__} visualization only supports Cylinder and Cone types!"
             radius, height = np.mean(self._projection_mesh_params["extents"][:2]) / 2.0, self._projection_mesh_params["extents"][2]
             # Generate the projection visualization
             particle_radius = m.VISUAL_PARTICLE_PROJECTION_PARTICLE_RADIUS if \
-                is_visual_particle_system(system_name=system.name) else system.particle_radius
+                    is_visual_particle_system(system_name=system.name) else system.particle_radius
 
             name_prefix = f"{self.obj.name}_{self.__class__.__name__}"
             # Create the projection visualization if it doesn't already exist, otherwise we reference it directly
@@ -874,9 +886,9 @@ class ParticleApplier(ParticleModifier):
             # metalink, and (b) zero relative orientation between the metalink and the projection mesh
             local_pos, local_quat = self.projection_mesh.get_local_pose()
             assert np.all(np.isclose(local_pos + np.array([0, 0, height / 2.0]), 0.0)), \
-                "Projection mesh tip should align with metalink position!"
+                    "Projection mesh tip should align with metalink position!"
             assert np.all(np.isclose(T.quat2euler(local_quat), 0.0)), \
-                "Projection mesh orientation should align with metalink orientation!"
+                    "Projection mesh orientation should align with metalink orientation!"
 
         # Store which method to use for sampling particle locations
         if self._sample_with_raycast:
@@ -889,9 +901,9 @@ class ParticleApplier(ParticleModifier):
         else:
             # Make sure we're only using a physical particle system and the projection method
             assert issubclass(system, PhysicalParticleSystem), \
-                "If not sampling with raycast, ParticleApplier only supports PhysicalParticleSystems!"
+                    "If not sampling with raycast, ParticleApplier only supports PhysicalParticleSystems!"
             assert self.method == ParticleModifyMethod.PROJECTION, \
-                "If not sampling with raycast, ParticleApplier only supports ParticleModifyMethod.PROJECTION method!"
+                    "If not sampling with raycast, ParticleApplier only supports ParticleModifyMethod.PROJECTION method!"
             # Compute particle spawning information once
             self._compute_particle_spawn_information(system=system)
 

@@ -82,7 +82,7 @@ def main():
         env.step(np.array([]))
         # Also print temperatures
         temps = [f"{obj.states[object_states.Temperature].get_value():>7.2f}" for obj in objs]
-        print(f"obj temps:", *temps, end="\r")
+        print("obj temps:", *temps, end="\r")
     print()
 
     # Objects are not heated anymore.

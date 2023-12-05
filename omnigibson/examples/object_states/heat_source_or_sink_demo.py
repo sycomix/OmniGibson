@@ -79,14 +79,14 @@ def main():
     # Move stove, notify user
     input("Heat source is now moving: Press ENTER to continue.")
     stove.set_position(np.array([0, 1.0, 0.61]))
-    for i in range(100):
+    for _ in range(100):
         env.step(np.array([]))
 
     # Toggle on stove again, notify user
     input("Heat source will now turn ON: Press ENTER to continue.")
     stove.states[object_states.ToggledOn].set_value(True)
     assert stove.states[object_states.ToggledOn].get_value()
-    for i in range(500):
+    for _ in range(500):
         env.step(np.array([]))
 
     # Shutdown environment at end

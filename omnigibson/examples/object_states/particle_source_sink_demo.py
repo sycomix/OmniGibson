@@ -29,13 +29,6 @@ def main(random_selection=False, headless=False, short_exec=False):
     """
     og.log.info(f"Demo {__file__}\n    " + "*" * 80 + "\n    Description:\n" + main.__doc__ + "*" * 80)
 
-    # Create the scene config to load -- empty scene
-    cfg = {
-        "scene": {
-            "type": "Scene",
-        }
-    }
-
     # Define objects to load into the environment
     sink_cfg = dict(
         type="DatasetObject",
@@ -60,8 +53,7 @@ def main(random_selection=False, headless=False, short_exec=False):
         position=[0.0, 0, 0.42],
     )
 
-    cfg["objects"] = [sink_cfg]
-
+    cfg = {"scene": {"type": "Scene"}, "objects": [sink_cfg]}
     # Create the environment!
     env = og.Environment(configs=cfg, action_timestep=1/60., physics_timestep=1/60.)
 

@@ -64,6 +64,10 @@ def create_sensor(
 
     # Create the sensor
     sensor_kwargs = dict() if sensor_kwargs is None else sensor_kwargs
-    sensor = sensor_cls(prim_path=prim_path, name=name, modalities=modalities, noise=noise, **sensor_kwargs)
-
-    return sensor
+    return sensor_cls(
+        prim_path=prim_path,
+        name=name,
+        modalities=modalities,
+        noise=noise,
+        **sensor_kwargs
+    )

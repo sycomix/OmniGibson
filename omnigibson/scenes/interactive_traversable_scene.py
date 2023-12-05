@@ -108,8 +108,8 @@ class InteractiveTraversableScene(TraversableScene):
             str: Absolute path to the desired scene file (.json) to load
         """
         # Infer scene file from model and directory
-        fname = "{}_best".format(scene_model) if scene_instance is None else scene_instance
-        return os.path.join(self.scene_dir, "json", "{}.json".format(fname))
+        fname = f"{scene_model}_best" if scene_instance is None else scene_instance
+        return os.path.join(self.scene_dir, "json", f"{fname}.json")
 
     def filter_rooms_and_object_categories(
         self, load_object_categories, not_load_object_categories, load_room_types, load_room_instances
@@ -124,10 +124,10 @@ class InteractiveTraversableScene(TraversableScene):
             load_room_instances (None or list): if specified, only load objects in these room instances into the scene
         """
         self.load_object_categories = [load_object_categories] if \
-            isinstance(load_object_categories, str) else load_object_categories
+                isinstance(load_object_categories, str) else load_object_categories
 
         self.not_load_object_categories = [not_load_object_categories] if \
-            isinstance(not_load_object_categories, str) else not_load_object_categories
+                isinstance(not_load_object_categories, str) else not_load_object_categories
 
         if load_room_instances is not None:
             if isinstance(load_room_instances, str):
@@ -137,7 +137,7 @@ class InteractiveTraversableScene(TraversableScene):
                 if room_instance in self._seg_map.room_ins_name_to_ins_id:
                     load_room_instances_filtered.append(room_instance)
                 else:
-                    log.warning("room_instance [{}] does not exist.".format(room_instance))
+                    log.warning(f"room_instance [{room_instance}] does not exist.")
             self.load_room_instances = load_room_instances_filtered
         elif load_room_types is not None:
             if isinstance(load_room_types, str):
@@ -147,7 +147,7 @@ class InteractiveTraversableScene(TraversableScene):
                 if room_type in self._seg_map.room_sem_name_to_ins_name:
                     load_room_instances_filtered.extend(self._seg_map.room_sem_name_to_ins_name[room_type])
                 else:
-                    log.warning("room_type [{}] does not exist.".format(room_type))
+                    log.warning(f"room_type [{room_type}] does not exist.")
             self.load_room_instances = load_room_instances_filtered
         else:
             self.load_room_instances = None

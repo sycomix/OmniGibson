@@ -94,7 +94,7 @@ def main(random_selection=False, headless=False, short_exec=False):
     input("The knife will fall on the apple and slice it. Press [ENTER] to continue.")
 
     # Step simulation for a bit so that apple is sliced
-    for i in range(1000):
+    for _ in range(1000):
         env.step(np.array([]))
 
     input("Apple has been sliced! Press [ENTER] to terminate the demo.")

@@ -40,7 +40,9 @@ _DEFAULT_STATE_SET = frozenset(
 )
 
 _KINEMATIC_STATE_SET = frozenset(
-    [state for state in REGISTERED_OBJECT_STATES.values() if issubclass(state, KinematicsMixin)]
+    state
+    for state in REGISTERED_OBJECT_STATES.values()
+    if issubclass(state, KinematicsMixin)
 )
 
 _FIRE_STATE_SET = frozenset(

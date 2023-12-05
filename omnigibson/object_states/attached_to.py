@@ -85,9 +85,9 @@ class AttachedTo(RelativeObjectState, BooleanStateMixin, ContactSubscribedStateM
     # Attempts to attach two objects when a CONTACT_FOUND event happens
     def on_contact(self, other, contact_headers, contact_data):
         for contact_header in contact_headers:
-            if contact_header.type == ContactEventType.CONTACT_FOUND:
                 # If it has successfully attached to something, break.
-                if self.set_value(other, True):
+            if self.set_value(other, True):
+                if contact_header.type == ContactEventType.CONTACT_FOUND:
                     break
 
     def _set_value(self, other, new_value, bypass_alignment_checking=False):
@@ -179,7 +179,7 @@ class AttachedTo(RelativeObjectState, BooleanStateMixin, ContactSubscribedStateM
                 if child_category.endswith("F"):
                     continue
                 assert child_category.endswith("M")
-                parent_category = child_category[:-1] + "F"
+                parent_category = f"{child_category[:-1]}F"
                 for parent_link_name, parent_link in other.states[AttachedTo].links.items():
                     if parent_category in parent_link_name:
                         parent_link_names[child_link_name].add(parent_link_name)

@@ -28,16 +28,15 @@ class Frozen(AbsoluteObjectState, BooleanStateMixin):
         return deps
 
     def _set_value(self, new_value):
-        if new_value:
-            temperature = np.random.uniform(
-                self.freeze_temperature + m.FROZEN_SAMPLING_RANGE_MIN,
-                self.freeze_temperature + m.FROZEN_SAMPLING_RANGE_MAX,
-            )
-            return self.obj.states[Temperature].set_value(temperature)
-        else:
+        if not new_value:
             # We'll set the temperature just one degree above freezing. Hopefully the object
             # isn't in a fridge.
             return self.obj.states[Temperature].set_value(self.freeze_temperature + 1.0)
+        temperature = np.random.uniform(
+            self.freeze_temperature + m.FROZEN_SAMPLING_RANGE_MIN,
+            self.freeze_temperature + m.FROZEN_SAMPLING_RANGE_MAX,
+        )
+        return self.obj.states[Temperature].set_value(temperature)
 
     def _get_value(self):
         return self.obj.states[Temperature].get_value() <= self.freeze_temperature

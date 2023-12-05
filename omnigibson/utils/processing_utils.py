@@ -286,5 +286,5 @@ class UniformSubsampler(Subsampler):
 if __name__ == "__main__":
     f = MovingAverageFilter(3, 10)
     a = np.array([1, 1, 1])
-    for i in range(500):
+    for _ in range(500):
         print(f.estimate(a + np.random.normal(scale=0.1)))

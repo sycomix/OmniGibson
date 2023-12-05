@@ -103,7 +103,7 @@ def main(random_selection=False, headless=False, short_exec=False):
     action_generator.print_keyboard_teleop_info()
 
     # Other helpful user info
-    print("Running demo with grasping mode {}.".format(grasping_mode))
+    print(f"Running demo with grasping mode {grasping_mode}.")
     print("Press ESC to quit")
 
     # Loop control until user quits

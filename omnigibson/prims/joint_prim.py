@@ -108,15 +108,12 @@ class JointPrim(BasePrim):
     def _load(self):
         # Make sure this joint isn't articulated
         assert not self.articulated, "Joint cannot be created, since this is an articulated joint! We are assuming" \
-                                     "the joint already exists in the stage."
+                                         "the joint already exists in the stage."
 
-        # Define a joint prim at the current stage
-        prim = create_joint(
+        return create_joint(
             prim_path=self._prim_path,
             joint_type=self._load_config.get("joint_type", JointType.JOINT),
         )
-
-        return prim
 
     def _post_load(self):
         # run super first
@@ -900,13 +897,16 @@ class JointPrim(BasePrim):
 
     def _deserialize(self, state):
         # We deserialize deterministically by knowing the order of values -- pos, vel, effort
-        return dict(
-            pos=state[0:self.n_dof],
-            vel=state[self.n_dof:2*self.n_dof],
-            effort=state[2*self.n_dof:3*self.n_dof],
-            target_pos=state[3*self.n_dof:4*self.n_dof],
-            target_vel=state[4*self.n_dof:5*self.n_dof],
-        ), 5*self.n_dof
+        return (
+            dict(
+                pos=state[: self.n_dof],
+                vel=state[self.n_dof : 2 * self.n_dof],
+                effort=state[2 * self.n_dof : 3 * self.n_dof],
+                target_pos=state[3 * self.n_dof : 4 * self.n_dof],
+                target_vel=state[4 * self.n_dof : 5 * self.n_dof],
+            ),
+            5 * self.n_dof,
+        )
 
     def duplicate(self, prim_path):
         # Cannot directly duplicate a joint prim

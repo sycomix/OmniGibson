@@ -66,7 +66,7 @@ def main(random_selection=False, headless=False, short_exec=False):
 
     def clear_waypoints():
         nonlocal waypoints
-        print(f"Cleared all waypoints!")
+        print("Cleared all waypoints!")
         waypoints = []
 
     KeyboardEventHandler.initialize()

@@ -100,7 +100,7 @@ class JointController(LocomotionController, ManipulationController, GripperContr
         # If we're using delta commands, add this value
         if self._use_delta_commands:
             # Compute the base value for the command.
-            base_value = control_dict["joint_{}".format(self._motor_type)][self.dof_idx]
+            base_value = control_dict[f"joint_{self._motor_type}"][self.dof_idx]
 
             # Apply the command to the base value.
             u = base_value + command
@@ -121,7 +121,6 @@ class JointController(LocomotionController, ManipulationController, GripperContr
                 # Update the command
                 u[[rx_ind, ry_ind, rz_ind]] = end_rots
 
-        # Otherwise, control is simply the command itself
         else:
             u = command
 

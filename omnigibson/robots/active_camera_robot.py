@@ -24,9 +24,7 @@ class ActiveCameraRobot(BaseRobot):
         # Make sure a camera controller is specified
         assert (
             "camera" in self._controllers
-        ), "Controller 'camera' must exist in controllers! Current controllers: {}".format(
-            list(self._controllers.keys())
-        )
+        ), f"Controller 'camera' must exist in controllers! Current controllers: {list(self._controllers.keys())}"
 
         # run super
         super()._validate_configuration()

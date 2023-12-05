@@ -105,17 +105,12 @@ def create_module_macros(module_path):
 
     # Create and return the generated sub-dictionary
     def _recursively_get_or_create_dict(dic, keys):
-        # If no entry is in @keys, it returns @dic
-        # Otherwise, checks whether the dictionary contains the first entry in @keys, if so, it grabs the
-        # corresponding nested dictionary, otherwise, generates a new Dict() as the value
-        # It then recurisvely calls this function with the new dic and the remaining keys
         if len(keys) == 0:
             return dic
-        else:
-            key = keys[0]
-            if key not in dic:
-                dic[key] = Dict()
-            return _recursively_get_or_create_dict(dic=dic[key], keys=keys[1:])
+        key = keys[0]
+        if key not in dic:
+            dic[key] = Dict()
+        return _recursively_get_or_create_dict(dic=dic[key], keys=keys[1:])
 
     return _recursively_get_or_create_dict(dic=macros, keys=subsections)
 

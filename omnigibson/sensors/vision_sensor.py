@@ -178,14 +178,14 @@ class VisionSensor(BaseSensor):
         self._viewport.viewport_api.set_active_camera(self._prim_path)
 
         # Requires 3 render updates to propagate changes
-        for i in range(3):
+        for _ in range(3):
             render()
 
         # Set the viewer size (requires taking one render step afterwards)
         self._viewport.viewport_api.set_texture_resolution((self._load_config["image_width"], self._load_config["image_height"]))
 
         # Requires 3 render updates to propagate changes
-        for i in range(3):
+        for _ in range(3):
             render()
 
     def _initialize(self):
@@ -203,14 +203,15 @@ class VisionSensor(BaseSensor):
                 If they are not part of self._RAW_SENSOR_TYPES' keys, we will simply pass over them
         """
         # Standardize the input and grab the intersection with all possible raw sensors
-        names = set([names]) if isinstance(names, str) else set(names)
+        names = {names} if isinstance(names, str) else set(names)
         names = names.intersection(set(self._RAW_SENSOR_TYPES.keys()))
 
-        # Initialize sensors
-        sensors = []
-        for name in names:
-            sensors.append(sensors_util.create_or_retrieve_sensor(self._viewport.viewport_api, self._RAW_SENSOR_TYPES[name]))
-
+        sensors = [
+            sensors_util.create_or_retrieve_sensor(
+                self._viewport.viewport_api, self._RAW_SENSOR_TYPES[name]
+            )
+            for name in names
+        ]
         # Suppress syntheticdata warning here because we know the first render is invalid
         with suppress_omni_log(channels=["omni.syntheticdata.plugin"]):
             render()
@@ -301,7 +302,7 @@ class VisionSensor(BaseSensor):
         width, _ = self._viewport.viewport_api.get_texture_resolution()
         self._viewport.viewport_api.set_texture_resolution((width, height))
         # Requires 3 updates to propagate changes
-        for i in range(3):
+        for _ in range(3):
             render()
 
     @property
@@ -323,7 +324,7 @@ class VisionSensor(BaseSensor):
         _, height = self._viewport.viewport_api.get_texture_resolution()
         self._viewport.viewport_api.set_texture_resolution((width, height))
         # Requires 3 updates to propagate changes
-        for i in range(3):
+        for _ in range(3):
             render()
 
     @property
@@ -414,21 +415,44 @@ class VisionSensor(BaseSensor):
             clipping_range=gym.spaces.Box(low=0, high=np.inf, shape=(2,), dtype=float),
         ))
 
-        obs_space_mapping = dict(
+        return dict(
             rgb=((self.image_height, self.image_width, 4), 0, 255, np.uint8),
             depth=((self.image_height, self.image_width), 0.0, 1.0, np.float32),
-            depth_linear=((self.image_height, self.image_width), 0.0, np.inf, np.float32),
-            normal=((self.image_height, self.image_width, 3), -1.0, 1.0, np.float32),
-            seg_semantic=((self.image_height, self.image_width), 0, MAX_CLASS_COUNT, np.uint32),
-            seg_instance=((self.image_height, self.image_width), 0, MAX_INSTANCE_COUNT, np.uint32),
-            flow=((self.image_height, self.image_width, 3), -np.inf, np.inf, np.float32),
+            depth_linear=(
+                (self.image_height, self.image_width),
+                0.0,
+                np.inf,
+                np.float32,
+            ),
+            normal=(
+                (self.image_height, self.image_width, 3),
+                -1.0,
+                1.0,
+                np.float32,
+            ),
+            seg_semantic=(
+                (self.image_height, self.image_width),
+                0,
+                MAX_CLASS_COUNT,
+                np.uint32,
+            ),
+            seg_instance=(
+                (self.image_height, self.image_width),
+                0,
+                MAX_INSTANCE_COUNT,
+                np.uint32,
+            ),
+            flow=(
+                (self.image_height, self.image_width, 3),
+                -np.inf,
+                np.inf,
+                np.float32,
+            ),
             bbox_2d_tight=bbox_2d_space,
             bbox_2d_loose=bbox_2d_space,
             bbox_3d=bbox_3d_space,
             camera=camera_space,
         )
-
-        return obs_space_mapping
 
     @classmethod
     def clear(cls):
@@ -448,7 +472,7 @@ class VisionSensor(BaseSensor):
 
     @classproperty
     def all_modalities(cls):
-        return {k for k in cls._SENSOR_HELPERS.keys()}
+        return set(cls._SENSOR_HELPERS.keys())
 
     @classproperty
     def no_noise_modalities(cls):

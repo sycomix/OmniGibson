@@ -164,16 +164,15 @@ def merge_nested_dicts(base_dict, extra_dict, inplace=False, verbose=False):
     for k, v in extra_dict.items():
         if k not in base_dict:
             base_dict[k] = v
+        elif isinstance(v, dict) and isinstance(base_dict[k], dict):
+            base_dict[k] = merge_nested_dicts(base_dict[k], v)
         else:
-            if isinstance(v, dict) and isinstance(base_dict[k], dict):
-                base_dict[k] = merge_nested_dicts(base_dict[k], v)
-            else:
-                not_equal = base_dict[k] != v
-                if isinstance(not_equal, np.ndarray):
-                    not_equal = not_equal.any()
-                if not_equal and verbose:
-                    print(f"Different values for key {k}: {base_dict[k]}, {v}\n")
-                base_dict[k] = np.array(v) if isinstance(v, list) else v
+            not_equal = base_dict[k] != v
+            if isinstance(not_equal, np.ndarray):
+                not_equal = not_equal.any()
+            if not_equal and verbose:
+                print(f"Different values for key {k}: {base_dict[k]}, {v}\n")
+            base_dict[k] = np.array(v) if isinstance(v, list) else v
 
     # Return new dict
     return base_dict
@@ -244,8 +243,9 @@ def assert_valid_key(key, valid_keys, name=None):
     """
     if name is None:
         name = "value"
-    assert key in valid_keys, "Invalid {} received! Valid options are: {}, got: {}".format(
-        name, valid_keys.keys() if isinstance(valid_keys, dict) else valid_keys, key)
+    assert (
+        key in valid_keys
+    ), f"Invalid {name} received! Valid options are: {valid_keys.keys() if isinstance(valid_keys, dict) else valid_keys}, got: {key}"
 
 
 def create_class_from_registry_and_config(cls_name, cls_registry, cfg, cls_type_descriptor):
@@ -778,7 +778,9 @@ class Wrapper:
         while True:
             if isinstance(obj, Wrapper):
                 if obj.class_name() == self.class_name():
-                    raise Exception("Attempted to double wrap with Wrapper: {}".format(self.__class__.__name__))
+                    raise Exception(
+                        f"Attempted to double wrap with Wrapper: {self.__class__.__name__}"
+                    )
                 obj = obj.wrapped_obj
             else:
                 break
@@ -809,9 +811,8 @@ class Wrapper:
             def hooked(*args, **kwargs):
                 result = orig_attr(*args, **kwargs)
                 # prevent wrapped_class from becoming unwrapped
-                if id(result) == id(self.wrapped_obj):
-                    return self
-                return result
+                return self if id(result) == id(self.wrapped_obj) else result
+
             return hooked
         else:
             return orig_attr

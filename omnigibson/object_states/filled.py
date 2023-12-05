@@ -16,7 +16,7 @@ class Filled(RelativeObjectState, BooleanStateMixin):
     def _get_value(self, system):
         # Sanity check to make sure system is valid
         assert is_physical_particle_system(system_name=system.name), \
-            "Can only get Filled state with a valid PhysicalParticleSystem!"
+                "Can only get Filled state with a valid PhysicalParticleSystem!"
 
         # Check what volume is filled
         if system.n_particles > 0:
@@ -26,25 +26,23 @@ class Filled(RelativeObjectState, BooleanStateMixin):
             # If greater than threshold, then the volume is filled
             # Explicit bool cast needed here because the type is bool_ instead of bool which is not JSON-Serializable
             # This has to do with numpy, see https://stackoverflow.com/questions/58408054/typeerror-object-of-type-bool-is-not-json-serializable
-            value = bool(prop_filled > m.VOLUME_FILL_PROPORTION)
+            return prop_filled > m.VOLUME_FILL_PROPORTION
         else:
             # No particles exists, so we're obviously empty
-            value = False
-
-        return value
+            return False
 
     def _set_value(self, system, new_value):
         # Sanity check to make sure system is valid
         assert is_physical_particle_system(system_name=system.name), \
-            "Can only set Filled state with a valid PhysicalParticleSystem!"
+                "Can only set Filled state with a valid PhysicalParticleSystem!"
 
         # First, check our current state
         current_state = self.get_value(system)
 
         # Only do something if we're changing state
         if current_state != new_value:
-            contained_particles_state = self.obj.states[ContainedParticles]
             if new_value:
+                contained_particles_state = self.obj.states[ContainedParticles]
                 # Going from False --> True, sample volume with particles
                 system.generate_particles_from_link(
                     obj=self.obj,

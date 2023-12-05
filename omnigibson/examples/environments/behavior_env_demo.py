@@ -39,14 +39,14 @@ def main(random_selection=False, headless=False, short_exec=False):
 
     # Run a simple loop and reset periodically
     max_iterations = 10 if not short_exec else 1
-    for j in range(max_iterations):
+    for _ in range(max_iterations):
         og.log.info("Resetting environment")
         env.reset()
         for i in range(100):
             action = env.action_space.sample()
             state, reward, done, info = env.step(action)
             if done:
-                og.log.info("Episode finished after {} timesteps".format(i + 1))
+                og.log.info(f"Episode finished after {i + 1} timesteps")
                 break
 
     # Always close the environment at the end

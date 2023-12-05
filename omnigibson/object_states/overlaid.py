@@ -51,7 +51,10 @@ class Overlaid(KinematicsMixin, RelativeObjectState, BooleanStateMixin):
         Then, the convex hull of the particles of the cloth object needs to cover a decent percentage of the
         base aligned bounding box of the other rigid object.
         """
-        if not (self.obj.prim_type == PrimType.CLOTH and other.prim_type == PrimType.RIGID):
+        if (
+            self.obj.prim_type != PrimType.CLOTH
+            or other.prim_type != PrimType.RIGID
+        ):
             raise ValueError("Overlaid state requires obj1 is cloth and obj2 is rigid.")
 
         if not self.obj.states[Touching].get_value(other):

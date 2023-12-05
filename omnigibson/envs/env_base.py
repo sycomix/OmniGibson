@@ -62,7 +62,7 @@ class Environment(gym.Env, GymObservable, Recreatable):
         self._current_step = 0
 
         # Convert config file(s) into a single parsed dict
-        configs = configs if isinstance(configs, list) or isinstance(configs, tuple) else [configs]
+        configs = configs if isinstance(configs, (list, tuple)) else [configs]
 
         # Initial default config
         self.config = self.default_config
@@ -94,7 +94,7 @@ class Environment(gym.Env, GymObservable, Recreatable):
                 modifications to be made without having to specify entire configs during each reload.
         """
         # Convert config file(s) into a single parsed dict
-        configs = [configs] if isinstance(configs, dict) or isinstance(configs, str) else configs
+        configs = [configs] if isinstance(configs, (dict, str)) else configs
 
         # Initial default config
         new_config = self.default_config
@@ -382,17 +382,17 @@ class Environment(gym.Env, GymObservable, Recreatable):
                 - dict: info, i.e. dictionary with any useful information
         """
         # If the action is not a dictionary, convert into a dictionary
-        if not isinstance(action, dict) and not isinstance(action, gym.spaces.Dict):
+        if isinstance(action, (dict, gym.spaces.Dict)):
+            # Our inputted action is the action dictionary
+            action_dict = action
+
+        else:
             action_dict = dict()
             idx = 0
             for robot in self.robots:
                 action_dim = robot.action_dim
                 action_dict[robot.name] = action[idx: idx + action_dim]
                 idx += action_dim
-        else:
-            # Our inputted action is the action dictionary
-            action_dict = action
-
         # Iterate over all robots and apply actions
         for robot in self.robots:
             robot.apply_action(action_dict[robot.name])

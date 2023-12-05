@@ -98,13 +98,16 @@ class ToggledOn(AbsoluteObjectState, BooleanStateMixin, LinkBasedStateMixin, Upd
         # Avoid circular imports
         from omnigibson.robots.manipulation_robot import ManipulationRobot
         # detect marker and hand interaction
-        self._robot_link_paths = set(link.prim_path
-                                     for robot in og.sim.scene.robots if isinstance(robot, ManipulationRobot)
-                                     for finger_links in robot.finger_links.values()
-                                     for link in finger_links)
+        self._robot_link_paths = {
+            link.prim_path
+            for robot in og.sim.scene.robots
+            if isinstance(robot, ManipulationRobot)
+            for finger_links in robot.finger_links.values()
+            for link in finger_links
+        }
 
         # Check overlap
-        robot_can_toggle = self._check_overlap() if len(self._robot_link_paths) > 0 else False
+        robot_can_toggle = self._check_overlap() if self._robot_link_paths else False
 
         if robot_can_toggle:
             self.robot_can_toggle_steps += 1
