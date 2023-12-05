@@ -153,17 +153,11 @@ class Saturated(RelativeObjectState, BooleanStateMixin):
         return True
 
     def get_texture_change_params(self):
-        colors = []
-
-        for system in self._limits.keys():
-            if self.get_value(system):
-                colors.append(system.color)
-
-        if len(colors) == 0:
-            # If no fluid system has Soaked=True, keep the default albedo value
-            albedo_add = 0.0
-            diffuse_tint = [1.0, 1.0, 1.0]
-        else:
+        if colors := [
+            system.color
+            for system in self._limits.keys()
+            if self.get_value(system)
+        ]:
             albedo_add = 0.1
             avg_color = np.mean(colors, axis=0)
             # Add a tint of avg_color
@@ -173,6 +167,10 @@ class Saturated(RelativeObjectState, BooleanStateMixin):
             diffuse_tint = np.array([0.5, 0.5, 0.5]) + avg_color / np.sum(avg_color)
             diffuse_tint = diffuse_tint.tolist()
 
+        else:
+            # If no fluid system has Soaked=True, keep the default albedo value
+            albedo_add = 0.0
+            diffuse_tint = [1.0, 1.0, 1.0]
         return albedo_add, diffuse_tint
 
     @classmethod

@@ -290,7 +290,7 @@ class EntityPrim(XFormPrim):
         prismatic_joints = {j_name: j for j_name, j in self._joints.items() if j.joint_type == JointType.JOINT_PRISMATIC}
 
         # If there are no prismatic joints, we can skip this step
-        if len(prismatic_joints) == 0:
+        if not prismatic_joints:
             return
 
         uniform_scale = np.allclose(self.scale, self.scale[0])
@@ -300,7 +300,7 @@ class EntityPrim(XFormPrim):
                 scale_along_axis = self.scale[0]
             else:
                 assert not self.initialized, \
-                    "Cannot update joint limits for a non-uniformly scaled object when already initialized."
+                        "Cannot update joint limits for a non-uniformly scaled object when already initialized."
                 for link_name, link in self.links.items():
                     if joint.parent_name == link_name:
                         # Find the parent link frame orientation in the object frame
@@ -897,27 +897,26 @@ class EntityPrim(XFormPrim):
                 self.root_link.set_position_orientation(position, orientation)
             else:
                 super().set_position_orientation(position, orientation)
+        elif self._root_handle is not None and self._root_handle != _dynamic_control.INVALID_HANDLE and \
+                        self._dc is not None and self._dc.is_simulating():
+            self.root_link.set_position_orientation(position, orientation)
         else:
-            if self._root_handle is not None and self._root_handle != _dynamic_control.INVALID_HANDLE and \
-                    self._dc is not None and self._dc.is_simulating():
-                self.root_link.set_position_orientation(position, orientation)
-            else:
-                super().set_position_orientation(position=position, orientation=orientation)
+            super().set_position_orientation(position=position, orientation=orientation)
 
         BoundingBoxAPI.clear()
 
     def get_position_orientation(self):
         if self._prim_type == PrimType.CLOTH:
-            if self._dc is not None and self._dc.is_simulating():
-                return self.root_link.get_position_orientation()
-            else:
-                return super().get_position_orientation()
-        else:
-            if self._root_handle is not None and self._root_handle != _dynamic_control.INVALID_HANDLE and \
+            return (
+                self.root_link.get_position_orientation()
+                if self._dc is not None and self._dc.is_simulating()
+                else super().get_position_orientation()
+            )
+        if self._root_handle is not None and self._root_handle != _dynamic_control.INVALID_HANDLE and \
                     self._dc is not None and self._dc.is_simulating():
-                return self.root_link.get_position_orientation()
-            else:
-                return super().get_position_orientation()
+            return self.root_link.get_position_orientation()
+        else:
+            return super().get_position_orientation()
 
     def _set_local_pose_when_simulating(self, translation=None, orientation=None):
         """
@@ -955,12 +954,11 @@ class EntityPrim(XFormPrim):
                 self._set_local_pose_when_simulating(translation=translation, orientation=orientation)
             else:
                 super().set_local_pose(translation=translation, orientation=orientation)
+        elif self._root_handle is not None and self._root_handle != _dynamic_control.INVALID_HANDLE and \
+                        self._dc is not None and self._dc.is_simulating():
+            self._set_local_pose_when_simulating(translation=translation, orientation=orientation)
         else:
-            if self._root_handle is not None and self._root_handle != _dynamic_control.INVALID_HANDLE and \
-                    self._dc is not None and self._dc.is_simulating():
-                self._set_local_pose_when_simulating(translation=translation, orientation=orientation)
-            else:
-                super().set_local_pose(translation=translation, orientation=orientation)
+            super().set_local_pose(translation=translation, orientation=orientation)
         BoundingBoxAPI.clear()
 
     def _get_local_pose_when_simulating(self):
@@ -987,16 +985,16 @@ class EntityPrim(XFormPrim):
 
     def get_local_pose(self):
         if self._prim_type == PrimType.CLOTH:
-            if self._dc is not None and self._dc.is_simulating():
-                return self._get_local_pose_when_simulating()
-            else:
-                return super().get_local_pose()
-        else:
-            if self._root_handle is not None and self._root_handle != _dynamic_control.INVALID_HANDLE and \
+            return (
+                self._get_local_pose_when_simulating()
+                if self._dc is not None and self._dc.is_simulating()
+                else super().get_local_pose()
+            )
+        if self._root_handle is not None and self._root_handle != _dynamic_control.INVALID_HANDLE and \
                     self._dc is not None and self._dc.is_simulating():
-                return self._get_local_pose_when_simulating()
-            else:
-                return super().get_local_pose()
+            return self._get_local_pose_when_simulating()
+        else:
+            return super().get_local_pose()
 
     # TODO: Is the omni joint damping (used for driving motors) same as dissipative joint damping (what we had in pb)?
     @property

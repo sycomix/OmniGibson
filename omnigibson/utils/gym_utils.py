@@ -24,9 +24,9 @@ def recursively_generate_flat_dict(dic, prefix=None):
     out = dict()
     prefix = "" if prefix is None else f"{prefix}::"
     for k, v in dic.items():
-        if isinstance(v, gym.spaces.Dict) or isinstance(v, dict):
+        if isinstance(v, (gym.spaces.Dict, dict)):
             out.update(recursively_generate_flat_dict(dic=v, prefix=f"{prefix}{k}"))
-        elif isinstance(v, gym.spaces.Tuple) or isinstance(v, tuple):
+        elif isinstance(v, (gym.spaces.Tuple, tuple)):
             for i, vv in enumerate(v):
                 # Assume no dicts are nested within tuples
                 out[f"{prefix}{k}::{i}"] = vv

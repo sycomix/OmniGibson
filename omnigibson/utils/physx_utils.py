@@ -245,7 +245,7 @@ def create_physx_particleset_pointinstancer(
     # Omni always complains about a low-level USD thing we have no control over
     # so we suppress the warnings
     with suppress_omni_log(channels=["omni.usd"]):
-        for i in range(3):
+        for _ in range(3):
             og.sim.render()
 
     # Isosurfaces require an additional physics timestep before they're actually rendered

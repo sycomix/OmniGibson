@@ -186,8 +186,7 @@ class DatasetObject(USDObject):
                 [0.0, 0.0, 1.0],
             ]
         )
-        rotated_quat = T.mat2quat(rot_matrix @ T.quat2mat(chosen_orientation))
-        return rotated_quat
+        return T.mat2quat(rot_matrix @ T.quat2mat(chosen_orientation))
 
     def _initialize(self):
         # Run super method first
@@ -493,11 +492,8 @@ class DatasetObject(USDObject):
         # Compute the world-to-base frame transform.
         world_to_base_frame = trimesh.transformations.inverse_matrix(base_frame_to_world)
 
-        # Grab the corners of all the different links' bounding boxes. We will later fit a bounding box to
-        # this set of points to get our final, base-frame bounding box.
-        points = []
-
         links = {link_name: self._links[link_name]} if link_name is not None else self._links
+        points = []
         for link_name, link in links.items():
             # If the link has no visual or collision meshes, we skip over it (based on the @visual flag)
             meshes = link.visual_meshes if visual else link.collision_meshes
@@ -549,8 +545,7 @@ class DatasetObject(USDObject):
                 points.extend(aabb_vertices_in_base_frame)
             else:
                 raise ValueError(
-                    "Bounding box annotation missing for link: %s. Use fallback_to_aabb=True if you're okay with using "
-                    "AABB as fallback." % link_name
+                    f"Bounding box annotation missing for link: {link_name}. Use fallback_to_aabb=True if you're okay with using AABB as fallback."
                 )
 
         if xy_aligned:

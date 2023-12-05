@@ -191,9 +191,9 @@ class BaseController(Serializable, Registerable, Recreatable):
             command (Array[float]): inputted command to store internally in this controller
         """
         # Sanity check the command
-        assert len(command) == self.command_dim, "Commands must be dimension {}, got dim {} instead.".format(
-            self.command_dim, len(command)
-        )
+        assert (
+            len(command) == self.command_dim
+        ), f"Commands must be dimension {self.command_dim}, got dim {len(command)} instead."
         # Preprocess and store inputted command
         self._command = self._preprocess_command(np.array(command))
 

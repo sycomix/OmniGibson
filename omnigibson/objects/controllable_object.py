@@ -300,9 +300,9 @@ class ControllableObject(BaseObject):
             action = np.array(self.discrete_action_list[action])
 
         # Check if the input action's length matches the action dimension
-        assert len(action) == self.action_dim, "Action must be dimension {}, got dim {} instead.".format(
-            self.action_dim, len(action)
-        )
+        assert (
+            len(action) == self.action_dim
+        ), f"Action must be dimension {self.action_dim}, got dim {len(action)} instead."
 
         # Run convert actions to controls
         control, control_type = self._actions_to_control(action=action)
@@ -382,17 +382,15 @@ class ControllableObject(BaseObject):
         """
         # Run sanity check
         if indices is None:
-            assert len(control) == len(control_type) == self.n_dof, (
-                "Control signals, control types, and number of DOF should all be the same!"
-                "Got {}, {}, and {} respectively.".format(len(control), len(control_type), self.n_dof)
-            )
+            assert (
+                len(control) == len(control_type) == self.n_dof
+            ), f"Control signals, control types, and number of DOF should all be the same!Got {len(control)}, {len(control_type)}, and {self.n_dof} respectively."
             # Set indices manually so that we're standardized
             indices = np.arange(self.n_dof)
         else:
-            assert len(control) == len(control_type) == len(indices), (
-                "Control signals, control types, and indices should all be the same!"
-                "Got {}, {}, and {} respectively.".format(len(control), len(control_type), len(indices))
-            )
+            assert (
+                len(control) == len(control_type) == len(indices)
+            ), f"Control signals, control types, and indices should all be the same!Got {len(control)}, {len(control_type)}, and {len(indices)} respectively."
 
         # Standardize normalized input
         n_indices = len(indices)
@@ -413,14 +411,14 @@ class ControllableObject(BaseObject):
 
                 # Make sure the indices are mapped correctly
                 assert indices[cur_indices_idx + joint_dof] == cur_ctrl_idx + joint_dof, \
-                    "Got mismatched control indices for a single joint!"
+                        "Got mismatched control indices for a single joint!"
                 # Check to make sure all joints, control_types, and normalized as all the same over n-DOF for the joint
                 for group_name, group in zip(
                         ("joints", "control_types", "normalized"),
                         (self._dof_to_joints, control_type, normalized),
                 ):
                     assert len({group[indices[cur_indices_idx + i]] for i in range(joint_dof)}) == 1, \
-                        f"Not all {group_name} were the same when trying to deploy control for a single joint!"
+                            f"Not all {group_name} were the same when trying to deploy control for a single joint!"
                 # Assuming this all passes, we grab the control subvector, type, and normalized value accordingly
                 ctrl = control[cur_ctrl_idx: cur_ctrl_idx + joint_dof]
             else:
@@ -435,11 +433,8 @@ class ControllableObject(BaseObject):
                 joint.set_vel(ctrl, normalized=norm, drive=True)
             elif ctrl_type == ControlType.POSITION:
                 joint.set_pos(ctrl, normalized=norm, drive=True)
-            elif ctrl_type == ControlType.NONE:
-                # Do nothing
-                pass
-            else:
-                raise ValueError("Invalid control type specified: {}".format(ctrl_type))
+            elif ctrl_type != ControlType.NONE:
+                raise ValueError(f"Invalid control type specified: {ctrl_type}")
 
             # Finally, increment the current index based on how many DOFs were just controlled
             cur_indices_idx += joint_dof
@@ -478,7 +473,7 @@ class ControllableObject(BaseObject):
         # Grab size from super and add in controller state sizes
         size = super().state_size
 
-        return size + sum([c.state_size for c in self._controllers.values()])
+        return size + sum(c.state_size for c in self._controllers.values())
 
     def _dump_state(self):
         # Grab super state
@@ -535,7 +530,7 @@ class ControllableObject(BaseObject):
             int: Dimension of action space for this object. By default,
                 is the sum over all controller action dimensions
         """
-        return sum([controller.command_dim for controller in self._controllers.values()])
+        return sum(controller.command_dim for controller in self._controllers.values())
 
     @property
     def action_space(self):
@@ -601,11 +596,10 @@ class ControllableObject(BaseObject):
             dict: Mapping from controller names (e.g.: head, base, arm, etc.) to corresponding
                 indices (list) of the joint state vector controlled by each controller
         """
-        dic = {}
-        for controller in self.controller_order:
-            dic[controller] = self._controllers[controller].dof_idx
-
-        return dic
+        return {
+            controller: self._controllers[controller].dof_idx
+            for controller in self.controller_order
+        }
 
     @property
     def control_limits(self):

@@ -87,9 +87,9 @@ class Registry(UniquelyNamed):
         self.unique_keys.add(self.default_key)
 
         # Make sure there's no overlap between the unique and group keys
-        assert len(self.unique_keys.intersection(self.group_keys)) == 0,\
-            f"Cannot create registry with unique and group object keys that are the same! " \
-            f"Unique keys: {self.unique_keys}, group keys: {self.group_keys}"
+        assert not self.unique_keys.intersection(
+            self.group_keys
+        ), f"Cannot create registry with unique and group object keys that are the same! Unique keys: {self.unique_keys}, group keys: {self.group_keys}"
 
         # Create the dicts programmatically
         for k in self.unique_keys.union(self.group_keys):
@@ -110,8 +110,10 @@ class Registry(UniquelyNamed):
             obj (any): Instance to add to this registry
         """
         # Make sure that obj is of the correct class type
-        assert any([isinstance(obj, class_type) or issubclass(obj, class_type) for class_type in self.class_types]), \
-            f"Added object must be either an instance or subclass of one of the following classes: {self.class_types}!"
+        assert any(
+            isinstance(obj, class_type) or issubclass(obj, class_type)
+            for class_type in self.class_types
+        ), f"Added object must be either an instance or subclass of one of the following classes: {self.class_types}!"
         self._add(obj=obj, keys=self.all_keys)
 
     def _add(self, obj, keys=None):
@@ -312,8 +314,10 @@ class SerializableRegistry(Registry, Serializable):
     def add(self, obj):
         # In addition to any other class types, we make sure that the object is a serializable instance / class
         validate_class = issubclass if isclass(obj) else isinstance
-        assert any([validate_class(obj, class_type) for class_type in (Serializable, SerializableNonInstance)]), \
-            f"Added object must be either an instance or subclass of Serializable or SerializableNonInstance!"
+        assert any(
+            validate_class(obj, class_type)
+            for class_type in (Serializable, SerializableNonInstance)
+        ), "Added object must be either an instance or subclass of Serializable or SerializableNonInstance!"
         # Run super like normal
         super().add(obj=obj)
 

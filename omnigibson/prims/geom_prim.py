@@ -75,9 +75,8 @@ class GeomPrim(XFormPrim):
         """
         if self.has_material():
             return self.material.diffuse_color_constant
-        else:
-            color = self.get_attribute("primvars:displayColor")
-            return None if color is None else np.array(color)[0]
+        color = self.get_attribute("primvars:displayColor")
+        return None if color is None else np.array(color)[0]
 
     @color.setter
     def color(self, rgb):
@@ -100,9 +99,8 @@ class GeomPrim(XFormPrim):
         """
         if self.has_material():
             return self.material.opacity_constant
-        else:
-            opacity = self.get_attribute("primvars:displayOpacity")
-            return None if opacity is None else np.array(opacity)[0]
+        opacity = self.get_attribute("primvars:displayOpacity")
+        return None if opacity is None else np.array(opacity)[0]
 
     @opacity.setter
     def opacity(self, opacity):
@@ -334,14 +332,12 @@ class CollisionGeomPrim(GeomPrim):
                 self._binding_api = UsdShade.MaterialBindingAPI.Apply(self.prim)
         if self._applied_physics_material is not None:
             return self._applied_physics_material
-        else:
-            physics_binding = self._binding_api.GetDirectBinding(materialPurpose="physics")
-            path = physics_binding.GetMaterialPath()
-            if path == "":
-                return None
-            else:
-                self._applied_physics_material = PhysicsMaterial(prim_path=path)
-                return self._applied_physics_material
+        physics_binding = self._binding_api.GetDirectBinding(materialPurpose="physics")
+        path = physics_binding.GetMaterialPath()
+        if path == "":
+            return None
+        self._applied_physics_material = PhysicsMaterial(prim_path=path)
+        return self._applied_physics_material
 
 
 class VisualGeomPrim(GeomPrim):

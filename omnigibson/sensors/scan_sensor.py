@@ -100,7 +100,9 @@ class ScanSensor(BaseSensor):
 
         # Sanity check modalities -- if we're using occupancy_grid without scan modality, raise an error
         if isinstance(modalities, Iterable) and not isinstance(modalities, str) and "occupancy_grid" in modalities:
-            assert "scan" in modalities, f"'scan' modality must be included in order to get occupancy_grid modality!"
+            assert (
+                "scan" in modalities
+            ), "'scan' modality must be included in order to get occupancy_grid modality!"
 
         # Run super method
         super().__init__(
@@ -143,14 +145,24 @@ class ScanSensor(BaseSensor):
 
     @property
     def _obs_space_mapping(self):
-        # Set the remaining modalities' values
-        # (obs modality, shape, low, high)
-        obs_space_mapping = dict(
-            scan=((self.n_horizontal_rays, self.n_vertical_rays), 0.0, 1.0, np.float32),
-            occupancy_grid=((self.occupancy_grid_resolution, self.occupancy_grid_resolution, 1), 0.0, 1.0, np.float32),
+        return dict(
+            scan=(
+                (self.n_horizontal_rays, self.n_vertical_rays),
+                0.0,
+                1.0,
+                np.float32,
+            ),
+            occupancy_grid=(
+                (
+                    self.occupancy_grid_resolution,
+                    self.occupancy_grid_resolution,
+                    1,
+                ),
+                0.0,
+                1.0,
+                np.float32,
+            ),
         )
-
-        return obs_space_mapping
 
     def get_local_occupancy_grid(self, scan):
         """

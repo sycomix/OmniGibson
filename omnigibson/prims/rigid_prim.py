@@ -163,8 +163,7 @@ class RigidPrim(XFormPrim):
         coms, vols = [], []
         for prim in self._prim.GetChildren():
             prims_to_check.append(prim)
-            for child in prim.GetChildren():
-                prims_to_check.append(child)
+            prims_to_check.extend(iter(prim.GetChildren()))
         for prim in prims_to_check:
             if prim.GetPrimTypeInfo().GetTypeName() in GEOM_TYPES:
                 mesh_name, mesh_path = prim.GetName(), prim.GetPrimPath().__str__()
@@ -192,7 +191,7 @@ class RigidPrim(XFormPrim):
 
         # If we have any collision meshes, we aggregate their center of mass and volume values to set the center of mass
         # for this link
-        if len(coms) > 0:
+        if coms:
             com = (np.array(coms) * np.array(vols).reshape(-1, 1)).sum(axis=0) / np.sum(vols)
             self.set_attribute("physics:centerOfMass", Gf.Vec3f(*com))
 
@@ -453,13 +452,11 @@ class RigidPrim(XFormPrim):
         # If our raw_usd_mass isn't specified, we check dynamic control if possible (sim is playing),
         # otherwise we fallback to analytical computation of volume * density
         if raw_usd_mass != 0:
-            mass = raw_usd_mass
+            return raw_usd_mass
         elif self.dc_is_accessible:
-            mass = self.rigid_body_properties.mass
+            return self.rigid_body_properties.mass
         else:
-            mass = self.volume * self.density
-
-        return mass
+            return self.volume * self.density
 
     @mass.setter
     def mass(self, mass):

@@ -101,10 +101,10 @@ class BaseTask(GymObservable, Registerable, metaclass=ABCMeta):
         Load this task
         """
         # Make sure the scene is of the correct type!
-        assert any([issubclass(env.scene.__class__, valid_cls) for valid_cls in self.valid_scene_types]), \
-            f"Got incompatible scene type {env.scene.__class__.__name__} for task {self.__class__.__name__}! " \
-            f"Scene class must be a subclass of at least one of: " \
-            f"{[cls_type.__name__ for cls_type in self.valid_scene_types]}"
+        assert any(
+            issubclass(env.scene.__class__, valid_cls)
+            for valid_cls in self.valid_scene_types
+        ), f"Got incompatible scene type {env.scene.__class__.__name__} for task {self.__class__.__name__}! Scene class must be a subclass of at least one of: {[cls_type.__name__ for cls_type in self.valid_scene_types]}"
 
         # Run internal method
         self._load(env=env)
@@ -272,7 +272,11 @@ class BaseTask(GymObservable, Registerable, metaclass=ABCMeta):
             n-array: 1D-numpy array of flattened low-dim observations
         """
         # By default, we simply concatenate all values in our obs dict
-        return np.concatenate([ob for ob in obs.values()]) if len(obs.values()) > 0 else np.array([])
+        return (
+            np.concatenate(list(obs.values()))
+            if len(obs.values()) > 0
+            else np.array([])
+        )
 
     def get_obs(self, env, flatten_low_dim=True):
         # Args: env (Environment): environment instance

@@ -251,7 +251,7 @@ def test_adjacency():
     dishtowel = og.sim.scene.object_registry("name", "dishtowel")
 
     place_obj_on_floor_plane(bottom_cabinet)
-    for i, (axis, obj) in enumerate(zip(("x", "y"), (bowl, dishtowel))):
+    for axis, obj in zip(("x", "y"), (bowl, dishtowel)):
         place_obj_on_floor_plane(obj, **{f"{axis}_offset": 0.4})
         og.sim.step()
 

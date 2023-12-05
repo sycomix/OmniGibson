@@ -12,32 +12,29 @@ def main(random_selection=False, headless=False, short_exec=False):
     Demo of attachment of different parts of a shelf
     """
     cfg = yaml.load(open(f"{og.example_config_path}/default_cfg.yaml", "r"), Loader=yaml.FullLoader)
-    # Add objects that we want to create
-    obj_cfgs = []
-    obj_cfgs.append(dict(
-        type="LightObject",
-        name="light",
-        light_type="Sphere",
-        radius=0.01,
-        intensity=5000,
-        position=[0, 0, 1.0],
-    ))
-
     base_z = 0.2
     delta_z = 0.01
 
-    idx = 0
-    obj_cfgs.append(dict(
-        type="DatasetObject",
-        name="shelf_back_panel",
-        category="shelf_back_panel",
-        model="gjsnrt",
-        bounding_box=[0.8, 2.02, 0.02],
-        position=[0, 0, 0.01],
-        abilities={"attachable": {}},
-    ))
-    idx += 1
-
+    obj_cfgs = [
+        dict(
+            type="LightObject",
+            name="light",
+            light_type="Sphere",
+            radius=0.01,
+            intensity=5000,
+            position=[0, 0, 1.0],
+        ),
+        dict(
+            type="DatasetObject",
+            name="shelf_back_panel",
+            category="shelf_back_panel",
+            model="gjsnrt",
+            bounding_box=[0.8, 2.02, 0.02],
+            position=[0, 0, 0.01],
+            abilities={"attachable": {}},
+        ),
+    ]
+    idx = 0 + 1
     xs = [-0.4, 0.4]
     for i in range(2):
         obj_cfgs.append(dict(
@@ -75,15 +72,17 @@ def main(random_selection=False, headless=False, short_exec=False):
     ))
     idx += 1
 
-    obj_cfgs.append(dict(
-        type="DatasetObject",
-        name=f"shelf_baseboard",
-        category="shelf_baseboard",
-        model="hlhneo",
-        bounding_box=[0.742, 0.067, 0.02],
-        position=[0, -0.97884506, base_z + delta_z * idx],
-        abilities={"attachable": {}},
-    ))
+    obj_cfgs.append(
+        dict(
+            type="DatasetObject",
+            name="shelf_baseboard",
+            category="shelf_baseboard",
+            model="hlhneo",
+            bounding_box=[0.742, 0.067, 0.02],
+            position=[0, -0.97884506, base_z + delta_z * idx],
+            abilities={"attachable": {}},
+        )
+    )
     idx += 1
 
     cfg["objects"] = obj_cfgs

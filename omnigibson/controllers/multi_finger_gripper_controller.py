@@ -137,7 +137,6 @@ class MultiFingerGripperController(GripperController):
         Returns:
             Array[float]: outputted (non-clipped!) control signal to deploy
         """
-        joint_pos = control_dict["joint_position"][self.dof_idx]
         # Choose what to do based on control mode
         if self._mode == "binary":
             # Use max control signal
@@ -152,6 +151,7 @@ class MultiFingerGripperController(GripperController):
 
         # If we're near the joint limits and we're using velocity / torque control, we zero out the action
         if self._motor_type in {"velocity", "torque"}:
+            joint_pos = control_dict["joint_position"][self.dof_idx]
             violate_upper_limit = (
                 joint_pos > self._control_limits[ControlType.POSITION][1][self.dof_idx] - self._limit_tolerance
             )

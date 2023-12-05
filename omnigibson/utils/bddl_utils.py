@@ -85,7 +85,7 @@ class ObjectStateBinaryPredicate(BinaryAtomicFormula):
 
 def get_unary_predicate_for_state(state_class, state_name):
     return type(
-        state_class.__name__ + "StateUnaryPredicate",
+        f"{state_class.__name__}StateUnaryPredicate",
         (ObjectStateUnaryPredicate,),
         {"STATE_CLASS": state_class, "STATE_NAME": state_name},
     )
@@ -93,7 +93,7 @@ def get_unary_predicate_for_state(state_class, state_name):
 
 def get_binary_predicate_for_state(state_class, state_name):
     return type(
-        state_class.__name__ + "StateBinaryPredicate",
+        f"{state_class.__name__}StateBinaryPredicate",
         (ObjectStateBinaryPredicate,),
         {"STATE_CLASS": state_class, "STATE_NAME": state_name},
     )
@@ -156,7 +156,9 @@ SUPPORTED_PREDICATES = {
     "insource": ObjectStateInsourcePredicate,
 }
 
-KINEMATIC_STATES_BDDL = frozenset([state.__name__.lower() for state in _KINEMATIC_STATE_SET])
+KINEMATIC_STATES_BDDL = frozenset(
+    state.__name__.lower() for state in _KINEMATIC_STATE_SET
+)
 
 
 # BEHAVIOR-related
@@ -343,19 +345,16 @@ class BDDLSampler:
         with og.sim.playing():
             self._env.scene.reset()
 
-            error_msg = self._sample_initial_conditions()
-            if error_msg:
+            if error_msg := self._sample_initial_conditions():
                 log.error(error_msg)
                 return False, error_msg
 
             if validate_goal:
-                error_msg = self._sample_goal_conditions()
-                if error_msg:
+                if error_msg := self._sample_goal_conditions():
                     log.error(error_msg)
                     return False, error_msg
 
-            error_msg = self._sample_initial_conditions_final()
-            if error_msg:
+            if error_msg := self._sample_initial_conditions_final():
                 log.error(error_msg)
                 return False, error_msg
 
@@ -372,23 +371,19 @@ class BDDLSampler:
                 - bool: Whether the generated scene activity should be accepted or not
                 - dict: Any feedback from the sampling / initialization process
         """
-        error_msg = self._parse_inroom_object_room_assignment()
-        if error_msg:
+        if error_msg := self._parse_inroom_object_room_assignment():
             log.error(error_msg)
             return False, error_msg
 
-        error_msg = self._build_sampling_order()
-        if error_msg:
+        if error_msg := self._build_sampling_order():
             log.error(error_msg)
             return False, error_msg
 
-        error_msg = self._build_inroom_object_scope()
-        if error_msg:
+        if error_msg := self._build_inroom_object_scope():
             log.error(error_msg)
             return False, error_msg
 
-        error_msg = self._import_sampleable_objects()
-        if error_msg:
+        if error_msg := self._import_sampleable_objects():
             log.error(error_msg)
             return False, error_msg
 
@@ -457,7 +452,7 @@ class BDDLSampler:
             # Sampled conditions must always be positive
             # Non-positive (e.g.: NOT onTop) is not restrictive enough for sampling
             if condition.STATE_NAME in KINEMATIC_STATES_BDDL and not positive:
-                return "Initial condition has negative kinematic conditions: {}".format(condition.body)
+                return f"Initial condition has negative kinematic conditions: {condition.body}"
 
             # Store any unsampleable conditions separately
             if isinstance(condition, UnsampleablePredicate):
@@ -473,8 +468,8 @@ class BDDLSampler:
                 group = "particle" if condition.body[1] in self._substance_instances else "kinematic"
             else:
                 assert len(condition.body) == 1, \
-                    f"Got invalid parsed initial condition; body length should either be 2 or 1. " \
-                    f"Got body: {condition.body} for condition: {condition}"
+                        f"Got invalid parsed initial condition; body length should either be 2 or 1. " \
+                        f"Got body: {condition.body} for condition: {condition}"
                 group = "unary"
             sampling_groups[group].append(condition.body)
             self._object_sampling_conditions[group].append((condition, positive))
@@ -499,7 +494,7 @@ class BDDLSampler:
                     if condition.body[1] == cur_batch_inst:
                         inst_batch.add(condition.body[0])
                         next_batch.add(condition.body[0])
-                if len(inst_batch) > 0:
+                if inst_batch:
                     self._object_sampling_orders["kinematic"].append(inst_batch)
             cur_batch = next_batch
 
@@ -520,16 +515,16 @@ class BDDLSampler:
 
         # Sanity check kinematic objects -- any non-system must be kinematically sampled
         remaining_kinematic_entities = nonparticle_entities - unsampleable_obj_instances - \
-            self._inroom_object_instances - set.union(*(self._object_sampling_orders["kinematic"] + [set()]))
+                self._inroom_object_instances - set.union(*(self._object_sampling_orders["kinematic"] + [set()]))
         if len(remaining_kinematic_entities) != 0:
             return f"Some objects do not have any kinematic condition defined for them in the initial conditions: " \
-                   f"{', '.join(remaining_kinematic_entities)}"
+                       f"{', '.join(remaining_kinematic_entities)}"
 
         # Sanity check particle systems -- any non-future system must be sampled as part of particle groups
         remaining_particle_entities = self._substance_instances - unsampleable_obj_instances - sampled_particle_entities
         if len(remaining_particle_entities) != 0:
             return f"Some systems do not have any particle condition defined for them in the initial conditions: " \
-                   f"{', '.join(remaining_particle_entities)}"
+                       f"{', '.join(remaining_particle_entities)}"
 
     def _build_inroom_object_scope(self):
         """
@@ -569,13 +564,17 @@ class BDDLSampler:
                 for room_inst in og.sim.scene.seg_map.room_sem_name_to_ins_name[room_type]:
                     # A list of scene objects that satisfy the requested categories
                     room_objs = og.sim.scene.object_registry("in_rooms", room_inst, default_val=[])
-                    scene_objs = [obj for obj in room_objs if obj.category in categories and obj.model in valid_models[obj.category]]
-
-                    if len(scene_objs) != 0:
+                    if scene_objs := [
+                        obj
+                        for obj in room_objs
+                        if obj.category in categories
+                        and obj.model in valid_models[obj.category]
+                    ]:
                         room_type_to_scene_objs[room_type][obj_inst][room_inst] = scene_objs
 
-        error_msg = self._consolidate_room_instance(room_type_to_scene_objs, "initial_pre-sampling")
-        if error_msg:
+        if error_msg := self._consolidate_room_instance(
+            room_type_to_scene_objs, "initial_pre-sampling"
+        ):
             return error_msg
         self._inroom_object_scope = room_type_to_scene_objs
 
@@ -688,12 +687,14 @@ class BDDLSampler:
             )
 
             if len(room_inst_satisfied) == 0:
-                error_msg = "{}: Room type [{}] of scene [{}] do not contain or cannot sample all the objects needed.\nThe following are the possible room instances for each object, the intersection of which is an empty set.\n".format(
-                    condition_type, room_type, self._scene_model
-                )
+                error_msg = f"{condition_type}: Room type [{room_type}] of scene [{self._scene_model}] do not contain or cannot sample all the objects needed.\nThe following are the possible room instances for each object, the intersection of which is an empty set.\n"
                 for obj_inst in filtered_object_scope[room_type]:
                     error_msg += (
-                        "{}: ".format(obj_inst) + ", ".join(filtered_object_scope[room_type][obj_inst].keys()) + "\n"
+                        f"{obj_inst}: "
+                        + ", ".join(
+                            filtered_object_scope[room_type][obj_inst].keys()
+                        )
+                        + "\n"
                     )
 
                 return error_msg
@@ -742,9 +743,9 @@ class BDDLSampler:
             else:
                 valid_categories = set(OBJECT_TAXONOMY.get_subtree_categories(obj_synset))
                 categories = list(valid_categories.intersection(available_categories))
-                if len(categories) == 0:
+                if not categories:
                     return f"None of the following categories could be found in the dataset for synset {obj_synset}: " \
-                           f"{valid_categories}"
+                               f"{valid_categories}"
 
                 for obj_inst in self._activity_conditions.parsed_objects[obj_synset]:
                     # Don't explicitly sample if future
@@ -863,8 +864,8 @@ class BDDLSampler:
                     # Sample!
                     for condition, positive, entity, child_scope_name in conditions_to_sample:
                         success = False
+                        num_trials = 1
                         while True:
-                            num_trials = 1
                             for _ in range(num_trials):
                                 success = condition.sample(binary_state=positive)
                                 if success:
@@ -960,18 +961,18 @@ class BDDLSampler:
             # Loop through each room instance
             for room_inst in room_insts:
                 graph = nx.Graph()
-                # For this given room instance, gether mapping from obj instance to a list of simulator obj
-                obj_inst_to_obj_per_room_inst = {}
-                for obj_inst in filtered_object_scope[room_type]:
-                    obj_inst_to_obj_per_room_inst[obj_inst] = filtered_object_scope[room_type][obj_inst][room_inst]
+                obj_inst_to_obj_per_room_inst = {
+                    obj_inst: filtered_object_scope[room_type][obj_inst][room_inst]
+                    for obj_inst in filtered_object_scope[room_type]
+                }
                 top_nodes = []
-                log_msg = "MBM for room instance [{}]".format(room_inst)
+                log_msg = f"MBM for room instance [{room_inst}]"
                 log.debug((log_msg))
-                for obj_inst in obj_inst_to_obj_per_room_inst:
-                    for obj in obj_inst_to_obj_per_room_inst[obj_inst]:
+                for obj_inst, value in obj_inst_to_obj_per_room_inst.items():
+                    for obj in value:
                         # Create an edge between obj instance and each of the simulator obj that supports sampling
                         graph.add_edge(obj_inst, obj)
-                        log_msg = "Adding edge: {} <-> {}".format(obj_inst, obj.name)
+                        log_msg = f"Adding edge: {obj_inst} <-> {obj.name}"
                         log.debug((log_msg))
                         top_nodes.append(obj_inst)
                 # Need to provide top_nodes that contain all nodes in one bipartite node set
@@ -986,6 +987,4 @@ class BDDLSampler:
                     success = True
                     break
             if not success:
-                return "{}: Room type [{}] of scene [{}] do not have enough simulator objects that can successfully sample all the objects needed. This is usually caused by specifying too many object instances in the object scope or the conditions are so stringent that too few simulator objects can satisfy them via sampling.\n".format(
-                    condition_type, room_type, self._scene_model
-                )
+                return f"{condition_type}: Room type [{room_type}] of scene [{self._scene_model}] do not have enough simulator objects that can successfully sample all the objects needed. This is usually caused by specifying too many object instances in the object scope or the conditions are so stringent that too few simulator objects can satisfy them via sampling.\n"

@@ -18,85 +18,75 @@ def main(random_selection=False, headless=False, short_exec=False):
     og.log.info(f"Demo {__file__}\n    " + "*" * 80 + "\n    Description:\n" + main.__doc__ + "*" * 80)
 
     # Define specific objects we want to load in with the scene directly
-    obj_configs = []
-
-    # Light
-    obj_configs.append(dict(
-        type="LightObject",
-        light_type="Sphere",
-        name="light",
-        radius=0.01,
-        intensity=1e8,
-        position=[-2.0, -2.0, 1.0],
-    ))
-
-    # Stove
-    obj_configs.append(dict(
-        type="DatasetObject",
-        name="stove",
-        category="stove",
-        model="yhjzwg",
-        bounding_box=[1.185, 0.978, 1.387],
-        position=[0, 0, 0.69],
-    ))
-
-    # Microwave
-    obj_configs.append(dict(
-        type="DatasetObject",
-        name="microwave",
-        category="microwave",
-        model="hjjxmi",
-        bounding_box=[0.384, 0.256, 0.196],
-        position=[2.5, 0, 0.10],
-    ))
-
-    # Oven
-    obj_configs.append(dict(
-        type="DatasetObject",
-        name="oven",
-        category="oven",
-        model="wuinhm",
-        bounding_box=[1.075, 0.926, 1.552],
-        position=[-1.25, 0, 0.88],
-    ))
-
-    # Tray
-    obj_configs.append(dict(
-        type="DatasetObject",
-        name="tray",
-        category="tray",
-        model="xzcnjq",
-        bounding_box=[0.319, 0.478, 0.046],
-        position=[-0.25, -0.12, 1.26],
-    ))
-
-    # Fridge
-    obj_configs.append(dict(
-        type="DatasetObject",
-        name="fridge",
-        category="fridge",
-        model="hivvdf",
-        bounding_box=[1.065, 1.149, 1.528],
-        abilities={
-            "coldSource": {
-                "temperature": -100.0,
-                "requires_inside": True,
-            }
-        },
-        position=[1.25, 0, 0.81],
-    ))
+    obj_configs = [
+        dict(
+            type="LightObject",
+            light_type="Sphere",
+            name="light",
+            radius=0.01,
+            intensity=1e8,
+            position=[-2.0, -2.0, 1.0],
+        ),
+        dict(
+            type="DatasetObject",
+            name="stove",
+            category="stove",
+            model="yhjzwg",
+            bounding_box=[1.185, 0.978, 1.387],
+            position=[0, 0, 0.69],
+        ),
+        dict(
+            type="DatasetObject",
+            name="microwave",
+            category="microwave",
+            model="hjjxmi",
+            bounding_box=[0.384, 0.256, 0.196],
+            position=[2.5, 0, 0.10],
+        ),
+        dict(
+            type="DatasetObject",
+            name="oven",
+            category="oven",
+            model="wuinhm",
+            bounding_box=[1.075, 0.926, 1.552],
+            position=[-1.25, 0, 0.88],
+        ),
+        dict(
+            type="DatasetObject",
+            name="tray",
+            category="tray",
+            model="xzcnjq",
+            bounding_box=[0.319, 0.478, 0.046],
+            position=[-0.25, -0.12, 1.26],
+        ),
+        dict(
+            type="DatasetObject",
+            name="fridge",
+            category="fridge",
+            model="hivvdf",
+            bounding_box=[1.065, 1.149, 1.528],
+            abilities={
+                "coldSource": {
+                    "temperature": -100.0,
+                    "requires_inside": True,
+                }
+            },
+            position=[1.25, 0, 0.81],
+        ),
+    ]
 
     # 5 Apples
-    for i in range(5):
-        obj_configs.append(dict(
+    obj_configs.extend(
+        dict(
             type="DatasetObject",
             name=f"apple{i}",
             category="apple",
             model="agveuv",
             bounding_box=[0.065, 0.065, 0.077],
             position=[0, i * 0.1, 5.0],
-        ))
-
+        )
+        for i in range(5)
+    )
     # Create the scene config to load -- empty scene with desired objects
     cfg = {
         "scene": {

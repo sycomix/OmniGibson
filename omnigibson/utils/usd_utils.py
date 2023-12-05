@@ -69,17 +69,11 @@ def array_to_vtarray(arr, element_type):
     # Make sure array type is valid
     assert_valid_key(key=element_type, valid_keys=GF_TO_VT_MAPPING, name="array element type")
 
-    # Construct list of values
-    arr_list = []
-
     # Check first to see if elements are vectors or not. If this is an iterable value that is not a string,
     # then this is a vector and we have to map it to the correct type via *
     is_vec_element = (isinstance(arr[0], Iterable)) and (not isinstance(arr[0], str))
 
-    # Loop over array and set values
-    for ele in arr:
-        arr_list.append(element_type(*ele) if is_vec_element else ele)
-
+    arr_list = [element_type(*ele) if is_vec_element else ele for ele in arr]
     return GF_TO_VT_MAPPING[element_type](arr_list)
 
 
@@ -179,8 +173,9 @@ def create_joint(prim_path, joint_type, body0=None, body1=None, enabled=True,
         f"Invalid joint specified for creation: {joint_type}"
 
     # Make sure at least body0 or body1 is specified
-    assert body0 is not None or body1 is not None, \
-        f"At least either body0 or body1 must be specified when creating a joint!"
+    assert (
+        body0 is not None or body1 is not None
+    ), "At least either body0 or body1 must be specified when creating a joint!"
 
     # Create the joint
     joint = UsdPhysics.__dict__[joint_type].Define(og.sim.stage, prim_path)
@@ -465,8 +460,9 @@ class BoundingBoxAPI:
             # See if this XForm belongs to any object
             obj = og.sim.scene.object_registry("prim_path", "/".join(prim.prim_path.split("/")[:2]), None)
         else:
-            raise ValueError(f"Inputted prim must be an instance of EntityPrim, RigidPrim, or XFormPrim "
-                             f"in order to calculate AABB!")
+            raise ValueError(
+                'Inputted prim must be an instance of EntityPrim, RigidPrim, or XFormPrim in order to calculate AABB!'
+            )
 
         # Update tfs for the object that owns this prim
         if obj is not None:
@@ -723,8 +719,10 @@ def mesh_prim_to_trimesh_mesh(mesh_prim, include_normals=True, include_texcoord=
     faces = []
     i = 0
     for count in face_vertex_counts:
-        for j in range(count - 2):
-            faces.append([face_indices[i], face_indices[i + j + 1], face_indices[i + j + 2]])
+        faces.extend(
+            [face_indices[i], face_indices[i + j + 1], face_indices[i + j + 2]]
+            for j in range(count - 2)
+        )
         i += count
 
     kwargs = dict(vertices=vertices, faces=faces)
@@ -879,7 +877,10 @@ def add_asset_to_stage(asset_path, prim_path):
         Usd.Prim: Loaded prim as a USD prim
     """
     # Make sure this is actually a supported asset type
-    assert asset_path[-4:].lower() in {".usd", ".obj"}, f"Cannot load a non-USD or non-OBJ file as a USD prim!"
+    assert asset_path[-4:].lower() in {
+        ".usd",
+        ".obj",
+    }, "Cannot load a non-USD or non-OBJ file as a USD prim!"
     asset_type = asset_path[-3:]
 
     # Make sure the path exists

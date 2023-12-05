@@ -37,7 +37,7 @@ def test_blender_rule():
     og.sim.import_object(ice_cream)
     ice_cream.set_position([0, 0, 0.52])
 
-    for i in range(5):
+    for _ in range(5):
         og.sim.step()
 
     assert milkshake.n_particles == 0
@@ -82,7 +82,7 @@ def test_cooking_rule():
     og.sim.import_object(dough)
     dough.set_position_orientation([0.072, 0.004, 0.555], [0, 0, 0, 1])
 
-    for i in range(10):
+    for _ in range(10):
         og.sim.step()
 
     assert len(og.sim.scene.object_registry("category", "sugar_cookie", default_val=[])) == 0

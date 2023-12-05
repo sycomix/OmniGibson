@@ -80,13 +80,13 @@ def sample_kinematics(
     state = og.sim.dump_state()
 
     # Attempt sampling
-    for i in range(max_trials):
+    for _ in range(max_trials):
         pos = None
-        if hasattr(objA, "orientations") and objA.orientations is not None:
-            orientation = objA.sample_orientation()
-        else:
-            orientation = np.array([0, 0, 0, 1.0])
-
+        orientation = (
+            objA.sample_orientation()
+            if hasattr(objA, "orientations") and objA.orientations is not None
+            else np.array([0, 0, 0, 1.0])
+        )
         # Orientation needs to be set for stable_z_on_aabb to work correctly
         # Position needs to be set to be very far away because the object's
         # original position might be blocking rays (use_ray_casting_method=True)
@@ -254,7 +254,7 @@ def sample_cloth_on_rigid(obj, other, max_trials=40, z_offset=0.05, randomize_xy
     assert z_offset > 0.5 * 9.81 * (og.sim.get_physics_dt() ** 2) + 0.02,\
         f"z_offset {z_offset} is too small for the current physics_dt {og.sim.get_physics_dt()}"
 
-    if not (obj.prim_type == PrimType.CLOTH and other.prim_type == PrimType.RIGID):
+    if obj.prim_type != PrimType.CLOTH or other.prim_type != PrimType.RIGID:
         raise ValueError("sample_cloth_on_rigid requires obj1 is cloth and obj2 is rigid.")
 
     state = og.sim.dump_state(serialized=False)

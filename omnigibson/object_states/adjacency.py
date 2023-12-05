@@ -76,7 +76,7 @@ def compute_adjacencies(obj, axes, max_distance):
     # Get vectors for each of the axes' directions.
     # The ordering is axes1+, axis1-, axis2+, axis2- etc.
     directions = np.empty((len(axes) * 2, 3))
-    directions[0::2] = axes
+    directions[::2] = axes
     directions[1::2] = -axes
 
     # Prepare this object's info for ray casting.
@@ -113,13 +113,12 @@ def compute_adjacencies(obj, axes, max_distance):
                 unique_objs.add(obj)
         objs_by_direction.append(unique_objs)
 
-    # Reshape so that these have the following indices:
-    # (axis_idx, direction-one-or-zero, hit_idx)
-    objs_by_axis = [
+    return [
         AxisAdjacencyList(positive_neighbors, negative_neighbors)
-        for positive_neighbors, negative_neighbors in zip(objs_by_direction[::2], objs_by_direction[1::2])
+        for positive_neighbors, negative_neighbors in zip(
+            objs_by_direction[::2], objs_by_direction[1::2]
+        )
     ]
-    return objs_by_axis
 
 
 class VerticalAdjacency(AbsoluteObjectState):
@@ -170,11 +169,7 @@ class HorizontalAdjacency(AbsoluteObjectState):
         # Flatten the axis dimension and input into compute_adjacencies.
         bodies_by_axis = compute_adjacencies(self.obj, coordinate_planes.reshape(-1, 3), m.MAX_DISTANCE_HORIZONTAL)
 
-        # Now reshape the bodies_by_axis to group by coordinate planes.
-        bodies_by_plane = list(zip(bodies_by_axis[::2], bodies_by_axis[1::2]))
-
-        # Return the adjacencies.
-        return bodies_by_plane
+        return list(zip(bodies_by_axis[::2], bodies_by_axis[1::2]))
 
     @classmethod
     def get_dependencies(cls):

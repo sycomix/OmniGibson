@@ -104,7 +104,7 @@ class BaseRobot(USDObject, ControllableObject, GymObservable):
         """
         # Store inputs
         self._obs_modalities = obs_modalities if obs_modalities == "all" else \
-            {obs_modalities} if isinstance(obs_modalities, str) else set(obs_modalities)              # this will get updated later when we fill in our sensors
+                {obs_modalities} if isinstance(obs_modalities, str) else set(obs_modalities)              # this will get updated later when we fill in our sensors
         self._proprio_obs = self.default_proprio_obs if proprio_obs == "default" else list(proprio_obs)
 
         # Process abilities
@@ -116,8 +116,11 @@ class BaseRobot(USDObject, ControllableObject, GymObservable):
 
         # If specified, make sure scale is uniform -- this is because non-uniform scale can result in non-matching
         # collision representations for parts of the robot that were optimized (e.g.: bounding sphere for wheels)
-        assert scale is None or isinstance(scale, int) or isinstance(scale, float) or np.all(scale == scale[0]), \
-            f"Robot scale must be uniform! Got: {scale}"
+        assert (
+            scale is None
+            or isinstance(scale, (int, float))
+            or np.all(scale == scale[0])
+        ), f"Robot scale must be uniform! Got: {scale}"
 
         # Run super init
         super().__init__(
@@ -317,9 +320,6 @@ class BaseRobot(USDObject, ControllableObject, GymObservable):
                         elif modality == "normal":
                             # Re-map to 0 - 1 range
                             ob = (ob + 1.0) / 2.0
-                        else:
-                            # Depth, nothing to do here
-                            pass
                         # Add this observation to our frames and remove the modality
                         sensor_frames.append((modality, ob))
                         remaining_obs_modalities -= {modality}

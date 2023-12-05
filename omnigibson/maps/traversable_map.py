@@ -70,7 +70,7 @@ class TraversableMap(BaseMap):
             int: Size of the loaded map
         """
         if not os.path.exists(maps_path):
-            log.warning("trav map does not exist: {}".format(maps_path))
+            log.warning(f"trav map does not exist: {maps_path}")
             return
 
         self.floor_heights = floor_heights
@@ -79,9 +79,15 @@ class TraversableMap(BaseMap):
         for floor in range(len(self.floor_heights)):
             if self.trav_map_with_objects:
                 # TODO: Shouldn't this be generated dynamically?
-                trav_map = np.array(Image.open(os.path.join(maps_path, "floor_trav_{}.png".format(floor))))
+                trav_map = np.array(
+                    Image.open(os.path.join(maps_path, f"floor_trav_{floor}.png"))
+                )
             else:
-                trav_map = np.array(Image.open(os.path.join(maps_path, "floor_trav_no_obj_{}.png".format(floor))))
+                trav_map = np.array(
+                    Image.open(
+                        os.path.join(maps_path, f"floor_trav_no_obj_{floor}.png")
+                    )
+                )
 
             # If we do not initialize the original size of the traversability map, we obtain it from the image
             # Then, we compute the final map size as the factor of scaling (default_resolution/resolution) times the
@@ -126,9 +132,9 @@ class TraversableMap(BaseMap):
             floor (int): floor number
             trav_map ((H, W)-array): traversability map in image form
         """
-        floor_graph = []
         graph_file = os.path.join(
-            maps_path, "floor_trav_{}_py{}{}.p".format(floor, sys.version_info.major, sys.version_info.minor)
+            maps_path,
+            f"floor_trav_{floor}_py{sys.version_info.major}{sys.version_info.minor}.p",
         )
         if os.path.isfile(graph_file):
             log.info("Loading traversable graph")
@@ -158,8 +164,7 @@ class TraversableMap(BaseMap):
             with open(graph_file, "wb") as pfile:
                 pickle.dump(g, pfile)
 
-        floor_graph.append(g)
-
+        floor_graph = [g]
         # update trav_map accordingly
         # This overwrites the traversability map loaded before
         # It sets everything to zero, then only sets to one the points where we have graph nodes

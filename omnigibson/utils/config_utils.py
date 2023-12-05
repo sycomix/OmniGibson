@@ -26,9 +26,7 @@ def parse_config(config):
 
     if not os.path.exists(config):
         raise IOError(
-            "config path {} does not exist. Please either pass in a dict or a string that represents the file path to the config yaml.".format(
-                config
-            )
+            f"config path {config} does not exist. Please either pass in a dict or a string that represents the file path to the config yaml."
         )
     with open(config, "r") as f:
         config_data = yaml.load(f, Loader=yaml.FullLoader)

@@ -88,12 +88,19 @@ class HeatSourceOrSink(AbsoluteObjectState, LinkBasedStateMixin):
         if not compatible:
             return compatible, reason
 
-        # Check whether this state has toggledon if required or open if required
-        for kwarg, state_type in zip(("requires_toggled_on", "requires_closed"), (ToggledOn, Open)):
-            if kwargs.get(kwarg, False) and state_type not in obj.states:
-                return False, f"{cls.__name__} has {kwarg} but obj has no {state_type.__name__} state!"
-
-        return True, None
+        return next(
+            (
+                (
+                    False,
+                    f"{cls.__name__} has {kwarg} but obj has no {state_type.__name__} state!",
+                )
+                for kwarg, state_type in zip(
+                    ("requires_toggled_on", "requires_closed"), (ToggledOn, Open)
+                )
+                if kwargs.get(kwarg, False) and state_type not in obj.states
+            ),
+            (True, None),
+        )
 
     @classmethod
     def is_compatible_asset(cls, prim, **kwargs):
@@ -102,12 +109,20 @@ class HeatSourceOrSink(AbsoluteObjectState, LinkBasedStateMixin):
         if not compatible:
             return compatible, reason
 
-        # Check whether this state has toggledon if required or open if required
-        for kwarg, state_type in zip(("requires_toggled_on", "requires_closed"), (ToggledOn, Open)):
-            if kwargs.get(kwarg, False) and not state_type.is_compatible_asset(prim=prim, **kwargs)[0]:
-                return False, f"{cls.__name__} has {kwarg} but obj has no {state_type.__name__} state!"
-
-        return True, None
+        return next(
+            (
+                (
+                    False,
+                    f"{cls.__name__} has {kwarg} but obj has no {state_type.__name__} state!",
+                )
+                for kwarg, state_type in zip(
+                    ("requires_toggled_on", "requires_closed"), (ToggledOn, Open)
+                )
+                if kwargs.get(kwarg, False)
+                and not state_type.is_compatible_asset(prim=prim, **kwargs)[0]
+            ),
+            (True, None),
+        )
 
     @classproperty
     def metalink_prefix(cls):
@@ -162,10 +177,7 @@ class HeatSourceOrSink(AbsoluteObjectState, LinkBasedStateMixin):
             return False
 
         # Check the open state.
-        if self.requires_closed and self.obj.states[Open].get_value():
-            return False
-
-        return True
+        return not self.requires_closed or not self.obj.states[Open].get_value()
 
     def affects_obj(self, obj):
         """

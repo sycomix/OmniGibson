@@ -70,11 +70,16 @@ class BaseObjectState(Serializable, Registerable, Recreatable, ABC):
                 return False, f"Missing required dependency state {dep.__name__}"
         # Make sure all required kwargs are specified
         default_kwargs = inspect.signature(cls.__init__).parameters
-        for kwarg, val in default_kwargs.items():
-            if val.default == inspect._empty and kwarg not in kwargs and kwarg not in {"obj", "self", "args", "kwargs"}:
-                return False, f"Missing required kwarg '{kwarg}'"
-        # Default is True if all kwargs are met
-        return True, None
+        return next(
+            (
+                (False, f"Missing required kwarg '{kwarg}'")
+                for kwarg, val in default_kwargs.items()
+                if val.default == inspect._empty
+                and kwarg not in kwargs
+                and kwarg not in {"obj", "self", "args", "kwargs"}
+            ),
+            (True, None),
+        )
 
     @classmethod
     def is_compatible_asset(cls, prim, **kwargs):
@@ -96,11 +101,16 @@ class BaseObjectState(Serializable, Registerable, Recreatable, ABC):
         """
         # Make sure all required kwargs are specified
         default_kwargs = inspect.signature(cls.__init__).parameters
-        for kwarg, val in default_kwargs.items():
-            if val.default == inspect._empty and kwarg not in kwargs and kwarg not in {"obj", "self"}:
-                return False, f"Missing required kwarg '{kwarg}'"
-        # Default is True if all kwargs are met
-        return True, None
+        return next(
+            (
+                (False, f"Missing required kwarg '{kwarg}'")
+                for kwarg, val in default_kwargs.items()
+                if val.default == inspect._empty
+                and kwarg not in kwargs
+                and kwarg not in {"obj", "self"}
+            ),
+            (True, None),
+        )
 
     @property
     def stateful(self):
@@ -298,10 +308,7 @@ class BaseObjectState(Serializable, Registerable, Recreatable, ABC):
             # Update the cache
             self.update_cache(get_value_args=key)
 
-        # Value is the cached value
-        val = self._cache[key]["value"]
-
-        return val
+        return self._cache[key]["value"]
 
     def _get_value(self, *args, **kwargs):
         raise NotImplementedError(f"_get_value not implemented for {self.__class__.__name__} state.")
@@ -316,9 +323,7 @@ class BaseObjectState(Serializable, Registerable, Recreatable, ABC):
         assert self._initialized
         # Clear cache because the state may be changed
         self.clear_cache()
-        # Set the value
-        val = self._set_value(*args, **kwargs)
-        return val
+        return self._set_value(*args, **kwargs)
 
     def _set_value(self, *args, **kwargs):
         raise NotImplementedError(f"_set_value not implemented for {self.__class__.__name__} state.")

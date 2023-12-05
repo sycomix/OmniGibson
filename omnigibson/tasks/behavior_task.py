@@ -472,7 +472,9 @@ class BehaviorTask(BaseTask):
         natural_language_condition = self.activity_natural_language_goal_conditions[self.currently_viewed_instruction]
         objects = self.activity_goal_conditions[self.currently_viewed_instruction].get_relevant_objects()
         text_color = (
-            [83.0 / 255.0, 176.0 / 255.0, 72.0 / 255.0] if satisfied else [255.0 / 255.0, 51.0 / 255.0, 51.0 / 255.0]
+            [83.0 / 255.0, 176.0 / 255.0, 72.0 / 255.0]
+            if satisfied
+            else [1.0, 51.0 / 255.0, 51.0 / 255.0]
         )
 
         return natural_language_condition, text_color, objects

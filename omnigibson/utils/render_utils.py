@@ -25,13 +25,14 @@ def make_glass(prim):
         visual_meshes = [vm for link in prim.links.values() for vm in link.visual_meshes.values()]
     elif isinstance(prim, RigidPrim):
         # Grab all visual meshes from the link
-        visual_meshes = [vm for vm in prim.visual_meshes.values()]
+        visual_meshes = list(prim.visual_meshes.values())
     elif isinstance(prim, VisualGeomPrim):
         # Just use this visual mesh
         visual_meshes = [prim]
     else:
-        raise ValueError(f"Inputted prim must an instance of EntityPrim, RigidPrim, or VisualGeomPrim "
-                         f"in order to be converted into glass!")
+        raise ValueError(
+            'Inputted prim must an instance of EntityPrim, RigidPrim, or VisualGeomPrim in order to be converted into glass!'
+        )
 
     # Grab the glass material prim; if it doesn't exist, we create it on the fly
     glass_prim_path = "/Looks/OmniGlass"

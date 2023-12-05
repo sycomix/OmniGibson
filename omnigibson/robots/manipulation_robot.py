@@ -197,23 +197,19 @@ class ManipulationRobot(BaseRobot):
         for arm in self.arm_names:
             # We make sure that our arm controller exists and is a manipulation controller
             assert (
-                "arm_{}".format(arm) in self._controllers
-            ), "Controller 'arm_{}' must exist in controllers! Current controllers: {}".format(
-                arm, list(self._controllers.keys())
-            )
+                f"arm_{arm}" in self._controllers
+            ), f"Controller 'arm_{arm}' must exist in controllers! Current controllers: {list(self._controllers.keys())}"
             assert isinstance(
-                self._controllers["arm_{}".format(arm)], ManipulationController
-            ), "Arm {} controller must be a ManipulationController!".format(arm)
+                self._controllers[f"arm_{arm}"], ManipulationController
+            ), f"Arm {arm} controller must be a ManipulationController!"
 
             # We make sure that our gripper controller exists and is a gripper controller
             assert (
-                "gripper_{}".format(arm) in self._controllers
-            ), "Controller 'gripper_{}' must exist in controllers! Current controllers: {}".format(
-                arm, list(self._controllers.keys())
-            )
+                f"gripper_{arm}" in self._controllers
+            ), f"Controller 'gripper_{arm}' must exist in controllers! Current controllers: {list(self._controllers.keys())}"
             assert isinstance(
-                self._controllers["gripper_{}".format(arm)], GripperController
-            ), "Gripper {} controller must be a GripperController!".format(arm)
+                self._controllers[f"gripper_{arm}"], GripperController
+            ), f"Gripper {arm} controller must be a GripperController!"
 
         # run super
         super()._validate_configuration()
@@ -255,10 +251,10 @@ class ManipulationRobot(BaseRobot):
             )
         else:
             # Infer from the gripper controller the state
-            is_grasping = self._controllers["gripper_{}".format(arm)].is_grasping()
+            is_grasping = self._controllers[f"gripper_{arm}"].is_grasping()
             # If candidate obj is not None, we also check to see if our fingers are in contact with the object
             if is_grasping and candidate_obj is not None:
-                finger_links = {link for link in self.finger_links[arm]}
+                finger_links = set(self.finger_links[arm])
                 is_grasping = len(candidate_obj.states[ContactBodies].get_value().intersection(finger_links)) > 0
 
         return is_grasping
@@ -307,11 +303,10 @@ class ManipulationRobot(BaseRobot):
         return contact_data, robot_contact_links
 
     def set_position_orientation(self, position=None, orientation=None):
-        # Store the original EEF poses.
-        original_poses = {}
-        for arm in self.arm_names:
-            original_poses[arm] = (self.get_eef_position(arm), self.get_eef_orientation(arm))
-
+        original_poses = {
+            arm: (self.get_eef_position(arm), self.get_eef_orientation(arm))
+            for arm in self.arm_names
+        }
         # Run the super method
         super().set_position_orientation(position=position, orientation=orientation)
 
@@ -386,8 +381,8 @@ class ManipulationRobot(BaseRobot):
         dic = super().get_control_dict()
 
         for arm in self.arm_names:
-            dic["eef_{}_pos_relative".format(arm)] = self.get_relative_eef_position(arm)
-            dic["eef_{}_quat_relative".format(arm)] = self.get_relative_eef_orientation(arm)
+            dic[f"eef_{arm}_pos_relative"] = self.get_relative_eef_position(arm)
+            dic[f"eef_{arm}_quat_relative"] = self.get_relative_eef_orientation(arm)
 
         return dic
 
@@ -399,19 +394,19 @@ class ManipulationRobot(BaseRobot):
         joint_velocities = self.get_joint_velocities(normalized=False)
         for arm in self.arm_names:
             # Add arm info
-            dic["arm_{}_qpos".format(arm)] = joint_positions[self.arm_control_idx[arm]]
-            dic["arm_{}_qpos_sin".format(arm)] = np.sin(joint_positions[self.arm_control_idx[arm]])
-            dic["arm_{}_qpos_cos".format(arm)] = np.cos(joint_positions[self.arm_control_idx[arm]])
-            dic["arm_{}_qvel".format(arm)] = joint_velocities[self.arm_control_idx[arm]]
+            dic[f"arm_{arm}_qpos"] = joint_positions[self.arm_control_idx[arm]]
+            dic[f"arm_{arm}_qpos_sin"] = np.sin(joint_positions[self.arm_control_idx[arm]])
+            dic[f"arm_{arm}_qpos_cos"] = np.cos(joint_positions[self.arm_control_idx[arm]])
+            dic[f"arm_{arm}_qvel"] = joint_velocities[self.arm_control_idx[arm]]
 
             # Add eef and grasping info
-            dic["eef_{}_pos_global".format(arm)] = self.get_eef_position(arm)
-            dic["eef_{}_quat_global".format(arm)] = self.get_eef_orientation(arm)
-            dic["eef_{}_pos".format(arm)] = self.get_relative_eef_position(arm)
-            dic["eef_{}_quat".format(arm)] = self.get_relative_eef_orientation(arm)
-            dic["grasp_{}".format(arm)] = np.array([self.is_grasping(arm)])
-            dic["gripper_{}_qpos".format(arm)] = joint_positions[self.gripper_control_idx[arm]]
-            dic["gripper_{}_qvel".format(arm)] = joint_velocities[self.gripper_control_idx[arm]]
+            dic[f"eef_{arm}_pos_global"] = self.get_eef_position(arm)
+            dic[f"eef_{arm}_quat_global"] = self.get_eef_orientation(arm)
+            dic[f"eef_{arm}_pos"] = self.get_relative_eef_position(arm)
+            dic[f"eef_{arm}_quat"] = self.get_relative_eef_orientation(arm)
+            dic[f"grasp_{arm}"] = np.array([self.is_grasping(arm)])
+            dic[f"gripper_{arm}_qpos"] = joint_positions[self.gripper_control_idx[arm]]
+            dic[f"gripper_{arm}_qvel"] = joint_velocities[self.gripper_control_idx[arm]]
 
         return dic
 
@@ -420,12 +415,12 @@ class ManipulationRobot(BaseRobot):
         obs_keys = super().default_proprio_obs
         for arm in self.arm_names:
             obs_keys += [
-                "arm_{}_qpos_sin".format(arm),
-                "arm_{}_qpos_cos".format(arm),
-                "eef_{}_pos".format(arm),
-                "eef_{}_quat".format(arm),
-                "gripper_{}_qpos".format(arm),
-                "grasp_{}".format(arm),
+                f"arm_{arm}_qpos_sin",
+                f"arm_{arm}_qpos_cos",
+                f"eef_{arm}_pos",
+                f"eef_{arm}_quat",
+                f"gripper_{arm}_qpos",
+                f"grasp_{arm}",
             ]
         return obs_keys
 
@@ -444,7 +439,7 @@ class ManipulationRobot(BaseRobot):
         # Assumes we have arm(s) and corresponding gripper(s)
         controllers = []
         for arm in self.arm_names:
-            controllers += ["arm_{}".format(arm), "gripper_{}".format(arm)]
+            controllers += [f"arm_{arm}", f"gripper_{arm}"]
 
         return controllers
 
@@ -455,8 +450,8 @@ class ManipulationRobot(BaseRobot):
 
         # For best generalizability use, joint controller as default
         for arm in self.arm_names:
-            controllers["arm_{}".format(arm)] = "JointController"
-            controllers["gripper_{}".format(arm)] = "JointController"
+            controllers[f"arm_{arm}"] = "JointController"
+            controllers[f"gripper_{arm}"] = "JointController"
 
         return controllers
 
@@ -717,15 +712,15 @@ class ManipulationRobot(BaseRobot):
         """
         arm = self.default_arm if arm == "default" else arm
 
-        # If we're not using physical grasping, we check for gripper contact
-        if self.grasping_mode != "physical":
-            candidates_set, robot_contact_links = self._find_gripper_contacts(arm=arm)
-            # If we're using assisted grasping, we further filter candidates via ray-casting
-            if self.grasping_mode == "assisted":
-                raise NotImplementedError("Assisted grasp not yet available in OmniGibson!")
-        else:
-            raise ValueError("Invalid grasping mode for calculating in hand object: {}".format(self.grasping_mode))
+        if self.grasping_mode == "physical":
+            raise ValueError(
+                f"Invalid grasping mode for calculating in hand object: {self.grasping_mode}"
+            )
 
+        candidates_set, robot_contact_links = self._find_gripper_contacts(arm=arm)
+        # If we're using assisted grasping, we further filter candidates via ray-casting
+        if self.grasping_mode == "assisted":
+            raise NotImplementedError("Assisted grasp not yet available in OmniGibson!")
         # Immediately return if there are no valid candidates
         if len(candidates_set) == 0:
             return None
@@ -814,9 +809,8 @@ class ManipulationRobot(BaseRobot):
             dict: Dictionary mapping arm appendage name to default controller config to control that
                 robot's arm. Uses velocity control by default.
         """
-        dic = {}
-        for arm in self.arm_names:
-            dic[arm] = {
+        return {
+            arm: {
                 "name": "JointController",
                 "control_freq": self._control_freq,
                 "motor_type": "velocity",
@@ -825,7 +819,8 @@ class ManipulationRobot(BaseRobot):
                 "command_output_limits": "default",
                 "use_delta_commands": False,
             }
-        return dic
+            for arm in self.arm_names
+        }
 
     @property
     def _default_arm_ik_controller_configs(self):
@@ -834,9 +829,8 @@ class ManipulationRobot(BaseRobot):
             dict: Dictionary mapping arm appendage name to default controller config for an
                 Inverse kinematics controller to control this robot's arm
         """
-        dic = {}
-        for arm in self.arm_names:
-            dic[arm] = {
+        return {
+            arm: {
                 "name": "InverseKinematicsController",
                 "task_name": f"eef_{arm}",
                 "robot_description_path": self.robot_arm_descriptor_yamls[arm],
@@ -855,7 +849,8 @@ class ManipulationRobot(BaseRobot):
                 "smoothing_filter_size": 2,
                 "workspace_pose_limiter": None,
             }
-        return dic
+            for arm in self.arm_names
+        }
 
     @property
     def _default_arm_null_joint_controller_configs(self):
@@ -864,16 +859,16 @@ class ManipulationRobot(BaseRobot):
             dict: Dictionary mapping arm appendage name to default arm null controller config
                 to control this robot's arm i.e. dummy controller
         """
-        dic = {}
-        for arm in self.arm_names:
-            dic[arm] = {
+        return {
+            arm: {
                 "name": "NullJointController",
                 "control_freq": self._control_freq,
                 "motor_type": "velocity",
                 "control_limits": self.control_limits,
                 "dof_idx": self.arm_control_idx[arm],
             }
-        return dic
+            for arm in self.arm_names
+        }
 
     @property
     def _default_gripper_multi_finger_controller_configs(self):
@@ -882,9 +877,8 @@ class ManipulationRobot(BaseRobot):
             dict: Dictionary mapping arm appendage name to default controller config to control
                 this robot's multi finger gripper. Assumes robot gripper idx has exactly two elements
         """
-        dic = {}
-        for arm in self.arm_names:
-            dic[arm] = {
+        return {
+            arm: {
                 "name": "MultiFingerGripperController",
                 "control_freq": self._control_freq,
                 "motor_type": "position",
@@ -894,7 +888,8 @@ class ManipulationRobot(BaseRobot):
                 "mode": "binary",
                 "limit_tolerance": 0.001,
             }
-        return dic
+            for arm in self.arm_names
+        }
 
     @property
     def _default_gripper_joint_controller_configs(self):
@@ -903,9 +898,8 @@ class ManipulationRobot(BaseRobot):
             dict: Dictionary mapping arm appendage name to default gripper joint controller config
                 to control this robot's gripper
         """
-        dic = {}
-        for arm in self.arm_names:
-            dic[arm] = {
+        return {
+            arm: {
                 "name": "JointController",
                 "control_freq": self._control_freq,
                 "motor_type": "velocity",
@@ -914,7 +908,8 @@ class ManipulationRobot(BaseRobot):
                 "command_output_limits": "default",
                 "use_delta_commands": False,
             }
-        return dic
+            for arm in self.arm_names
+        }
 
     @property
     def _default_gripper_null_controller_configs(self):
@@ -923,16 +918,16 @@ class ManipulationRobot(BaseRobot):
             dict: Dictionary mapping arm appendage name to default gripper null controller config
                 to control this robot's (non-prehensile) gripper i.e. dummy controller
         """
-        dic = {}
-        for arm in self.arm_names:
-            dic[arm] = {
+        return {
+            arm: {
                 "name": "NullJointController",
                 "control_freq": self._control_freq,
                 "motor_type": "velocity",
                 "control_limits": self.control_limits,
                 "dof_idx": self.gripper_control_idx[arm],
             }
-        return dic
+            for arm in self.arm_names
+        }
 
     @property
     def _default_controller_config(self):
@@ -948,12 +943,12 @@ class ManipulationRobot(BaseRobot):
 
         # Add arm and gripper defaults, per arm
         for arm in self.arm_names:
-            cfg["arm_{}".format(arm)] = {
+            cfg[f"arm_{arm}"] = {
                 arm_ik_configs[arm]["name"]: arm_ik_configs[arm],
                 arm_joint_configs[arm]["name"]: arm_joint_configs[arm],
                 arm_null_joint_configs[arm]["name"]: arm_null_joint_configs[arm],
             }
-            cfg["gripper_{}".format(arm)] = {
+            cfg[f"gripper_{arm}"] = {
                 gripper_pj_configs[arm]["name"]: gripper_pj_configs[arm],
                 gripper_joint_configs[arm]["name"]: gripper_joint_configs[arm],
                 gripper_null_configs[arm]["name"]: gripper_null_configs[arm],
@@ -996,11 +991,14 @@ class ManipulationRobot(BaseRobot):
                 joint_handle = self._dc.get_rigid_body_parent_joint(link_handle)
 
         force_data, _ = self._find_gripper_contacts(arm=arm, return_contact_positions=True)
-        contact_pos = None
-        for c_link_prim_path, c_contact_pos in force_data:
-            if c_link_prim_path == ag_link.prim_path:
-                contact_pos = np.array(c_contact_pos)
-                break
+        contact_pos = next(
+            (
+                np.array(c_contact_pos)
+                for c_link_prim_path, c_contact_pos in force_data
+                if c_link_prim_path == ag_link.prim_path
+            ),
+            None,
+        )
         assert contact_pos is not None
 
         # Joint frame set at the contact point
@@ -1236,16 +1234,7 @@ class ManipulationRobot(BaseRobot):
             self._ag_freeze_joint_pos[arm][joint.joint_name] = j_val
 
     def _dump_state(self):
-        # Call super first
-        state = super()._dump_state()
-
-        # If we're using actual physical grasping, no extra state needed to save
-        if self.grasping_mode == "physical":
-            return state
-
-        # TODO: Include AG_state
-
-        return state
+        return super()._dump_state()
 
     def _load_state(self, state):
         super()._load_state(state=state)
@@ -1257,25 +1246,12 @@ class ManipulationRobot(BaseRobot):
         # TODO: Include AG_state
 
     def _serialize(self, state):
-        # Call super first
-        state_flat = super()._serialize(state=state)
-
-        # No additional serialization needed if we're using physical grasping
-        if self.grasping_mode == "physical":
-            return state_flat
-
-        # TODO AG
-        return state_flat
+        return super()._serialize(state=state)
 
     def _deserialize(self, state):
         # Call super first
         state_dict, idx = super()._deserialize(state=state)
 
-        # No additional deserialization needed if we're using physical grasping
-        if self.grasping_mode == "physical":
-            return state_dict, idx
-
-        # TODO AG
         return state_dict, idx
 
     @classproperty

@@ -17,40 +17,43 @@ def main(random_selection=False, headless=False, short_exec=False):
     og.log.info(f"Demo {__file__}\n    " + "*" * 80 + "\n    Description:\n" + main.__doc__ + "*" * 80)
 
     # Define specific objects we want to load in with the scene directly
-    obj_configs = []
-
-    # Light
-    obj_configs.append(dict(
-        type="LightObject",
-        light_type="Sphere",
-        name="light",
-        radius=0.01,
-        intensity=1e8,
-        position=[-2.0, -2.0, 1.0],
-    ))
-
-    # Stove
-    obj_configs.append(dict(
-        type="DatasetObject",
-        name="stove",
-        category="stove",
-        model="yhjzwg",
-        bounding_box=[1.185, 0.978, 1.387],
-        position=[0, 0, 0.69],
-    ))
+    obj_configs = [
+        dict(
+            type="LightObject",
+            light_type="Sphere",
+            name="light",
+            radius=0.01,
+            intensity=1e8,
+            position=[-2.0, -2.0, 1.0],
+        ),
+        dict(
+            type="DatasetObject",
+            name="stove",
+            category="stove",
+            model="yhjzwg",
+            bounding_box=[1.185, 0.978, 1.387],
+            position=[0, 0, 0.69],
+        ),
+    ]
 
     # 2 Apples
-    for i in range(2):
-        obj_configs.append(dict(
+    obj_configs.extend(
+        dict(
             type="DatasetObject",
             name=f"apple{i}",
             category="apple",
             model="agveuv",
             bounding_box=[0.065, 0.065, 0.077],
             position=[0, i * 0.07, 2.0],
-            abilities={"flammable": {"ignition_temperature": 100, "distance_threshold": 0.5}},
-        ))
-
+            abilities={
+                "flammable": {
+                    "ignition_temperature": 100,
+                    "distance_threshold": 0.5,
+                }
+            },
+        )
+        for i in range(2)
+    )
     # Create the scene config to load -- empty scene with desired objects
     cfg = {
         "scene": {

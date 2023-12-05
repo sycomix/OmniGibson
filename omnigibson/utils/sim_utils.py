@@ -74,12 +74,7 @@ def check_deletable_prim(prim_path):
         return False
     if prim_path == "/World":
         return False
-    if prim_path == "/":
-        return False
-    # Don't remove any /Render prims as that can cause crashes
-    if prim_path.startswith("/Render"):
-        return False
-    return True
+    return False if prim_path == "/" else not prim_path.startswith("/Render")
 
 
 def prims_to_rigid_prim_set(inp_prims):
@@ -99,7 +94,7 @@ def prims_to_rigid_prim_set(inp_prims):
     out = set()
     for prim in inp_prims:
         if isinstance(prim, EntityPrim):
-            out.update({link for link in prim.links.values()})
+            out.update(set(prim.links.values()))
         elif isinstance(prim, RigidPrim):
             out.add(prim)
         else:
@@ -255,12 +250,7 @@ def filter_collisions(collisions, filter_prims):
     """
     paths = prims_to_rigid_prim_set(filter_prims)
 
-    filtered_collisions = set()
-    for pair in collisions:
-        if set(pair).isdisjoint(paths):
-            filtered_collisions.add(pair)
-
-    return filtered_collisions
+    return {pair for pair in collisions if set(pair).isdisjoint(paths)}
 
 
 def place_base_pose(obj, pos, quat=None, z_offset=None):

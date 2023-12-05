@@ -28,7 +28,7 @@ class LocomotionRobot(BaseRobot):
         # We make sure that our base controller exists and is a locomotion controller
         assert (
             "base" in self._controllers
-        ), "Controller 'base' must exist in controllers! Current controllers: {}".format(list(self._controllers.keys()))
+        ), f"Controller 'base' must exist in controllers! Current controllers: {list(self._controllers.keys())}"
         assert isinstance(
             self._controllers["base"], LocomotionController
         ), "Base controller must be a LocomotionController!"

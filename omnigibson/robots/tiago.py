@@ -144,7 +144,7 @@ class Tiago(ManipulationRobot, LocomotionRobot, ActiveCameraRobot):
         if isinstance(reset_joint_pos, str):
             assert (
                 reset_joint_pos in RESET_JOINT_OPTIONS
-            ), "reset_joint_pos should be one of {} if using a string!".format(RESET_JOINT_OPTIONS)
+            ), f"reset_joint_pos should be one of {RESET_JOINT_OPTIONS} if using a string!"
             reset_joint_pos = (
                 self.tucked_default_joint_pos if reset_joint_pos == "tuck" else self.untucked_default_joint_pos
             )
@@ -239,7 +239,7 @@ class Tiago(ManipulationRobot, LocomotionRobot, ActiveCameraRobot):
                 [0.22, 0.48, 1.52, 1.76, 0.04, -0.49, 0]
             )
         else:
-            raise ValueError("Unknown default arm pose: {}".format(self.default_arm_pose))
+            raise ValueError(f"Unknown default arm pose: {self.default_arm_pose}")
         return pos
 
     def _create_discrete_action_space(self):
@@ -369,7 +369,7 @@ class Tiago(ManipulationRobot, LocomotionRobot, ActiveCameraRobot):
     def controller_order(self):
         controllers = ["base", "camera"]
         for arm in self.arm_names:
-            controllers += ["arm_{}".format(arm), "gripper_{}".format(arm)]
+            controllers += [f"arm_{arm}", f"gripper_{arm}"]
 
         return controllers
 
@@ -382,13 +382,13 @@ class Tiago(ManipulationRobot, LocomotionRobot, ActiveCameraRobot):
         controllers["base"] = "JointController"
         controllers["camera"] = "JointController"
         for arm in self.arm_names:
-            controllers["arm_{}".format(arm)] = "InverseKinematicsController"
-            controllers["gripper_{}".format(arm)] = "MultiFingerGripperController"
+            controllers[f"arm_{arm}"] = "InverseKinematicsController"
+            controllers[f"gripper_{arm}"] = "MultiFingerGripperController"
         return controllers
 
     @property
     def _default_base_controller_configs(self):
-        dic = {
+        return {
             "name": "JointController",
             "control_freq": self._control_freq,
             "control_limits": self.control_limits,
@@ -397,7 +397,6 @@ class Tiago(ManipulationRobot, LocomotionRobot, ActiveCameraRobot):
             "compute_delta_in_quat_space": [(3, 4, 5)],
             "dof_idx": self.base_control_idx,
         }
-        return dic
 
     @property
     def _default_controller_config(self):
@@ -408,7 +407,7 @@ class Tiago(ManipulationRobot, LocomotionRobot, ActiveCameraRobot):
         cfg["base"] = {"JointController": self._default_base_controller_configs}
 
         for arm in self.arm_names:
-            for arm_cfg in cfg["arm_{}".format(arm)].values():
+            for arm_cfg in cfg[f"arm_{arm}"].values():
 
                 if arm == "left":
                     # Need to override joint idx being controlled to include trunk in default arm controller configs
@@ -419,9 +418,9 @@ class Tiago(ManipulationRobot, LocomotionRobot, ActiveCameraRobot):
                 # via the left arm??
                 if self.rigid_trunk:
                     arm_cfg["control_limits"]["position"][0][self.trunk_control_idx] = \
-                        self.untucked_default_joint_pos[self.trunk_control_idx]
+                            self.untucked_default_joint_pos[self.trunk_control_idx]
                     arm_cfg["control_limits"]["position"][1][self.trunk_control_idx] = \
-                        self.untucked_default_joint_pos[self.trunk_control_idx]
+                            self.untucked_default_joint_pos[self.trunk_control_idx]
 
         return cfg
 
@@ -433,10 +432,22 @@ class Tiago(ManipulationRobot, LocomotionRobot, ActiveCameraRobot):
     def assisted_grasp_start_points(self):
         return {
             arm: [
-                GraspingPoint(link_name="gripper_{}_right_finger_link".format(arm), position=[0.04, -0.012, 0.014]),
-                GraspingPoint(link_name="gripper_{}_right_finger_link".format(arm), position=[0.04, -0.012, -0.014]),
-                GraspingPoint(link_name="gripper_{}_right_finger_link".format(arm), position=[-0.04, -0.012, 0.014]),
-                GraspingPoint(link_name="gripper_{}_right_finger_link".format(arm), position=[-0.04, -0.012, -0.014]),
+                GraspingPoint(
+                    link_name=f"gripper_{arm}_right_finger_link",
+                    position=[0.04, -0.012, 0.014],
+                ),
+                GraspingPoint(
+                    link_name=f"gripper_{arm}_right_finger_link",
+                    position=[0.04, -0.012, -0.014],
+                ),
+                GraspingPoint(
+                    link_name=f"gripper_{arm}_right_finger_link",
+                    position=[-0.04, -0.012, 0.014],
+                ),
+                GraspingPoint(
+                    link_name=f"gripper_{arm}_right_finger_link",
+                    position=[-0.04, -0.012, -0.014],
+                ),
             ]
             for arm in self.arm_names
         }
@@ -445,10 +456,22 @@ class Tiago(ManipulationRobot, LocomotionRobot, ActiveCameraRobot):
     def assisted_grasp_end_points(self):
         return {
             arm: [
-                GraspingPoint(link_name="gripper_{}_left_finger_link".format(arm), position=[0.04, 0.012, 0.014]),
-                GraspingPoint(link_name="gripper_{}_left_finger_link".format(arm), position=[0.04, 0.012, -0.014]),
-                GraspingPoint(link_name="gripper_{}_left_finger_link".format(arm), position=[-0.04, 0.012, 0.014]),
-                GraspingPoint(link_name="gripper_{}_left_finger_link".format(arm), position=[-0.04, 0.012, -0.014]),
+                GraspingPoint(
+                    link_name=f"gripper_{arm}_left_finger_link",
+                    position=[0.04, 0.012, 0.014],
+                ),
+                GraspingPoint(
+                    link_name=f"gripper_{arm}_left_finger_link",
+                    position=[0.04, 0.012, -0.014],
+                ),
+                GraspingPoint(
+                    link_name=f"gripper_{arm}_left_finger_link",
+                    position=[-0.04, 0.012, 0.014],
+                ),
+                GraspingPoint(
+                    link_name=f"gripper_{arm}_left_finger_link",
+                    position=[-0.04, 0.012, -0.014],
+                ),
             ]
             for arm in self.arm_names
         }
@@ -530,17 +553,27 @@ class Tiago(ManipulationRobot, LocomotionRobot, ActiveCameraRobot):
 
     @property
     def eef_link_names(self):
-        return {arm: "gripper_{}_grasping_frame".format(arm) for arm in self.arm_names}
+        return {arm: f"gripper_{arm}_grasping_frame" for arm in self.arm_names}
 
     @property
     def finger_link_names(self):
-        return {arm: ["gripper_{}_right_finger_link".format(arm), "gripper_{}_left_finger_link".format(arm)] for arm in
-                self.arm_names}
+        return {
+            arm: [
+                f"gripper_{arm}_right_finger_link",
+                f"gripper_{arm}_left_finger_link",
+            ]
+            for arm in self.arm_names
+        }
 
     @property
     def finger_joint_names(self):
-        return {arm: ["gripper_{}_right_finger_joint".format(arm), "gripper_{}_left_finger_joint".format(arm)] for arm
-                in self.arm_names}
+        return {
+            arm: [
+                f"gripper_{arm}_right_finger_joint",
+                f"gripper_{arm}_left_finger_joint",
+            ]
+            for arm in self.arm_names
+        }
 
     @property
     def usd_path(self):

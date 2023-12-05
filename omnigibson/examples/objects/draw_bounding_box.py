@@ -63,7 +63,7 @@ def main(random_selection=False, headless=False, short_exec=False):
         cam.add_modality(bbox_modality)
 
     # Take a few steps to let objects settle
-    for i in range(100):
+    for _ in range(100):
         env.step(np.array([]))
 
     # Grab observations from viewer camera and write them to disk

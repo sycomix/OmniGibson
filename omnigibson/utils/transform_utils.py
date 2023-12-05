@@ -4,6 +4,7 @@ Utility functions of matrix and vector transformations.
 NOTE: convention for quaternions is (x, y, z, w)
 """
 
+
 import math
 
 import numpy as np
@@ -43,7 +44,7 @@ _AXES2TUPLE = {
     "rzyz": (2, 1, 1, 1),
 }
 
-_TUPLE2AXES = dict((v, k) for k, v in _AXES2TUPLE.items())
+_TUPLE2AXES = {v: k for k, v in _AXES2TUPLE.items()}
 
 
 def ewma_vectorized(data, alpha, offset=None, dtype=None, order="C", out=None):
@@ -70,10 +71,7 @@ def ewma_vectorized(data, alpha, offset=None, dtype=None, order="C", out=None):
     data = np.array(data, copy=False)
 
     if dtype is None:
-        if data.dtype == np.float32:
-            dtype = np.float32
-        else:
-            dtype = np.float64
+        dtype = np.float32 if data.dtype == np.float32 else np.float64
     else:
         dtype = np.dtype(dtype)
 
@@ -426,7 +424,7 @@ def euler2mat(euler):
     """
 
     euler = np.asarray(euler, dtype=np.float64)
-    assert euler.shape[-1] == 3, "Invalid shaped euler {}".format(euler)
+    assert euler.shape[-1] == 3, f"Invalid shaped euler {euler}"
 
     return R.from_euler("xyz", euler).as_matrix()
 
@@ -800,12 +798,11 @@ def clip_rotation(quat, limit):
     if den == 0:
         # This is a zero degree rotation, immediately return
         return quat, clipped
-    else:
-        # This is all other cases
-        x = quat[0] / den
-        y = quat[1] / den
-        z = quat[2] / den
-        a = 2 * math.acos(quat[3])
+    # This is all other cases
+    x = quat[0] / den
+    y = quat[1] / den
+    z = quat[2] / den
+    a = 2 * math.acos(quat[3])
 
     # Clip rotation if necessary and return clipped quat
     if abs(a) > limit:
@@ -914,8 +911,7 @@ def get_orientation_error(target_orn, current_orn):
     pinv[0, :] = [-current_orn[1], current_orn[0], -current_orn[3], current_orn[2]]
     pinv[1, :] = [-current_orn[2], current_orn[3], current_orn[0], -current_orn[1]]
     pinv[2, :] = [-current_orn[3], -current_orn[2], current_orn[1], current_orn[0]]
-    orn_error = 2.0 * pinv.dot(np.array(target_orn))
-    return orn_error
+    return 2.0 * pinv.dot(np.array(target_orn))
 
 
 def get_orientation_diff_in_radian(orn0, orn1):

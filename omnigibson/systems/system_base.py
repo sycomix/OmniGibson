@@ -1074,8 +1074,7 @@ def _create_system_from_metadata(system_name):
             is_viscous=False,
             material_mtl_name="DeepWater",
         )
-    else:
-        """
+    """
         This is not defined yet, but one proposal:
         
         Metadata = .json dict, with format:
@@ -1121,84 +1120,84 @@ def _create_system_from_metadata(system_name):
                         
         Then, compile the necessary kwargs and generate the requested system
         """
-        # Parse information
-        system_dir = os.path.join(gm.DATASET_PATH, "systems", system_name)
-        with open(os.path.join(system_dir, "metadata.json"), "r") as f:
-            metadata = json.load(f)
-        system_type = metadata["type"]
-        system_kwargs = dict(name=system_name)
+    # Parse information
+    system_dir = os.path.join(gm.DATASET_PATH, "systems", system_name)
+    with open(os.path.join(system_dir, "metadata.json"), "r") as f:
+        metadata = json.load(f)
+    system_type = metadata["type"]
+    system_kwargs = dict(name=system_name)
 
-        particle_assets = set(os.listdir(system_dir))
-        particle_assets.remove("metadata.json")
-        has_asset = len(particle_assets) > 0
-        if has_asset:
-            model = sorted(particle_assets)[0]
-            asset_path = os.path.join(system_dir, model, "usd", f"{model}.usd")
-        else:
-            asset_path = None
+    particle_assets = set(os.listdir(system_dir))
+    particle_assets.remove("metadata.json")
+    has_asset = len(particle_assets) > 0
+    if has_asset:
+        model = sorted(particle_assets)[0]
+        asset_path = os.path.join(system_dir, model, "usd", f"{model}.usd")
+    else:
+        asset_path = None
 
-        if not has_asset:
-            if system_type == "macro_visual_particle":
-                # Fallback to stain asset
-                asset_path = os.path.join(gm.DATASET_PATH, "systems", "stain", "ahkjul", "usd", "stain.usd")
-                has_asset = True
-        if has_asset:
-            def generate_particle_template_fcn():
-                return lambda prim_path, name: \
-                    og.objects.USDObject(
-                        prim_path=prim_path,
-                        name=name,
-                        usd_path=asset_path,
-                        encrypted=True,
-                        category=system_name,
-                        visible=False,
-                        fixed_base=False,
-                        visual_only=True,
-                        include_default_states=False,
-                        abilities={},
-                    )
-        else:
-            def generate_particle_template_fcn():
-                return lambda prim_path, name: \
-                    og.objects.PrimitiveObject(
-                        prim_path=prim_path,
-                        name=name,
-                        primitive_type="Sphere",
-                        category=system_name,
-                        radius=0.015,
-                        visible=False,
-                        fixed_base=False,
-                        visual_only=True,
-                        include_default_states=False,
-                        abilities={},
-                    )
-
-        def generate_customize_particle_material_fcn(mat_kwargs):
-            def customize_mat(mat):
-                for attr, val in mat_kwargs.items():
-                    setattr(mat, attr, np.array(val) if isinstance(val, list) else val)
-            return customize_mat
-
+    if not has_asset:
         if system_type == "macro_visual_particle":
-            system_kwargs["create_particle_template"] = generate_particle_template_fcn()
-            system_kwargs["scale_relative_to_parent"] = metadata["relative_particle_scaling"]
-        elif system_type == "granular" or system_type == "macro_physical_particle":
-            system_kwargs["create_particle_template"] = generate_particle_template_fcn()
-            system_kwargs["particle_density"] = metadata["particle_density"]
-        elif system_type == "fluid":
-            system_kwargs["particle_contact_offset"] = metadata["particle_contact_offset"]
-            system_kwargs["particle_density"] = metadata["particle_density"]
-            system_kwargs["is_viscous"] = metadata["is_viscous"]
-            system_kwargs["material_mtl_name"] = metadata["material_mtl_name"]
-            system_kwargs["customize_particle_material"] = \
-                generate_customize_particle_material_fcn(mat_kwargs=metadata["customize_material_kwargs"])
-        else:
-            raise ValueError(f"{system_name} system's type {system_type} is invalid! Must be one of "
-                             f"{{ 'macro_visual_particle', 'macro_physical_particle', 'granular', or 'fluid' }}")
+            # Fallback to stain asset
+            asset_path = os.path.join(gm.DATASET_PATH, "systems", "stain", "ahkjul", "usd", "stain.usd")
+            has_asset = True
+    if has_asset:
+        def generate_particle_template_fcn():
+            return lambda prim_path, name: \
+                og.objects.USDObject(
+                    prim_path=prim_path,
+                    name=name,
+                    usd_path=asset_path,
+                    encrypted=True,
+                    category=system_name,
+                    visible=False,
+                    fixed_base=False,
+                    visual_only=True,
+                    include_default_states=False,
+                    abilities={},
+                )
+    else:
+        def generate_particle_template_fcn():
+            return lambda prim_path, name: \
+                og.objects.PrimitiveObject(
+                    prim_path=prim_path,
+                    name=name,
+                    primitive_type="Sphere",
+                    category=system_name,
+                    radius=0.015,
+                    visible=False,
+                    fixed_base=False,
+                    visual_only=True,
+                    include_default_states=False,
+                    abilities={},
+                )
 
-        # Generate the requested system
-        system_cls = "".join([st.capitalize() for st in system_type.split("_")])
-        return systems.__dict__[f"{system_cls}System"].create(**system_kwargs)
+    def generate_customize_particle_material_fcn(mat_kwargs):
+        def customize_mat(mat):
+            for attr, val in mat_kwargs.items():
+                setattr(mat, attr, np.array(val) if isinstance(val, list) else val)
+        return customize_mat
+
+    if system_type == "macro_visual_particle":
+        system_kwargs["create_particle_template"] = generate_particle_template_fcn()
+        system_kwargs["scale_relative_to_parent"] = metadata["relative_particle_scaling"]
+    elif system_type in ["granular", "macro_physical_particle"]:
+        system_kwargs["create_particle_template"] = generate_particle_template_fcn()
+        system_kwargs["particle_density"] = metadata["particle_density"]
+    elif system_type == "fluid":
+        system_kwargs["particle_contact_offset"] = metadata["particle_contact_offset"]
+        system_kwargs["particle_density"] = metadata["particle_density"]
+        system_kwargs["is_viscous"] = metadata["is_viscous"]
+        system_kwargs["material_mtl_name"] = metadata["material_mtl_name"]
+        system_kwargs["customize_particle_material"] = \
+            generate_customize_particle_material_fcn(mat_kwargs=metadata["customize_material_kwargs"])
+    else:
+        raise ValueError(f"{system_name} system's type {system_type} is invalid! Must be one of "
+                         f"{{ 'macro_visual_particle', 'macro_physical_particle', 'granular', or 'fluid' }}")
+
+    # Generate the requested system
+    system_cls = "".join([st.capitalize() for st in system_type.split("_")])
+    return systems.__dict__[f"{system_cls}System"].create(**system_kwargs)
 
 
 def import_og_systems():

@@ -44,7 +44,7 @@ class CreateMeshPrimWithDefaultXformCommand(CMPWDXC):
 
             stage (Usd.Stage): If specified, stage to create prim on
         """
-        self._prim_type = prim_type[0:1].upper() + prim_type[1:].lower()
+        self._prim_type = prim_type[:1].upper() + prim_type[1:].lower()
         self._usd_context = omni.usd.get_context()
         self._selection = self._usd_context.get_selection()
         self._stage = kwargs.get("stage", self._usd_context.get_stage())
@@ -73,26 +73,25 @@ class Utils(OmniUtils):
     def create_material(self, name):
         # TODO: THIS IS THE ONLY LINE WE CHANGE! "/" SHOULD BE ""
         material_path = ""
-        default_prim = self.stage.GetDefaultPrim()
-        if default_prim:
+        if default_prim := self.stage.GetDefaultPrim():
             material_path = default_prim.GetPath().pathString
 
-        if not self.stage.GetPrimAtPath(material_path + "/Looks"):
-            self.stage.DefinePrim(material_path + "/Looks", "Scope")
-        material_path += "/Looks/" + name
+        if not self.stage.GetPrimAtPath(f"{material_path}/Looks"):
+            self.stage.DefinePrim(f"{material_path}/Looks", "Scope")
+        material_path += f"/Looks/{name}"
         material_path = ou.get_stage_next_free_path(
             self.stage, material_path, False
         )
         material = UsdShade.Material.Define(self.stage, material_path)
 
-        shader_path = material_path + "/Shader"
+        shader_path = f"{material_path}/Shader"
         shader = UsdShade.Shader.Define(self.stage, shader_path)
 
         # Update Neuraylib MDL search paths
         import omni.particle.system.core as core
         core.update_mdl_search_paths()
 
-        shader.SetSourceAsset(name + ".mdl", "mdl")
+        shader.SetSourceAsset(f"{name}.mdl", "mdl")
         shader.SetSourceAssetSubIdentifier(name, "mdl")
         shader.GetImplementationSourceAttr().Set(UsdShade.Tokens.sourceAsset)
         shader.CreateOutput("out", Sdf.ValueTypeNames.Token)
@@ -122,10 +121,11 @@ class Core(OmniCore):
         path appended to created_paths (if provided).
         """
         graph = None
-        graph_paths = [path for path in selected_paths
-                       if self.stage.GetPrimAtPath(path).GetTypeName() == "ComputeGraph"]
-
-        if len(graph_paths) > 0:
+        if graph_paths := [
+            path
+            for path in selected_paths
+            if self.stage.GetPrimAtPath(path).GetTypeName() == "ComputeGraph"
+        ]:
             graph = ogc.get_graph_by_path(graph_paths[0])
             if len(graph_paths) > 1:
                 carb.log_warn(f"Multiple ComputeGraph prims selected. Only the first will be used: {graph.get_path_to_graph()}")

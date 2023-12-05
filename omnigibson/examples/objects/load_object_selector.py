@@ -63,7 +63,7 @@ def main(random_selection=False, headless=False, short_exec=False):
 
     # Step through the environment
     max_steps = 100 if short_exec else 10000
-    for i in range(max_steps):
+    for _ in range(max_steps):
         env.step(np.array([]))
 
     # Always close the environment at the end

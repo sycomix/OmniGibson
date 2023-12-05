@@ -92,9 +92,7 @@ def benchmark_scene(scene_name, optimized=False, import_robot=True):
     plt.hist(render_fps)
     ax.set_xlabel("Render fps")
     ax.set_title(
-        "Scene {} version {}\noptimized {} num_obj {}\n import_robot {}".format(
-            scene_name, assets_version, optimized, scene.n_objects, import_robot
-        )
+        f"Scene {scene_name} version {assets_version}\noptimized {optimized} num_obj {scene.n_objects}\n import_robot {import_robot}"
     )
     ax = plt.subplot(6, 1, 2)
     plt.hist(physics_fps)
@@ -104,26 +102,34 @@ def benchmark_scene(scene_name, optimized=False, import_robot=True):
     ax.set_xlabel("Step fps")
     ax = plt.subplot(6, 1, 4)
     plt.plot(render_fps)
-    ax.set_xlabel("Render fps with time, converge to {}".format(np.mean(render_fps[-100:])))
+    ax.set_xlabel(
+        f"Render fps with time, converge to {np.mean(render_fps[-100:])}"
+    )
     ax.set_ylabel("fps")
     ax = plt.subplot(6, 1, 5)
     plt.plot(physics_fps)
-    ax.set_xlabel("Physics fps with time, converge to {}".format(np.mean(physics_fps[-100:])))
+    ax.set_xlabel(
+        f"Physics fps with time, converge to {np.mean(physics_fps[-100:])}"
+    )
     ax.set_ylabel("fps")
     ax = plt.subplot(6, 1, 6)
     plt.plot(fps)
-    ax.set_xlabel("Overall fps with time, converge to {}".format(np.mean(fps[-100:])))
+    ax.set_xlabel(f"Overall fps with time, converge to {np.mean(fps[-100:])}")
     ax.set_ylabel("fps")
     # TODO! Reading objects' wake state not available yet from omniverse
     # ax = plt.subplot(6, 1, 6)
     # plt.plot(obj_awake)
     # ax.set_xlabel("Num object links awake, converge to {}".format(np.mean(obj_awake[-100:])))
     plt.tight_layout()
-    plt.savefig(os.path.join(
-        OUTPUT_DIR,
-        "scene_benchmark_{}_o_{}_r_{}.pdf".format(scene_name, optimized, import_robot)))
+    plt.savefig(
+        os.path.join(
+            OUTPUT_DIR,
+            f"scene_benchmark_{scene_name}_o_{optimized}_r_{import_robot}.pdf",
+        )
+    )
 
     from IPython import embed; embed()
+    embed()
 
 
 def main():

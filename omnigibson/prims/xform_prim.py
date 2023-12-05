@@ -138,7 +138,7 @@ class XFormPrim(BasePrim):
             bool: True if there is a visual material bound to this prim. False otherwise
         """
         material_path = self._binding_api.GetDirectBinding().GetMaterialPath().pathString
-        return False if material_path == "" else True
+        return material_path != ""
 
     def set_position_orientation(self, position=None, orientation=None):
         """
@@ -265,14 +265,14 @@ class XFormPrim(BasePrim):
             translation = Gf.Vec3d(*np.array(translation, dtype=float))
             if "xformOp:translate" not in properties:
                 carb.log_error(
-                    "Translate property needs to be set for {} before setting its position".format(self.name)
+                    f"Translate property needs to be set for {self.name} before setting its position"
                 )
             self.set_attribute("xformOp:translate", translation)
         if orientation is not None:
             orientation = np.array(orientation, dtype=float)[[3, 0, 1, 2]]
             if "xformOp:orient" not in properties:
                 carb.log_error(
-                    "Orient property needs to be set for {} before setting its orientation".format(self.name)
+                    f"Orient property needs to be set for {self.name} before setting its orientation"
                 )
             xform_op = self._prim.GetAttribute("xformOp:orient")
             if xform_op.GetTypeName() == "quatf":
@@ -317,7 +317,9 @@ class XFormPrim(BasePrim):
         scale = Gf.Vec3d(*scale)
         properties = self.prim.GetPropertyNames()
         if "xformOp:scale" not in properties:
-            carb.log_error("Scale property needs to be set for {} before setting its scale".format(self.name))
+            carb.log_error(
+                f"Scale property needs to be set for {self.name} before setting its scale"
+            )
         self.set_attribute("xformOp:scale", scale)
 
     @property
@@ -407,4 +409,4 @@ class XFormPrim(BasePrim):
 
     def _deserialize(self, state):
         # We deserialize deterministically by knowing the order of values -- pos, ori
-        return dict(pos=state[0:3], ori=state[3:7]), 7
+        return dict(pos=state[:3], ori=state[3:7]), 7

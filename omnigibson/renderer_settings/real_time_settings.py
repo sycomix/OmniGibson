@@ -78,8 +78,7 @@ class AntiAliasingSettings(SubSettingsBase):
 
         antialiasing_ops = ["Off", "TAA", "FXAA"]
         if self._carb_settings.get("/ngx/enabled") is True:
-            antialiasing_ops.append("DLSS")
-            antialiasing_ops.append("RTXAA")
+            antialiasing_ops.extend(("DLSS", "RTXAA"))
         self.algorithm = SettingItem(self, SettingType.STRING, "Algorithm", "/rtx/post/aa/op", antialiasing_ops)
 
         # antialiasing_op_idx == 1
@@ -171,25 +170,19 @@ class AntiAliasingSettings(SubSettingsBase):
                     "/rtx/post/fxaa/qualityEdgeThresholdMin": self.quality_edge_threshold_min,
                 }
             )
-        elif antialiasing_op_idx == 3 or antialiasing_op_idx == 4:
+        elif antialiasing_op_idx in [3, 4]:
             # DLSS and RTXAA
             if antialiasing_op_idx == 3:
-                settings.update(
-                    {"/rtx/post/dlss/execMode": self.exec_mode,}
-                )
+                settings["/rtx/post/dlss/execMode"] = self.exec_mode
             settings.update(
                 {"/rtx/post/aa/sharpness": self.sharpness, "/rtx/post/aa/autoExposureMode": self.auto_exposure_mode,}
             )
 
         auto_exposure_idx = self._carb_settings.get("/rtx/post/aa/autoExposureMode")
         if auto_exposure_idx == 1:
-            settings.update(
-                {"/rtx/post/aa/exposureMultiplier": self.exposure_multiplier,}
-            )
+            settings["/rtx/post/aa/exposureMultiplier"] = self.exposure_multiplier
         elif auto_exposure_idx == 2:
-            settings.update(
-                {"/rtx/post/aa/exposure": self.exposure,}
-            )
+            settings["/rtx/post/aa/exposure"] = self.exposure
         return settings
 
 

@@ -202,9 +202,7 @@ def check_points_in_convex_hull_mesh(mesh_face_centroids, mesh_face_normals, pos
     particle_positions = np.tile(particle_positions.reshape(N, 1, 3), (1, D, 1))
     # All arrays are now (N, D, 3) shape -- efficient for batching
     in_range = ((particle_positions - mesh_points) * mesh_normals).sum(axis=-1) < 0         # shape (N, D)
-    # All D normals must be satisfied for a single point to be considered inside the hull
-    in_range = in_range.sum(axis=-1) == D
-    return in_range
+    return in_range.sum(axis=-1) == D
 
 
 def _generate_convex_hull_volume_checker_functions(convex_hull_mesh):

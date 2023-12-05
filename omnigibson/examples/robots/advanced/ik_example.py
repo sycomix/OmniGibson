@@ -111,7 +111,7 @@ def main(random_selection=False, headless=False, short_exec=False):
     else:
         # Create a visual marker to be moved by the user, representing desired end-effector position
         marker = PrimitiveObject(
-            prim_path=f"/World/marker",
+            prim_path="/World/marker",
             name="marker",
             primitive_type="Sphere",
             radius=0.03,
@@ -131,8 +131,10 @@ def main(random_selection=False, headless=False, short_exec=False):
         def keyboard_event_handler(event, *args, **kwargs):
             nonlocal command, exit_now
             # Check if we've received a key press or repeat
-            if event.type == carb.input.KeyboardEventType.KEY_PRESS \
-                    or event.type == carb.input.KeyboardEventType.KEY_REPEAT:
+            if event.type in [
+                carb.input.KeyboardEventType.KEY_PRESS,
+                carb.input.KeyboardEventType.KEY_REPEAT,
+            ]:
                 if event.input == carb.input.KeyboardInput.ENTER:
                     # Execute the command
                     execute_ik(pos=command)
